@@ -1,0 +1,79 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide empty methods
+hide empty attributes
+
+!include enums.puml
+!include richtypes.puml
+
+entity Student <Entity> {
+    firstName: String <<nn, length=64>>
+    lastName: String <<nn, length=64>>
+    ' do we want to store attendance here as well?
+    ' actually the idea would be to go from class to sessions to attendance
+    ' but what about a total of missed sessions?
+    ' the same goes for hand-ins
+}
+
+entity Class <Entity> {
+    name: String <<nn, length=64>>,
+    terms: Set<SchoolTerm>
+    type: ClassType,
+    isCollege: Boolean,
+    level: ClassLevel,
+    students: Set<Student>,
+    sessions: Set<Session>
+}
+
+entity Term <Entity> {
+    startDate: ZonedDateTime
+    endDate: ZonedDateTime
+}
+
+entity Session <Entity> {
+    date: ZonedDateTime
+    topic: String <<nn, length=128>>,
+    attendance: Set<Attendance>
+}
+
+entity Attendance <Entity> <<(V, bbFFcc)>> {
+    student: Student <<nn>>,
+    notes: String <<length=1024>>,
+    grading: SessionGrading <<embedded>>
+}
+
+entity Test <Entity> <<(V, bbFFcc)>> {
+    date: ZonedDateTime <<nn>>
+    duration: Duration <<embedded>>
+    type: TestType
+    maximumPoints: Points <<embedded>>
+    handIns: Set<HandIn>
+}
+
+entity Assignment <ValueObject> <<(V, bbFFcc)>> {
+    topics: String <<nn, length=256>>
+    blob: Blob <<nn>>
+}
+
+entity HandIn <Entity> <<(V, bbFFcc)>> {
+    student: Student <<nn>>
+    grade: Grade <<nullable, embedded>>
+    blob: Blob <<nullable>>
+}
+
+' relations
+Class *-up- Test
+Class *-- Session
+Test o- HandIn
+Class *-up- Student
+Student o- Attendance
+Session *- Attendance
+Student o-up- HandIn
+HandIn -down-> Points : receives
+Term *- Class
+Test -left-> Duration
+Test -> Points
+Test -down-> Assignment
+
+@enduml

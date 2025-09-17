@@ -1,0 +1,29 @@
+@startuml
+
+enum ClassType {
+    PROGRAMMING <<P>>,
+    DATABASES <<D>>,
+    INFI <<I>>
+}
+
+enum ClassLevel {
+    FIRST <<F>>,
+    SECOND <<S>>,
+    THIRD <<T>>,
+    FOURTH <<O>>,
+    FIFTH <<I>>
+}
+
+enum TestType {
+    WRITTEN <<W>>,
+    ORAL <<O>>,
+    PRACTICAL <<P>>
+    REPETITION <<R>>,
+}
+
+enum Semester {
+    WINTER <<W>>,
+    SUMMER <<S>>,
+}
+
+@enduml

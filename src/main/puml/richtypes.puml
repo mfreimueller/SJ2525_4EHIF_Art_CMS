@@ -1,0 +1,11 @@
+@startuml
+
+entity Points <RichType> <<(R, ffccdd)>> {
+    points: Integer <<ge: 0, le: 100>>
+}
+
+entity Duration <RichType> <<(R, ffccdd)>> {
+    minutes: Integer <<ge: 0, le: 250>>
+}
+
+@enduml
