@@ -14,7 +14,7 @@ enum ClassLevel {
     FIFTH <<I>>
 }
 
-enum TestType {
+enum ExamType {
     WRITTEN <<W>>,
     ORAL <<O>>,
     PRACTICAL <<P>>

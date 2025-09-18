@@ -51,10 +51,10 @@ entity Attendance <Entity> <<(V, bbFFcc)>> {
     grading: SessionGrading <<embedded>>
 }
 
-entity Test <Entity> <<(V, bbFFcc)>> {
+entity Exam <Entity> <<(V, bbFFcc)>> {
     date: ZonedDateTime <<nn>>
     duration: Duration <<embedded>>
-    type: TestType
+    type: ExamType
     maximumPoints: Points <<embedded>>
     handIns: Set<HandIn>
 }
@@ -71,18 +71,18 @@ entity HandIn <Entity> <<(V, bbFFcc)>> {
 }
 
 ' relations
-Course *-up- Test
+Course *-up- Exam
 Course *-- Session
-Test o- HandIn
+Exam o- HandIn
 Course *-up- Student
 Student o- Attendance
 Session *- Attendance
 Student o-up- HandIn
 HandIn -up-> Points : receives
 Term *- Course : has
-Test -left-> Duration
-Test -up-> Points : contains
-Test -down-> Assignment
+Exam -left-> Duration
+Exam -up-> Points : contains
+Exam -down-> Assignment
 Student -down-|> Person : is a
 Teacher -down-|> Person : is a
 Course <- Teacher : teaches
