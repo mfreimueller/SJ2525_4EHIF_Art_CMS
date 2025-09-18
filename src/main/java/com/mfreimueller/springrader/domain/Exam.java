@@ -1,9 +1,8 @@
 package com.mfreimueller.springrader.domain;
 
 import com.mfreimueller.springrader.richtypes.Duration;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -16,13 +15,27 @@ import java.time.ZonedDateTime;
 @Setter
 @EqualsAndHashCode(of = "id")
 
+// note to myself: we don't use AbstractPersistable, because we want to use different
+// types of primary keys (i.e. not only basic types)
 @Entity
-@Table(name = "tests")
-public class Exam extends AbstractPersistable<Long> {
+@Table(name = "exams")
+public class Exam {
 
-    private ZonedDateTime date;
+    // note to myself: we use embedded id to support complex types as ids
+    @EmbeddedId
+    private ExamId id;
 
-    @Column(columnDefinition = "check (width > 0 AND width <= 250)")
+    @Column(name = "date_ts")
+    private ZonedDateTime dateTS;
+
+    @Column(columnDefinition = "integer check (duration > 0 AND duration <= 250)")
     private Duration duration;
 
+    // note to myself: strongly typed to uniquely identify the identifier type of Exam
+    // which makes it obvious in code, which identifier we are working with (cmp ex negativo: using only
+    // Long, which makes it hard to distinguish between ids of Exam and Course etc.
+    public record ExamId(
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "examSeq")
+            @SequenceGenerator(name = "examSeq", sequenceName = "exam_seq",  allocationSize = 1)
+            @NotNull Long id){}
 }

@@ -21,7 +21,7 @@ class ExamRepositoryTest {
     @Test
     void can_save_and_reread() {
         var exam = Exam.builder()
-                .date(ZonedDateTime.now())
+                .dateTS(ZonedDateTime.now())
                 .duration(Duration.of(50))
                 .build();
 
