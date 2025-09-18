@@ -8,4 +8,8 @@ entity Duration <RichType> <<(R, ffccdd)>> {
     minutes: Integer <<ge: 0, le: 250>>
 }
 
+entity Email <RichType> <<(R, ffccdd)>> {
+    address: String <<nn>>
+}
+
 @enduml

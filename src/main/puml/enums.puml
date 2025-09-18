@@ -1,6 +1,6 @@
 @startuml
 
-enum ClassType {
+enum CourseType {
     PROGRAMMING <<P>>,
     DATABASES <<D>>,
     INFI <<I>>

@@ -7,23 +7,31 @@ hide empty attributes
 !include enums.puml
 !include richtypes.puml
 
-entity Student <Entity> {
-    firstName: String <<nn, length=64>>
+entity Person <Entity> {
+    firstName: String <<nn, length=64>>,
     lastName: String <<nn, length=64>>
+}
+
+entity Teacher <Entity> {
+    email: Email <<nn>>
+}
+
+entity Student <Entity> {
     ' do we want to store attendance here as well?
-    ' actually the idea would be to go from class to sessions to attendance
+    ' actually the idea would be to go from course to sessions to attendance
     ' but what about a total of missed sessions?
     ' the same goes for hand-ins
 }
 
-entity Class <Entity> {
+entity Course <Entity> {
     name: String <<nn, length=64>>,
     terms: Set<SchoolTerm>
-    type: ClassType,
+    type: CourseType,
     isCollege: Boolean,
     level: ClassLevel,
     students: Set<Student>,
-    sessions: Set<Session>
+    sessions: Set<Session>,
+    teacher: Teacher <<nn>>
 }
 
 entity Term <Entity> {
@@ -63,17 +71,21 @@ entity HandIn <Entity> <<(V, bbFFcc)>> {
 }
 
 ' relations
-Class *-up- Test
-Class *-- Session
+Course *-up- Test
+Course *-- Session
 Test o- HandIn
-Class *-up- Student
+Course *-up- Student
 Student o- Attendance
 Session *- Attendance
 Student o-up- HandIn
-HandIn -down-> Points : receives
-Term *- Class
+HandIn -up-> Points : receives
+Term *- Course : has
 Test -left-> Duration
-Test -> Points
+Test -up-> Points : contains
 Test -down-> Assignment
+Student -down-|> Person : is a
+Teacher -down-|> Person : is a
+Course <- Teacher : teaches
+Teacher -> Email : has
 
 @enduml
