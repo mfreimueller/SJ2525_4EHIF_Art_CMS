@@ -17,7 +17,10 @@ class CourseRepositoryTest {
 
     @Test
     void can_save_and_reread() {
-        var course = new Course();
+        var course = Course.builder()
+                .name("4EHIF POS1")
+                .isCollege(false)
+                .build();
 
         var saved = courseRepository.save(course);
 
