@@ -1,11 +1,15 @@
 package com.mfreimueller.springrader.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
@@ -23,4 +27,7 @@ public class Course extends AbstractPersistable<Long> {
     private String name;
 
     private Boolean isCollege;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private Set<Exam> exams;
 }
