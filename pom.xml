@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mfreimueller</groupId>
-    <artifactId>SprinGrader</artifactId>
+    <artifactId>SJ2526_4EHIF_Art_CMS</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>SprinGrader</name>
-    <description>SprinGrader</description>
+    <name>SJ2526 4EHIF Art CMS</name>
+    <description>A Spring Boot project for teaching in 4th grade in HTL.</description>
     <url/>
     <licenses>
         <license/>
