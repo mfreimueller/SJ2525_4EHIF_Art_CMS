@@ -1,15 +1,11 @@
 @startuml
 
-entity Points <RichType> <<(R, ffccdd)>> {
-    points: Integer <<ge: 0, le: 100>>
+entity LocalizedString <RichType> <<(R, ffccdd)>> {
+    value: String
 }
 
-entity Duration <RichType> <<(R, ffccdd)>> {
-    minutes: Integer <<ge: 0, le: 250>>
-}
-
-entity Email <RichType> <<(R, ffccdd)>> {
-    address: String <<nn>>
+entity Language <RichType> <<(R, ffccdd)>> {
+    name: String
 }
 
 @enduml

@@ -1,29 +1,32 @@
 @startuml
 
-enum CourseType {
-    PROGRAMMING <<P>>,
-    DATABASES <<D>>,
-    INFI <<I>>
+enum Role {
+    ' Can view the content but not edit/manage
+    ' Typically used by reviewers, testers etc.
+    VIEWER <<V>>,
+    ' Can CRUD content, but not manage users.
+    EDITOR <<E>>,
+    ' Can all of the above plus manage users.
+    ADMIN <<A>>
 }
 
-enum ClassLevel {
-    FIRST <<F>>,
-    SECOND <<S>>,
-    THIRD <<T>>,
-    FOURTH <<O>>,
-    FIFTH <<I>>
+' Defines how (and/or if) users can interact with a slideshow.
+' Does it automatically move on to the next entity? Or does it
+' need manual intervention?
+enum SlideshowMode {
+    ' User needs to manually click next/previous
+    MANUAL <<M>>,
+    ' User cannot interact.
+    AUTO <<A>>,
+    ' Combines both. If the users doesn't interact, it remains in
+    ' auto-mode, once they manually intervene, it switches to manual mode.
+    HYBRID <<H>>
 }
 
-enum ExamType {
-    WRITTEN <<W>>,
-    ORAL <<O>>,
-    PRACTICAL <<P>>
-    REPETITION <<R>>,
-}
-
-enum Semester {
-    WINTER <<W>>,
-    SUMMER <<S>>,
+enum LinkType {
+    ABSOLUTE <<A>>,
+    RELATIVE <<R>>,
+    URL <<U>>
 }
 
 @enduml

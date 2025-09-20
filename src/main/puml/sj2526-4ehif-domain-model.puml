@@ -7,85 +7,155 @@ hide empty attributes
 !include enums.puml
 !include richtypes.puml
 
-entity Person <Entity> {
-    firstName: String <<nn, length=64>>,
-    lastName: String <<nn, length=64>>
+' A root entity for all other entities that stores information about
+' an entities history (i.e. who created it, when was it last updated,
+' by whom etc.)
+entity HistoricObject <Entity> {
+    createdAt: ZonedDateTime
+    createdBy: Creator
+
+    updatedAt: ZonedDateTime
+    updatedBy: Creator
 }
 
-entity Teacher <Entity> {
-    email: Email <<nn>>
+' The core entity of this project. A point of interest (POI) represents any
+' object (art or otherwise) that will be shown to a user in the application.
+' POIs don't belong to any other entity, instead they reside in an POI pool,
+' which contains all POIs.
+entity PointOfInterest <Entity> {
+    title: Map<Language, LocalizedString>
+    description: Map<Language, LocalizedString>
+
+
+    ' We use a list because we want to store an order
+    content: List<Content>
 }
 
-entity Student <Entity> {
-    ' do we want to store attendance here as well?
-    ' actually the idea would be to go from course to sessions to attendance
-    ' but what about a total of missed sessions?
-    ' the same goes for hand-ins
+' An (optional) root entity that combines a set of POIs, groups etc.
+' Technically, an exhibition is a group containing more meta-information
+' (i.e. which languages are supported by the exhibition).
+entity Exhibition <Entity> {
+    languages: Set<Language>
 }
 
-entity Course <Entity> {
-    name: String <<nn, length=64>>,
-    terms: Set<SchoolTerm>
-    type: CourseType,
-    isCollege: Boolean,
-    level: ClassLevel,
-    students: Set<Student>,
-    sessions: Set<Session>,
-    teacher: Teacher <<nn>>
+' A group is a collection of POIs that help structure an exhibition.
+' Groups can represent room, showcases, logical units etc.
+' A group is not an owner of a POI. Deleting the group leaves the POI behind.
+entity Group <Entity> {
+    title: Map<Language, LocalizedString>
+    pointsOfInterest: Set<PointOfInterest>
+    subGroups: Set<Group>
 }
 
-entity Term <Entity> {
-    startDate: ZonedDateTime
-    endDate: ZonedDateTime
+' A content is any media object that is shown to a user. A content always
+' belongs to a POI and doesn't exist outside of this POI.
+entity Content <Entity> {
+
+    description: Map<Language, LocalizedString>
+    shortText: Map<Language, LocalizedString>
+    longText: Map<Language, LocalizedString>
 }
 
-entity Session <Entity> {
-    date: ZonedDateTime
-    topic: String <<nn, length=128>>,
-    attendance: Set<Attendance>
+entity TextContent <Entity> {
+    text: Map<Language, LocalizedString>
 }
 
-entity Attendance <Entity> <<(V, bbFFcc)>> {
-    student: Student <<nn>>,
-    notes: String <<length=1024>>,
-    grading: SessionGrading <<embedded>>
+entity ImageContent <Entity> {
+    ' Do we need localized images?
+    source: FilePath
 }
 
-entity Exam <Entity> <<(V, bbFFcc)>> {
-    date: ZonedDateTime <<nn>>
+entity VideoContent <Entity> {
+    source: Map<Language, Source>
     duration: Duration <<embedded>>
-    type: ExamType
-    maximumPoints: Points <<embedded>>
-    handIns: Set<HandIn>
+    ' ISSUE: how do we support multi-language content???
+    subtitles: Map<Language, Subtitle>
 }
 
-entity Assignment <ValueObject> <<(V, bbFFcc)>> {
-    topics: String <<nn, length=256>>
-    blob: Blob <<nn>>
+entity AudioContent <Entity> {
+    source: Map<Language, Source>
+    duration: Duration <<embedded>>
+    transcript: Transcript
 }
 
-entity HandIn <Entity> <<(V, bbFFcc)>> {
-    student: Student <<nn>>
-    grade: Grade <<nullable, embedded>>
-    blob: Blob <<nullable>>
+' A special form of content that contains sub-content and
+' presents it in form of a slideshow.
+entity SlideshowContent <Entity> {
+    slides: List<Content>
+    mode: SlideshowMode
+    ' How fast does the slideshow switch slides?
+    ' Only applicable in AUTO and HYBRID modes.
+    speed: Duration
 }
+
+entity Visitor <Entity> {
+    ' optional; a visitor might assign a custom name to display when interacting in the application
+    displayName: String <<n, length=128>>
+    ' optional; might be required when allowing interactions
+    email: String <<n, length=256>>
+    ' TODO: we might consider tracking the visiting history in a separate table
+    firstVisitOn: ZonedDateTime
+    lastVisitOn: ZonedDateTime
+
+    history: List<VisitHistory>
+}
+
+entity VisitHistory <entity> {
+    visitedOn: ZonedDateTime
+    duration: Duration <<embedded>>
+    pointsOfInterest: List<PointOfInterest>
+}
+
+entity Creator <Entity> {
+    username: String <<nn, length=64>>
+    role: Role <<nn>
+}
+
+ entity Source <ValueObject> <<(V, bbFFcc)>> {
+     filePath: String
+     linkType: LinkType
+ }
+
+ entity Transcript <ValueObject> <<(V, bbFFcc)>> {
+    source: Source
+ }
+
+ entity Subtitle <ValueObject> <<(V, bbFFcc)>> {
+     source: Source
+  }
 
 ' relations
-Course *-up- Exam
-Course *-- Session
-Exam o- HandIn
-Course *-up- Student
-Student o- Attendance
-Session *- Attendance
-Student o-up- HandIn
-HandIn -up-> Points : receives
-Term *- Course : has
-Exam -left-> Duration
-Exam -up-> Points : contains
-Exam -down-> Assignment
-Student -down-|> Person : is a
-Teacher -down-|> Person : is a
-Course <- Teacher : teaches
-Teacher -> Email : has
+PointOfInterest --|> HistoricObject : is a
+Group --|> HistoricObject : is a
+Content --|> HistoricObject : is a
+
+Creator <-- HistoricObject : is created by
+Creator <-- HistoricObject : is updated by
+
+PointOfInterest *-up- Content : contains
+Content <|-- ImageContent : is a
+Content <|-up- VideoContent : is a
+Content <|-right- AudioContent : is a
+Content <|-up- TextContent : is a
+Content <|-up- SlideshowContent : is a
+
+SlideshowContent *-up- Content : holds
+
+AudioContent --> Transcript : has
+VideoContent *-right- Subtitle : has
+
+VideoContent *-right- Source : has
+AudioContent *-right- Source : has
+ImageContent --> Source : has
+
+' We want to track a visitors history even after they deleted
+' their account. Of course, in a real-word scenario we should use
+' an analytics tool like Matomo or Google Analytics (for tracking statistics).
+' But maybe we want to show users their history.
+Visitor o-- VisitHistory : has
+VisitHistory *-- PointOfInterest : visits
+
+Group o-- PointOfInterest : groups
+Group <|-- Exhibition : is a
 
 @enduml
