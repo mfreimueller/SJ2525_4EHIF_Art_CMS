@@ -17,6 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "group")
 public class Group extends HistoryBase {
 
