@@ -47,11 +47,10 @@ class ExhibitionRepositoryTest {
         assertThat(saved).extracting(Exhibition::getCreatedBy).extracting(Creator::getId).isNotNull();
         assertThat(saved).extracting(Exhibition::getPointsOfInterest)
                 .asInstanceOf(set(PointOfInterest.class))
-                .anySatisfy(p -> {
-                    assertThat(p)
+                .anySatisfy(p -> assertThat(p)
                             .extracting(PointOfInterest::getId)
-                            .isNotNull();
-                });
+                            .isNotNull()
+                );
     }
 
 }

@@ -46,11 +46,10 @@ class GroupRepositoryTest {
         assertThat(saved).extracting(Group::getCreatedBy).extracting(Creator::getId).isNotNull();
         assertThat(saved).extracting(Group::getPointsOfInterest)
                 .asInstanceOf(set(PointOfInterest.class))
-                .anySatisfy(p -> {
-                    assertThat(p)
+                .anySatisfy(p -> assertThat(p)
                             .extracting(PointOfInterest::getId)
-                            .isNotNull();
-                });
+                            .isNotNull()
+                );
     }
 
 }

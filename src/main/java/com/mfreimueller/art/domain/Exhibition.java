@@ -2,11 +2,9 @@ package com.mfreimueller.art.domain;
 
 import com.mfreimueller.art.richtypes.Language;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Map;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

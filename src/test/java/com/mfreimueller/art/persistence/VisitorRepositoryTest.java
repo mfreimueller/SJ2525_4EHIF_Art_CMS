@@ -36,9 +36,7 @@ class VisitorRepositoryTest {
         assertThat(saved).extracting(Visitor::getId).isNotNull();
         assertThat(saved).extracting(Visitor::getVisitHistories)
                 .asInstanceOf(list(VisitHistory.class))
-                .anySatisfy(vh -> {
-                    assertThat(vh).extracting(VisitHistory::getId).isNotNull();
-                });
+                .anySatisfy(vh -> assertThat(vh).extracting(VisitHistory::getId).isNotNull());
     }
 
 }

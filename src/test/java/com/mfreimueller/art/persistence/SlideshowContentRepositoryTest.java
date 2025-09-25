@@ -5,8 +5,6 @@ import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.domain.TextContent;
 import com.mfreimueller.art.richtypes.Language;
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.assertj.core.api.InstanceOfAssertFactory;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -51,9 +49,7 @@ class SlideshowContentRepositoryTest {
         assertThat(saved).extracting(SlideshowContent::getCreatedBy).extracting(Creator::getId).isNotNull();
         assertThat(saved).extracting(SlideshowContent::getSlides)
                 .asInstanceOf(list(Content.class))
-                .anySatisfy(slide -> {
-                    assertThat(slide).extracting(Content::getId).isNotNull();
-                });
+                .anySatisfy(slide -> assertThat(slide).extracting(Content::getId).isNotNull());
     }
 
 }
