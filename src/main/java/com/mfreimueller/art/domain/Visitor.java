@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.time.ZonedDateTime;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
@@ -31,11 +31,8 @@ public class Visitor {
     @Column(name = "email_address")
     private String emailAddress;
 
-    @Column(name = "first_visit_ts")
-    private ZonedDateTime firstVisitTS;
-
-    @Column(name = "more_recent_visit_ts")
-    private ZonedDateTime mostRecentVisitTS;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<VisitHistory> visitHistories;
 
     public record VisitorId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visitorSeq")
