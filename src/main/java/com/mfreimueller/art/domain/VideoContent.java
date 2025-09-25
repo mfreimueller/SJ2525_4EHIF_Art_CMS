@@ -23,7 +23,7 @@ public class VideoContent extends MediaContent {
     @CollectionTable(name = "video_content_localized_subtitle",
             joinColumns = @JoinColumn(name = "content_id"))
     @MapKeyColumn(name = "language_code")
-    @Column(name = "subtitle")
-    private Map<Language, Source> subtitle;
+    @Column(name = "subtitles")
+    private Map<Language, Source> subtitles;
 
 }
