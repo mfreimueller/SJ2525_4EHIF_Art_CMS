@@ -1,11 +1,12 @@
 package com.mfreimueller.art.domain;
 
+import com.mfreimueller.art.richtypes.Language;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
@@ -15,18 +16,25 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "point_of_interest")
+@Table(name = "poi")
 public class PointOfInterest extends HistoryBase {
 
     @EmbeddedId
     private PointOfInterestId id;
 
-    @NotBlank
-    @Size(min = 3, max = 64)
-    private String name;
+    @ElementCollection
+    @CollectionTable(name = "poi_localized_title",
+            joinColumns = @JoinColumn(name = "poi_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "title")
+    private Map<Language, String> title;
 
-    // @OneToMany(cascade = CascadeType.PERSIST)
-    // private Set<HistoryBase> historyBases;
+    @ElementCollection
+    @CollectionTable(name = "poi_localized_description",
+            joinColumns = @JoinColumn(name = "poi_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "description")
+    private Map<Language, String> description;
 
     public record PointOfInterestId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "poiSeq")
