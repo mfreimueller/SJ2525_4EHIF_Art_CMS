@@ -16,25 +16,12 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "content")
-public class Content extends HistoryBase {
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "content_base")
+public abstract class Content extends HistoryBase {
 
     @EmbeddedId
     private ContentId id;
-
-    @ElementCollection
-    @CollectionTable(name = "content_localized_short_text",
-            joinColumns = @JoinColumn(name = "content_id"))
-    @MapKeyColumn(name = "language_code")
-    @Column(name = "shortText")
-    private Map<Language, String> shortText;
-
-    @ElementCollection
-    @CollectionTable(name = "content_localized_long_text",
-            joinColumns = @JoinColumn(name = "content_id"))
-    @MapKeyColumn(name = "language_code")
-    @Column(name = "longText")
-    private Map<Language, String> longText;
 
     @ElementCollection
     @CollectionTable(name = "content_localized_description",
