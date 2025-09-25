@@ -1,4 +1,4 @@
-package com.mfreimueller.springrader.richtypes;
+package com.mfreimueller.art.richtypes;
 
 public record Duration(Integer value) implements SingleValue<Integer> {
 

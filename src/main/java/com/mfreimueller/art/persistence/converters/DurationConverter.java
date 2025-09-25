@@ -1,6 +1,6 @@
-package com.mfreimueller.springrader.persistence.converters;
+package com.mfreimueller.art.persistence.converters;
 
-import com.mfreimueller.springrader.richtypes.Duration;
+import com.mfreimueller.art.richtypes.Duration;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)

@@ -1,6 +1,6 @@
-package com.mfreimueller.springrader.persistence.converters;
+package com.mfreimueller.art.persistence.converters;
 
-import com.mfreimueller.springrader.richtypes.SingleValue;
+import com.mfreimueller.art.richtypes.SingleValue;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.function.Function;
