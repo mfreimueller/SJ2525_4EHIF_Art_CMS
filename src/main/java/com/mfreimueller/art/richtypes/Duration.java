@@ -1,5 +1,8 @@
 package com.mfreimueller.art.richtypes;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record Duration(Integer value) implements SingleValue<Integer> {
 
     public Duration {
