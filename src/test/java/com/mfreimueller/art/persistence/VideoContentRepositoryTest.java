@@ -28,7 +28,7 @@ class VideoContentRepositoryTest {
                 .build();
 
         var sourceEn = new Source("https://google.com/...", Source.LinkType.Url);
-        var languageEn = new Language("en");
+        var languageEn = new Language("en", "English");
 
         var content = VideoContent.builder()
                 .source(Map.of(languageEn, sourceEn))

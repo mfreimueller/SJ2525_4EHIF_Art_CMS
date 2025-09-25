@@ -32,7 +32,7 @@ class SlideshowContentRepositoryTest {
                 .username("admin")
                 .build();
 
-        var languageEn = new Language("en");
+        var languageEn = new Language("en", "English");
         var shortTextEn = "This famous painting by Leonardo da Vinci...";
 
         var textContent = TextContent.builder()

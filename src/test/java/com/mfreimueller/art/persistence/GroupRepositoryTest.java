@@ -28,7 +28,7 @@ class GroupRepositoryTest {
                 .username("admin")
                 .build();
 
-        var languageEn = new Language("en");
+        var languageEn = new Language("en", "English");
         var titleEn = "Mona Lisa";
 
         var poi = PointOfInterest.builder()
