@@ -10,7 +10,7 @@ hide empty attributes
 ' A root entity for all other entities that stores information about
 ' an entities history (i.e. who created it, when was it last updated,
 ' by whom etc.)
-entity HistoricObject <Entity> {
+entity HistoryBase <Entity> {
     createdAt: ZonedDateTime
     createdBy: Creator
 
@@ -125,12 +125,12 @@ entity Creator <Entity> {
   }
 
 ' relations
-PointOfInterest --|> HistoricObject : is a
-Group --|> HistoricObject : is a
-Content --|> HistoricObject : is a
+PointOfInterest --|> HistoryBase : is a
+Group --|> HistoryBase : is a
+Content --|> HistoryBase : is a
 
-Creator <-- HistoricObject : is created by
-Creator <-- HistoricObject : is updated by
+Creator <-- HistoryBase : is created by
+Creator <-- HistoryBase : is updated by
 
 PointOfInterest *-up- Content : contains
 Content <|-- ImageContent : is a
