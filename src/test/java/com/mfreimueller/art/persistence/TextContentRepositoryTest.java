@@ -1,8 +1,7 @@
 package com.mfreimueller.art.persistence;
 
-import com.mfreimueller.art.domain.Content;
+import com.mfreimueller.art.domain.TextContent;
 import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.richtypes.Language;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -17,9 +16,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class ContentRepositoryTest {
+class TextContentRepositoryTest {
 
-    private @Autowired ContentRepository contentRepository;
+    private @Autowired TextContentRepository textContentRepository;
 
     @Test
     void can_save_and_reread() {
@@ -30,16 +29,16 @@ class ContentRepositoryTest {
         var languageEn = new Language("en");
         var shortTextEn = "This famous painting by Leonardo da Vinci...";
 
-        var content = Content.builder()
+        var content = TextContent.builder()
                 .shortText(Map.of(languageEn, shortTextEn))
                 .createdAt(ZonedDateTime.now())
                 .createdBy(creator)
                 .build();
 
-        var saved = contentRepository.save(content);
+        var saved = textContentRepository.save(content);
 
-        assertThat(saved).extracting(Content::getId).isNotNull();
-        assertThat(saved).extracting(Content::getCreatedBy).extracting(Creator::getId).isNotNull();
+        assertThat(saved).extracting(TextContent::getId).isNotNull();
+        assertThat(saved).extracting(TextContent::getCreatedBy).extracting(Creator::getId).isNotNull();
     }
 
 }
