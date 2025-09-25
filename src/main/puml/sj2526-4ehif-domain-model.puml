@@ -90,12 +90,12 @@ entity SlideshowContent <Entity> {
 
 entity Visitor <Entity> {
     ' optional; a visitor might assign a custom name to display when interacting in the application
-    displayName: String <<n, length=128>>
+    username: String <<n, min_length=3, length=128>>
     ' optional; might be required when allowing interactions
-    email: String <<n, length=256>>
+    emailAddress: String <<n>>
     ' TODO: we might consider tracking the visiting history in a separate table
-    firstVisitOn: ZonedDateTime
-    lastVisitOn: ZonedDateTime
+    firstVisitTS: ZonedDateTime
+    mostRecentVisitTS: ZonedDateTime
 
     history: List<VisitHistory>
 }
