@@ -18,7 +18,7 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 
 @PrimaryKeyJoinColumn(name = "content_id")
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
 public class MediaContent extends Content {
 
     @ElementCollection
