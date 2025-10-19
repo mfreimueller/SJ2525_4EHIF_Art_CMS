@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,25 +17,27 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "poi")
+@Table(name = "PointOfInterest")
 public class PointOfInterest extends HistoryBase {
 
     @EmbeddedId
     private PointOfInterestId id;
 
     @ElementCollection
-    @CollectionTable(name = "poi_localized_title",
-            joinColumns = @JoinColumn(name = "poi_id"))
+    @CollectionTable(name = "PointOfInterest_Titles",
+            foreignKey = @ForeignKey(name = "FK_PointOfInterest_Titles"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "title")
-    private Map<Language, String> title;
+    @Builder.Default
+    private Map<Language, String> title = new HashMap<>();
 
     @ElementCollection
-    @CollectionTable(name = "poi_localized_description",
-            joinColumns = @JoinColumn(name = "poi_id"))
+    @CollectionTable(name = "PointOfInterest_Descriptions",
+            foreignKey = @ForeignKey(name = "FK_PointOfInterest_Descriptions"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "description")
-    private Map<Language, String> description;
+    @Builder.Default
+    private Map<Language, String> description = new HashMap<>();
 
     public record PointOfInterestId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "poiSeq")

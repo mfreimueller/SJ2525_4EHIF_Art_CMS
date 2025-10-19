@@ -17,15 +17,15 @@ import java.util.Map;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "content_base")
+@Table(name = "ContentBase")
 public abstract class Content extends HistoryBase {
 
     @EmbeddedId
     private ContentId id;
 
     @ElementCollection
-    @CollectionTable(name = "content_localized_description",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "Content_LocalizedDescriptions",
+            foreignKey = @ForeignKey(name = "FK_Content_LocalizedDescriptions"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "description")
     private Map<Language, String> description;

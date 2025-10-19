@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,17 +22,19 @@ import java.util.Map;
 public class MediaContent extends Content {
 
     @ElementCollection
-    @CollectionTable(name = "media_content_localized_source",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "MediaContent_Sources",
+            foreignKey = @ForeignKey(name = "FK_MediaContent_Sources"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "source")
-    private Map<Language, Source> source;
+    @Builder.Default
+    private Map<Language, Source> source = new HashMap<>();
 
     @ElementCollection
-    @CollectionTable(name = "media_content_localized_duration",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "MediaContent_Durations",
+            foreignKey = @ForeignKey(name = "FK_MediaContent_Durations"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "duration")
-    private Map<Language, Duration> duration;
+    @Builder.Default
+    private Map<Language, Duration> duration = new HashMap<>();
 
 }

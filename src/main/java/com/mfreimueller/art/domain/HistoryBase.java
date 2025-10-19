@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 @Setter
 
 @MappedSuperclass
+@Table(name = "HistoryBase")
 public class HistoryBase {
     @Column(name = "created_at")
     private ZonedDateTime createdAt;

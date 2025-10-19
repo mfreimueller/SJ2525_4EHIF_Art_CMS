@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "content_id")
-@Table(name = "image_content")
+@Table(name = "ImageContent")
 public class ImageContent extends Content {
 
     @Embedded

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,12 +17,13 @@ import java.util.Set;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "group_id")
-@Table(name = "exhibiton")
-public class Exhibition extends Group {
+@Table(name = "Exhibiton")
+public class Exhibition extends Collection {
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "exhibition_language",
-            joinColumns = @JoinColumn(name = "group_id"))
-    private Set<Language> languages;
+    @CollectionTable(name = "Exhibition_Languages",
+            foreignKey = @ForeignKey(name = "FK_Exhibition_Languages"))
+    @Builder.Default
+    private Set<Language> languages = new HashSet<>();
 
 }

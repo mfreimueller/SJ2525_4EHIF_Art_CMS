@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,14 +17,15 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "video_content")
+@Table(name = "VideoContent")
 public class VideoContent extends MediaContent {
 
     @ElementCollection
-    @CollectionTable(name = "video_content_localized_subtitle",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "VideoContent_Sources",
+            foreignKey = @ForeignKey(name = "FK_VideoContent_Sources"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "subtitles")
-    private Map<Language, Source> subtitles;
+    @Builder.Default
+    private Map<Language, Source> subtitles = new HashMap<>();
 
 }

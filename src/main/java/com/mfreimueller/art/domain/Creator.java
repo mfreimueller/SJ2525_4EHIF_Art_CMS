@@ -14,7 +14,7 @@ import lombok.*;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "creator")
+@Table(name = "Creator")
 public class Creator {
 
     @EmbeddedId

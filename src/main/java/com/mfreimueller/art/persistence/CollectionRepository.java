@@ -1,10 +1,10 @@
 package com.mfreimueller.art.persistence;
 
-import com.mfreimueller.art.domain.Group;
+import com.mfreimueller.art.domain.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GroupRepository extends JpaRepository<Group, Long> {
+public interface CollectionRepository extends JpaRepository<Collection, Long> {
 
 }

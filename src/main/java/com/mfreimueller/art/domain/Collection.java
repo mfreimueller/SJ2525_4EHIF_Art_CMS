@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,24 +19,26 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "group")
-public class Group extends HistoryBase {
+@Table(name = "Collection")
+public class Collection extends HistoryBase {
 
     @EmbeddedId
     private GroupId id;
 
     @ElementCollection
-    @CollectionTable(name = "group_localized_title",
-            joinColumns = @JoinColumn(name = "group_id"))
+    @CollectionTable(name = "Collection_Titles",
+            foreignKey = @ForeignKey(name = "FK_Collection_Titles"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "title")
     private Map<Language, String> title;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    private Set<PointOfInterest> pointsOfInterest;
+    @Builder.Default
+    private Set<PointOfInterest> pointsOfInterest = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.PERSIST)
-    private Set<Group> subGroups;
+    @Builder.Default
+    private Set<Collection> subCollections = new HashSet<>();
 
     public record GroupId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groupSeq")

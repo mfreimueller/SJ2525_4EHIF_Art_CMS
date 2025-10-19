@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,14 +17,14 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "audio_content")
+@Table(name = "AudioContent")
 public class AudioContent extends MediaContent {
 
     @ElementCollection
-    @CollectionTable(name = "audio_content_localized_transcription",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "AudioContent_Transcriptions",
+            foreignKey = @ForeignKey(name = "FK_AudioContent_Transcriptions"))
     @MapKeyColumn(name = "language_code")
-    @Column(name = "transcriptions")
-    private Map<Language, Source> transcriptions;
+    @Builder.Default
+    private Map<Language, Source> transcriptions = new HashMap<>();
 
 }

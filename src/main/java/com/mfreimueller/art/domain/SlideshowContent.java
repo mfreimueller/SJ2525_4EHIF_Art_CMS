@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +19,12 @@ import java.util.Map;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "content_id")
-@Table(name = "slideshow_content")
+@Table(name = "SlideshowContent")
 public class SlideshowContent extends Content {
     
     @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Content> slides;
+    @Builder.Default
+    private List<Content> slides = new ArrayList<>();
 
     private Mode mode;
 

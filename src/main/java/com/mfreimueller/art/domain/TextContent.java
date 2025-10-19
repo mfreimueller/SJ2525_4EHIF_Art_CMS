@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,21 +17,23 @@ import java.util.Map;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "content_id")
-@Table(name = "text_content")
+@Table(name = "TextContent")
 public class TextContent extends Content {
     
     @ElementCollection
-    @CollectionTable(name = "content_localized_short_text",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "TextContent_ShortTexts",
+            foreignKey = @ForeignKey(name = "FK_TextContent_ShortTexts"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "shortText")
-    private Map<Language, String> shortText;
+    @Builder.Default
+    private Map<Language, String> shortText = new HashMap<>();
 
     @ElementCollection
-    @CollectionTable(name = "content_localized_long_text",
-            joinColumns = @JoinColumn(name = "content_id"))
+    @CollectionTable(name = "TextContent_LongTexts",
+            foreignKey = @ForeignKey(name = "FK_TextContent_LongTexts"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "longText")
-    private Map<Language, String> longText;
+    @Builder.Default
+    private Map<Language, String> longText = new HashMap<>();
 
 }

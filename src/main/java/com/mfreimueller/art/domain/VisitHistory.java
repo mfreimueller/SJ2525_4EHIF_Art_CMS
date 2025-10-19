@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,7 +29,8 @@ public class VisitHistory {
     private ZonedDateTime visitedOn;
 
     @ManyToMany
-    private List<PointOfInterest> pointsOfInterest;
+    @Builder.Default
+    private List<PointOfInterest> pointsOfInterest = new ArrayList<>();
 
     public record VisitHistoryId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visitHistorySeq")

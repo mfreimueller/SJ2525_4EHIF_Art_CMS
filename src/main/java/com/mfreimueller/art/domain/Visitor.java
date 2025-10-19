@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,7 +33,8 @@ public class Visitor {
     private String emailAddress;
 
     @OneToMany(cascade = CascadeType.PERSIST)
-    private List<VisitHistory> visitHistories;
+    @Builder.Default
+    private List<VisitHistory> visitHistories = new ArrayList<>();
 
     public record VisitorId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visitorSeq")
