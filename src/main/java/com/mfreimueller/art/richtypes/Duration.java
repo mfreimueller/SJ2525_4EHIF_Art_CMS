@@ -1,9 +1,10 @@
 package com.mfreimueller.art.richtypes;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public record Duration(Integer value) implements SingleValue<Integer> {
+public record Duration(@Column(name = "duration") Integer value) implements SingleValue<Integer> {
 
     public Duration {
         if (value == null || value < 0 || value > 250){
