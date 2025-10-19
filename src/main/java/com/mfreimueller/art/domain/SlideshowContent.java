@@ -23,6 +23,10 @@ import java.util.Map;
 public class SlideshowContent extends Content {
     
     @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "SlideshowContent_Slides",
+            foreignKey = @ForeignKey(name = "FK_SlideshowContent_Slides")
+    )
     @Builder.Default
     private List<Content> slides = new ArrayList<>();
 

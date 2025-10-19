@@ -23,7 +23,7 @@ import java.util.Set;
 public class Collection extends HistoryBase {
 
     @EmbeddedId
-    private GroupId id;
+    private CollectionId id;
 
     @ElementCollection
     @CollectionTable(name = "Collection_Titles",
@@ -33,15 +33,24 @@ public class Collection extends HistoryBase {
     private Map<Language, String> title;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "Collection_PointOfInterest",
+            joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_Collection_PointOfInterest_2_PointOfInterest")),
+            inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_Collection_PointOfInterest_2_Collection"))
+    )
     @Builder.Default
     private Set<PointOfInterest> pointsOfInterest = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "Collection_SubCollections",
+            foreignKey = @ForeignKey(name = "FK_Collection_SubCollections")
+    )
     @Builder.Default
     private Set<Collection> subCollections = new HashSet<>();
 
-    public record GroupId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groupSeq")
-            @SequenceGenerator(name = "groupSeq", sequenceName = "group_seq", allocationSize = 1)
+    public record CollectionId(
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "collectionSeq")
+            @SequenceGenerator(name = "collectionSeq", sequenceName = "collectionSeq", allocationSize = 1)
             @NotNull Long id) {}
 }

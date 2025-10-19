@@ -17,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "visit_history")
+@Table(name = "VisitHistory")
 public class VisitHistory {
 
     @EmbeddedId
@@ -30,7 +30,12 @@ public class VisitHistory {
 
     @ManyToMany
     @Builder.Default
-    private List<PointOfInterest> pointsOfInterest = new ArrayList<>();
+    @JoinTable(
+            name = "VisitHistory_PointOfInterest",
+            joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_VisitHistory_PointOfInterest_2_PointOfInterest")),
+            inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "VisitHistory_PointOfInterest_2_VisitHistory"))
+    )
+    private List<PointOfInterest> pointsOfInterest = new ArrayList<>(); // note: we use a list, as a list is ordered.
 
     public record VisitHistoryId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visitHistorySeq")

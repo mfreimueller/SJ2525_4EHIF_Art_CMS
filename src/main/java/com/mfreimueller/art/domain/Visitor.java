@@ -18,7 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@Table(name = "visitor")
+@Table(name = "Visitor")
 public class Visitor {
 
     @EmbeddedId
@@ -33,6 +33,10 @@ public class Visitor {
     private String emailAddress;
 
     @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "Visitor_VisitHistories",
+            joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_Visitor_VisitHistories"))
+    )
     @Builder.Default
     private List<VisitHistory> visitHistories = new ArrayList<>();
 
