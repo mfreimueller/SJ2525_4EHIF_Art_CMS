@@ -50,7 +50,6 @@ public class Collection extends HistoryBase {
     private Set<Collection> subCollections = new HashSet<>();
 
     public record CollectionId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "collectionSeq")
-            @SequenceGenerator(name = "collectionSeq", sequenceName = "collectionSeq", allocationSize = 1)
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
 }

@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 @Setter
 
 @MappedSuperclass
-public class HistoryBase {
+public class HistoryBase extends AbstractEntity {
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
 

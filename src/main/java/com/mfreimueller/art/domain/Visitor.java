@@ -41,7 +41,6 @@ public class Visitor {
     private List<VisitHistory> visitHistories = new ArrayList<>();
 
     public record VisitorId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visitorSeq")
-            @SequenceGenerator(name = "visitorSeq", sequenceName = "visitor_seq", allocationSize = 1)
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
 }

@@ -15,7 +15,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "Creator")
-public class Creator {
+public class Creator extends AbstractEntity {
 
     @EmbeddedId
     private CreatorId id;
@@ -27,8 +27,7 @@ public class Creator {
     private Role role;
 
     public record CreatorId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "creatorSeq")
-            @SequenceGenerator(name = "creatorSeq", sequenceName = "creator_seq", allocationSize = 1)
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
 
     public enum Role {

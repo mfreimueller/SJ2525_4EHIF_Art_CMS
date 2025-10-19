@@ -38,7 +38,6 @@ public class VisitHistory {
     private List<PointOfInterest> pointsOfInterest = new ArrayList<>(); // note: we use a list, as a list is ordered.
 
     public record VisitHistoryId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visitHistorySeq")
-            @SequenceGenerator(name = "visitHistorySeq", sequenceName = "visit_history__seq", allocationSize = 1)
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
 }

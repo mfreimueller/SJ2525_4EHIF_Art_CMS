@@ -31,7 +31,6 @@ public abstract class Content extends HistoryBase {
     private Map<Language, String> description;
 
     public record ContentId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contentSeq")
-            @SequenceGenerator(name = "contentSeq", sequenceName = "content_seq", allocationSize = 1)
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
 }

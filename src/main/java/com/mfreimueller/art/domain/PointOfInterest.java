@@ -40,7 +40,6 @@ public class PointOfInterest extends HistoryBase {
     private Map<Language, String> description = new HashMap<>();
 
     public record PointOfInterestId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "poiSeq")
-            @SequenceGenerator(name = "poiSeq", sequenceName = "poi_seq", allocationSize = 1)
+            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
 }
