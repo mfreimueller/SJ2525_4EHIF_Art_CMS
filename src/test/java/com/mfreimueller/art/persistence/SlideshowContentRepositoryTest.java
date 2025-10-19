@@ -4,7 +4,7 @@ import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.domain.TextContent;
-import com.mfreimueller.art.richtypes.Language;
+import com.mfreimueller.art.domain.Language;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,5 @@
 package com.mfreimueller.art.domain;
 
-import com.mfreimueller.art.richtypes.Language;
-import com.mfreimueller.art.richtypes.Source;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

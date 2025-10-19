@@ -1,4 +1,4 @@
-package com.mfreimueller.art.richtypes;
+package com.mfreimueller.art.domain;
 
 import jakarta.persistence.Embeddable;
 

@@ -1,14 +1,12 @@
 package com.mfreimueller.art.domain;
 
 import com.mfreimueller.art.richtypes.Duration;
-import com.mfreimueller.art.richtypes.Language;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
