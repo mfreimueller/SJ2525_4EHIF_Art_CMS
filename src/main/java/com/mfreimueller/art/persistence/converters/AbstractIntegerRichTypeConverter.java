@@ -5,7 +5,7 @@ import jakarta.persistence.AttributeConverter;
 
 import java.util.function.Function;
 
-public class AbstractIntegerRichTypeConverter<T extends SingleValue<Integer>> implements AttributeConverter<T, Integer> {
+public abstract class AbstractIntegerRichTypeConverter<T extends SingleValue<Integer>> implements AttributeConverter<T, Integer> {
     private final Function<Integer, T> constructor;
 
     AbstractIntegerRichTypeConverter(Function<Integer, T> constructor) {

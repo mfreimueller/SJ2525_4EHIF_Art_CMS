@@ -20,15 +20,15 @@ class ModeConverterTest {
     @ParameterizedTest
     @MethodSource("mappingData")
     void can_convert_to_db_value_and_back(SlideshowContent.Mode mode, Character dbValue) {
-        var result = converter.convertToDatabaseValue(mode);
+        var result = converter.convertToDatabaseColumn(mode);
         assertThat(result).isEqualTo(dbValue);
-        assertThat(converter.convertToEntity(result)).isEqualTo(mode);
+        assertThat(converter.convertToEntityAttribute(result)).isEqualTo(mode);
     }
 
     @Test
     void can_convert_null_values_safely() {
-        assertThat(converter.convertToEntity(null)).isNull();
-        assertThat(converter.convertToDatabaseValue(null)).isNull();
+        assertThat(converter.convertToEntityAttribute(null)).isNull();
+        assertThat(converter.convertToDatabaseColumn(null)).isNull();
     }
 
     private static Stream<Arguments> mappingData() {

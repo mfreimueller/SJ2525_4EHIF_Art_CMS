@@ -3,12 +3,13 @@ package com.mfreimueller.art.persistence.converters;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.exceptions.DataConstraintException;
+import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class ModeConverter implements AttributeConverter<SlideshowContent.Mode, Character> {
     @Override
-    public Character convertToDatabaseValue(SlideshowContent.Mode mode) {
+    public Character convertToDatabaseColumn(SlideshowContent.Mode mode) {
         return switch (mode) {
             case null -> null;
             case SlideshowContent.Mode.Auto -> 'a';
@@ -18,7 +19,7 @@ public class ModeConverter implements AttributeConverter<SlideshowContent.Mode, 
     }
 
     @Override
-    public SlideshowContent.Mode convertToEntity(Character character) {
+    public SlideshowContent.Mode convertToEntityAttribute(Character character) {
         return switch (character) {
             case null -> null;
             case 'a' -> SlideshowContent.Mode.Auto;

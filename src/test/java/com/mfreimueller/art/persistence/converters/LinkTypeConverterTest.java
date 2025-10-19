@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class LinkTypeConverterTest {
@@ -22,15 +20,15 @@ class LinkTypeConverterTest {
     @ParameterizedTest
     @MethodSource("mappingData")
     void can_convert_to_db_value_and_back(Source.LinkType linkType, Character dbValue) {
-        var result = converter.convertToDatabaseValue(linkType);
+        var result = converter.convertToDatabaseColumn(linkType);
         assertThat(result).isEqualTo(dbValue);
-        assertThat(converter.convertToEntity(result)).isEqualTo(linkType);
+        assertThat(converter.convertToEntityAttribute(result)).isEqualTo(linkType);
     }
 
     @Test
     void can_convert_null_values_safely() {
-        assertThat(converter.convertToEntity(null)).isNull();
-        assertThat(converter.convertToDatabaseValue(null)).isNull();
+        assertThat(converter.convertToEntityAttribute(null)).isNull();
+        assertThat(converter.convertToDatabaseColumn(null)).isNull();
     }
 
     private static Stream<Arguments> mappingData() {

@@ -20,15 +20,15 @@ class RoleConverterTest {
     @ParameterizedTest
     @MethodSource("mappingData")
     void can_convert_to_db_value_and_back(Creator.Role role, Character dbValue) {
-        var result = converter.convertToDatabaseValue(role);
+        var result = converter.convertToDatabaseColumn(role);
         assertThat(result).isEqualTo(dbValue);
-        assertThat(converter.convertToEntity(result)).isEqualTo(role);
+        assertThat(converter.convertToEntityAttribute(result)).isEqualTo(role);
     }
 
     @Test
     void can_convert_null_values_safely() {
-        assertThat(converter.convertToEntity(null)).isNull();
-        assertThat(converter.convertToDatabaseValue(null)).isNull();
+        assertThat(converter.convertToEntityAttribute(null)).isNull();
+        assertThat(converter.convertToDatabaseColumn(null)).isNull();
     }
 
     private static Stream<Arguments> mappingData() {
