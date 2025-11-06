@@ -1,5 +1,6 @@
 package com.mfreimueller.art.persistence;
 
+import com.mfreimueller.art.TestcontainersConfiguration;
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.SlideshowContent;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -20,6 +22,7 @@ import static org.assertj.core.api.InstanceOfAssertFactories.list;
 
 @DataJpaTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@Import(TestcontainersConfiguration.class)
 class SlideshowContentRepositoryTest {
 
     private @Autowired SlideshowContentRepository slideshowContentRepository;

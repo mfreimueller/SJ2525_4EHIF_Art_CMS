@@ -1,5 +1,6 @@
 package com.mfreimueller.art.persistence;
 
+import com.mfreimueller.art.TestcontainersConfiguration;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.domain.PointOfInterest;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +20,7 @@ import static org.assertj.core.api.InstanceOfAssertFactories.set;
 
 @DataJpaTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@Import(TestcontainersConfiguration.class)
 class ExhibitionRepositoryTest {
 
     private @Autowired ExhibitionRepository exhibitionRepository;
