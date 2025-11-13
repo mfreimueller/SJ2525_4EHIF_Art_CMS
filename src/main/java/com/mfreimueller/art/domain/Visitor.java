@@ -19,7 +19,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Visitor")
-public class Visitor {
+public class Visitor extends AbstractEntity {
 
     @EmbeddedId
     private VisitorId id;

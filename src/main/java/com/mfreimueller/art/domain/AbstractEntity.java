@@ -2,6 +2,7 @@ package com.mfreimueller.art.domain;
 
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -12,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @SequenceGenerator(name = "globalSeq", sequenceName = "global_seq", allocationSize = 1)
 public abstract class AbstractEntity {
-    // intentionally empty, as we only need the sequence generator to be defined once globally
+    @Version
+    private Long version;
 }
