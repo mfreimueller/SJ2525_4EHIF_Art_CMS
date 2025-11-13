@@ -16,7 +16,7 @@ public class TestMain {
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> testMainPostgresContainer() {
-        final Integer containerPort = 5432;
+        final int containerPort = 5432;
 
         PortBinding portBinding = new PortBinding(Ports.Binding.bindPort(15432), new ExposedPort(containerPort));
 
