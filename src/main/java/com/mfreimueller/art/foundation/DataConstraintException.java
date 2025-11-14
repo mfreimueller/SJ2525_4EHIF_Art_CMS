@@ -1,4 +1,4 @@
-package com.mfreimueller.art.exceptions;
+package com.mfreimueller.art.foundation;
 
 public class DataConstraintException extends RuntimeException {
     private DataConstraintException(String message) {

@@ -2,7 +2,7 @@ package com.mfreimueller.art.persistence.converters;
 
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.SlideshowContent;
-import com.mfreimueller.art.exceptions.DataConstraintException;
+import com.mfreimueller.art.foundation.DataConstraintException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

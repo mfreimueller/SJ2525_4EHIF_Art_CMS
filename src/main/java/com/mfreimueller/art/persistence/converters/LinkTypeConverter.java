@@ -1,7 +1,7 @@
 package com.mfreimueller.art.persistence.converters;
 
 import com.mfreimueller.art.domain.Source;
-import com.mfreimueller.art.exceptions.DataConstraintException;
+import com.mfreimueller.art.foundation.DataConstraintException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
