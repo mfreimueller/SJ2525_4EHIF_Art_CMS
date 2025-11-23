@@ -1,6 +1,8 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.CreateExhibitionCommand;
+import com.mfreimueller.art.commands.UpdateExhibitionCommand;
+import com.mfreimueller.art.domain.Collection;
 import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.ExhibitionRepository;
@@ -22,13 +24,26 @@ public class ExhibitionService {
     public Exhibition create(@NotNull @Valid CreateExhibitionCommand cmd) {
         var exhibition = Exhibition.builder()
                 .title(cmd.title())
-                .pointsOfInterest(cmd.pointsOfInterests())
-                .subCollections(cmd.subCollections())
                 .languages(cmd.languages())
                 .createdAt(dateTimeFactory.now())
                 .build();
 
         return exhibitionRepository.save(exhibition);
+    }
+
+    @Transactional(readOnly = false)
+    public Exhibition update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateExhibitionCommand cmd) {
+        var exhibition = exhibitionRepository.getReferenceById(id); // TODO: handle exception
+        exhibition.setTitle(cmd.title());
+        exhibition.setLanguages(cmd.languages());
+        exhibition.setUpdatedAt(dateTimeFactory.now());
+
+        return exhibitionRepository.save(exhibition);
+    }
+
+    @Transactional(readOnly = false)
+    public void delete(@NotNull Collection.CollectionId id) {
+        exhibitionRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
     }
 
     public Exhibition getByReference(Exhibition.CollectionId id) {
