@@ -15,7 +15,10 @@ import java.util.Set;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@PrimaryKeyJoinColumn(name = "group_id")
+@PrimaryKeyJoinColumn(
+        name = "collection_id",
+        foreignKey = @ForeignKey(name = "FK_Exhibition_Collection")
+)
 @Table(name = "Exhibiton")
 public class Exhibition extends Collection {
 

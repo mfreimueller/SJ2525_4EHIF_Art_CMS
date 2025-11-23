@@ -15,7 +15,10 @@ import java.util.Map;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@PrimaryKeyJoinColumn(name = "content_id")
+@PrimaryKeyJoinColumn(
+        name = "content_id",
+        foreignKey = @ForeignKey(name = "FK_TextContent_Content")
+)
 @Table(name = "TextContent")
 public class TextContent extends Content {
     

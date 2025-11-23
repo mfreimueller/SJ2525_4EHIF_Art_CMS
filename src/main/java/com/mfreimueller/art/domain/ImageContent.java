@@ -12,7 +12,10 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@PrimaryKeyJoinColumn(name = "content_id")
+@PrimaryKeyJoinColumn(
+        name = "content_id",
+        foreignKey = @ForeignKey(name = "FK_ImageContent_Content")
+)
 @Table(name = "ImageContent")
 public class ImageContent extends Content {
 

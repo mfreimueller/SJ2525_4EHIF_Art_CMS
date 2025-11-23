@@ -15,7 +15,10 @@ import java.util.Map;
 @Setter
 @EqualsAndHashCode(of = "id")
 
-@PrimaryKeyJoinColumn(name = "content_id")
+@PrimaryKeyJoinColumn(
+        name = "content_id",
+        foreignKey = @ForeignKey(name = "FK_MediaContent_Content")
+)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class MediaContent extends Content {
 

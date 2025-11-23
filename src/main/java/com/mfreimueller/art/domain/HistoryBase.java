@@ -21,8 +21,16 @@ public class HistoryBase extends AbstractEntity {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(
+            name = "creator_id",
+            foreignKey = @ForeignKey(name = "FK_HistoryBase_CreatedBy")
+    )
     private Creator createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(
+            name = "updater_id",
+            foreignKey = @ForeignKey(name = "FK_HistoryBase_UpdatedBy")
+    )
     private Creator updatedBy;
 }

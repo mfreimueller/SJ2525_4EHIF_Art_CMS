@@ -16,7 +16,10 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@PrimaryKeyJoinColumn(name = "content_id")
+@PrimaryKeyJoinColumn(
+        name = "content_id",
+        foreignKey = @ForeignKey(name = "FK_SlideshowContent_Conent")
+)
 @Table(name = "SlideshowContent")
 public class SlideshowContent extends Content {
     

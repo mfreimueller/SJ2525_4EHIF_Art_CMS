@@ -16,6 +16,10 @@ import java.util.Map;
 
 @Entity
 @Table(name = "AudioContent")
+@PrimaryKeyJoinColumn(
+        name = "id",
+        foreignKey = @ForeignKey(name = "FK_AudioContent_MediaContent")
+)
 public class AudioContent extends MediaContent {
 
     @ElementCollection
