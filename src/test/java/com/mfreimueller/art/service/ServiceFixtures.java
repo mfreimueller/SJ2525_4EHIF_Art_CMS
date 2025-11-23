@@ -1,6 +1,7 @@
 package com.mfreimueller.art.service;
 
 import com.github.javafaker.Faker;
+import com.mfreimueller.art.commands.PutAudioContentCommand;
 import com.mfreimueller.art.domain.*;
 import com.mfreimueller.art.richtypes.Duration;
 
@@ -104,6 +105,20 @@ public final class ServiceFixtures {
                 .build();
     }
 
+    public static AudioContent audioContent() {
+        var description = localizedText();
+        var sources = localizedSources();
+        var transcriptions = localizedSources();
+        var duration = localizedDurations();
+
+        return AudioContent.builder()
+                .description(description)
+                .duration(duration)
+                .source(sources)
+                .transcriptions(transcriptions)
+                .build();
+    }
+
     public static SlideshowContent createSlideshowContent() {
         var description = localizedText();
         List<Content> slides = List.of(
@@ -123,6 +138,20 @@ public final class ServiceFixtures {
         return new Source(
                 faker.file().fileName(),
                 Source.LinkType.Absolute
+        );
+    }
+    
+    public static Map<Language, Source> localizedSources() {
+        return Map.of(
+                new Language("en", "English"), source(),
+                new Language("de", "Deutsch"), source()
+        );
+    }
+
+    public static Map<Language, Duration> localizedDurations() {
+        return Map.of(
+                new Language("en", "English"), Duration.of(40),
+                new Language("de", "Deutsch"), Duration.of(55)
         );
     }
 
