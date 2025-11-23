@@ -1,5 +1,6 @@
 package com.mfreimueller.art.service;
 
+import com.github.javafaker.Faker;
 import com.mfreimueller.art.domain.*;
 
 import java.time.ZoneId;
@@ -8,6 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 public final class ServiceFixtures {
+    private static final Faker faker = new Faker();
+
+    public static String validEmail() {
+        return faker.bothify("????##@gmail.com");
+    }
 
     public static Creator createCreator() {
         return Creator.builder()
@@ -17,9 +23,17 @@ public final class ServiceFixtures {
                 .build();
     }
 
+    public static Visitor createVisitor() {
+        return Visitor.builder()
+                .id(new Visitor.VisitorId(1L))
+                .username(faker.name().username())
+                .emailAddress(validEmail())
+                .build();
+    }
+
     public static Collection createCollection() {
         var en = new Language("en", "English");
-        var title = Map.of(en, "Dauerausstellung");
+        var title = Map.of(en, faker.witcher().location());
 
         return Collection.builder()
                 .id(new Collection.CollectionId(1L))
@@ -29,7 +43,7 @@ public final class ServiceFixtures {
 
     public static Collection createSubcollection() {
         var en = new Language("en", "English");
-        var title = Map.of(en, "Italian Artists");
+        var title = Map.of(en, faker.lordOfTheRings().location());
 
         return Collection.builder()
                 .id(new Collection.CollectionId(2L))
@@ -51,7 +65,7 @@ public final class ServiceFixtures {
 
     public static Exhibition createExhibition() {
         var en = new Language("en", "English");
-        var title = Map.of(en, "Dauerausstellung");
+        var title = Map.of(en, faker.elderScrolls().city());
 
         return Exhibition.builder()
                 .id(new Collection.CollectionId(1L))
