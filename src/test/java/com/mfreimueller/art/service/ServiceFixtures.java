@@ -93,6 +93,17 @@ public final class ServiceFixtures {
                 .build();
     }
 
+    public static ImageContent createImageContent() {
+        var description = localizedText();
+        var source = source();
+
+        return ImageContent.builder()
+                .id(new Content.ContentId(randomId()))
+                .description(description)
+                .source(source)
+                .build();
+    }
+
     public static SlideshowContent createSlideshowContent() {
         var description = localizedText();
         List<Content> slides = List.of(
@@ -106,6 +117,13 @@ public final class ServiceFixtures {
                 .speed(Duration.of(5))
                 .slides(slides)
                 .build();
+    }
+
+    public static Source source() {
+        return new Source(
+                faker.file().fileName(),
+                Source.LinkType.Absolute
+        );
     }
 
     public static String validEmail() {
@@ -124,6 +142,7 @@ public final class ServiceFixtures {
         return faker.date().past(24, TimeUnit.HOURS).toInstant().atZone(ZoneId.systemDefault());
     }
 
-    private ServiceFixtures() {}
+    private ServiceFixtures() {
+    }
 
 }
