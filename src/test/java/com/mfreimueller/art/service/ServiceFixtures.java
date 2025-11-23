@@ -108,6 +108,20 @@ public final class ServiceFixtures {
                 .build();
     }
 
+    public static VideoContent videoContent() {
+        var description = localizedText();
+        var sources = localizedSources();
+        var subtitles = localizedSources();
+        var duration = localizedDurations();
+
+        return VideoContent.builder()
+                .description(description)
+                .duration(duration)
+                .source(sources)
+                .subtitles(subtitles)
+                .build();
+    }
+
     public static SlideshowContent slideshowContent() {
         var description = localizedText();
         List<Content> slides = List.of(
