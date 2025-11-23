@@ -27,8 +27,12 @@ public abstract class AbstractCollectionService<T extends Collection> {
             throw DataConstraintException.forDuplicatedEntry(PointOfInterest.class, poi.getId().id());
         }
 
+        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+
         pois.add(poi);
+
         collection.setUpdatedAt(getDateTimeFactory().now());
+        collection.setUpdatedBy(creator);
 
         return getRepository().save(collection);
     }
@@ -43,8 +47,12 @@ public abstract class AbstractCollectionService<T extends Collection> {
             throw DataConstraintException.forMissingEntry(PointOfInterest.class, poi.getId().id());
         }
 
+        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+
         pois.remove(poi);
+
         collection.setUpdatedAt(getDateTimeFactory().now());
+        collection.setUpdatedBy(creator);
 
         return getRepository().save(collection);
     }
@@ -68,8 +76,12 @@ public abstract class AbstractCollectionService<T extends Collection> {
             throw DataConstraintException.forDuplicatedEntry(Collection.class, collectionToAdd.getId().id());
         }
 
+        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+
         subcollections.add(collectionToAdd);
+
         collection.setUpdatedAt(getDateTimeFactory().now());
+        collection.setUpdatedBy(creator);
 
         return getRepository().save(collection);
     }
@@ -84,8 +96,12 @@ public abstract class AbstractCollectionService<T extends Collection> {
             throw DataConstraintException.forMissingEntry(Collection.class, collectionToRemove.getId().id());
         }
 
+        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+
         collections.remove(collectionToRemove);
+
         collection.setUpdatedAt(getDateTimeFactory().now());
+        collection.setUpdatedBy(creator);
 
         return getRepository().save(collection);
     }
@@ -102,6 +118,8 @@ public abstract class AbstractCollectionService<T extends Collection> {
     protected abstract JpaRepository<T, Collection.CollectionId> getRepository();
 
     protected abstract PointOfInterestService getPointOfInterestService();
+
+    protected abstract CreatorService getCreatorService();
 
     protected abstract DateTimeFactory getDateTimeFactory();
 }

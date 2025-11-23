@@ -1,10 +1,7 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.*;
-import com.mfreimueller.art.domain.Collection;
-import com.mfreimueller.art.domain.Exhibition;
-import com.mfreimueller.art.domain.Language;
-import com.mfreimueller.art.domain.PointOfInterest;
+import com.mfreimueller.art.domain.*;
 import com.mfreimueller.art.foundation.DataConstraintException;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.CollectionRepository;
@@ -38,6 +35,7 @@ class CollectionServiceTest {
     private @InjectMocks CollectionService service;
     private @Mock CollectionRepository repository;
     private @Mock PointOfInterestService pointOfInterestService;
+    private @Mock CreatorService creatorService;
     private @Mock DateTimeFactory dateTimeFactory;
 
     @BeforeEach
@@ -50,41 +48,53 @@ class CollectionServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
+        var creator = createCreator();
         var en = new Language("en", "English");
 
         var cmd = CreateCollectionCommand.builder()
                 .title(Map.of(en, "Dauerausstellung"))
+                .creatorId(creator.getId())
                 .build();
 
-        when(dateTimeFactory.now()).thenReturn(ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault()));
+        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+        when(creatorService.getByReference(any())).thenReturn(creator);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var collection = service.create(cmd);
 
         assertNotNull(collection);
+        assertEquals(collection.getCreatedAt(), dateTime);
+        assertThat(collection.getCreatedBy(), equalTo(creator));
+
         verify(repository, times(1)).save(any());
     }
 
     @Test
     public void can_update_existing_entity() {
+        var creator = createCreator();
         var collection = createCollection();
         var de = new Language("de", "Deutsch");
 
         var cmd = UpdateCollectionCommand.builder()
                 .title(Map.of(de, "Dauerausstellung"))
+                .creatorId(creator.getId())
                 .build();
 
         var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(repository.getReferenceById(any())).thenReturn(collection);
+        when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var updateCollection = service.update(collection.getId(), cmd);
 
         assertNotNull(updateCollection);
-        assertEquals(updateCollection.getUpdatedAt(), dateTime);
         assertTrue(updateCollection.getTitle().containsKey(de));
+        assertEquals(updateCollection.getUpdatedAt(), dateTime);
+        assertThat(updateCollection.getUpdatedBy(), equalTo(creator));
 
         verify(repository, times(1)).save(any());
     }
@@ -110,6 +120,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_add_point_of_interest() {
+        var creator = createCreator();
         var collection = createCollection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
@@ -118,15 +129,21 @@ class CollectionServiceTest {
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+
+        when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
 
-        var cmd = AddPointOfInterestCommand.builder().poiId(poi.getId()).build();
+        var cmd = AddPointOfInterestCommand.builder()
+                .poiId(poi.getId())
+                .creatorId(creator.getId())
+                .build();
 
         var returned = service.addPointOfInterest(collection.getId(), cmd);
 
         assertThat(returned.getPointsOfInterest(), hasSize(1));
         assertThat(returned.getPointsOfInterest(), hasItem(poi));
         assertThat(returned.getUpdatedAt(), equalTo(dateTime));
+        assertThat(returned.getUpdatedBy(), equalTo(creator));
 
         verify(repository, times(1)).getReferenceById(any());
     }
@@ -149,6 +166,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_remove_point_of_interest() {
+        var creator = createCreator();
         var collection = createCollection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
@@ -159,14 +177,20 @@ class CollectionServiceTest {
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+
+        when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
 
-        var cmd = RemovePointOfInterestCommand.builder().poiId(poi.getId()).build();
+        var cmd = RemovePointOfInterestCommand.builder()
+                .poiId(poi.getId())
+                .creatorId(creator.getId())
+                .build();
 
         var returned = service.removePointOfInterest(collection.getId(), cmd);
 
         assertThat(returned.getPointsOfInterest(), hasSize(0));
         assertThat(returned.getUpdatedAt(), equalTo(dateTime));
+        assertThat(returned.getUpdatedBy(), equalTo(creator));
 
         verify(repository, times(1)).getReferenceById(any());
     }
@@ -188,6 +212,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_add_subcollection() {
+        var creator = createCreator();
         var collection = createCollection();
         var subcollection = createSubcollection();
 
@@ -197,15 +222,21 @@ class CollectionServiceTest {
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+
+        when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
 
-        var cmd = AddSubcollectionCommand.builder().subcollectionId(subcollection.getId()).build();
+        var cmd = AddSubcollectionCommand.builder()
+                .subcollectionId(subcollection.getId())
+                .creatorId(creator.getId())
+                .build();
 
         var returned = service.addSubcollection(collection.getId(), cmd);
 
         assertThat(returned.getSubCollections(), hasSize(1));
         assertThat(returned.getSubCollections(), hasItem(subcollection));
         assertThat(returned.getUpdatedAt(), equalTo(dateTime));
+        assertThat(returned.getUpdatedBy(), equalTo(creator));
 
         verify(repository, times(1)).save(any());
     }
@@ -252,6 +283,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_remove_subcollection() {
+        var creator = createCreator();
         var collection = createCollection();
         var subcollection = createSubcollection();
 
@@ -263,14 +295,20 @@ class CollectionServiceTest {
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+
+        when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
 
-        var cmd = RemoveSubcollectionCommand.builder().collectionId(subcollection.getId()).build();
+        var cmd = RemoveSubcollectionCommand.builder()
+                .collectionId(subcollection.getId())
+                .creatorId(creator.getId())
+                .build();
 
         var returned = service.removeSubcollection(collection.getId(), cmd);
 
         assertThat(returned.getSubCollections(), hasSize(0));
         assertThat(returned.getUpdatedAt(), equalTo(dateTime));
+        assertThat(returned.getUpdatedBy(), equalTo(creator));
 
         verify(repository, times(1)).save(any());
     }
@@ -286,6 +324,12 @@ class CollectionServiceTest {
         var cmd = RemoveSubcollectionCommand.builder().collectionId(subcollection.getId()).build();
 
         assertThrows(DataConstraintException.class, () -> service.removeSubcollection(collection.getId(), cmd));
+    }
+
+    private Creator createCreator() {
+        return Creator.builder()
+                .id(new Creator.CreatorId(1L))
+                .build();
     }
 
     private Collection createCollection() {

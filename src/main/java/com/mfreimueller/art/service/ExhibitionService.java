@@ -21,13 +21,17 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
     private final ExhibitionRepository exhibitionRepository;
     private final DateTimeFactory dateTimeFactory;
     private final PointOfInterestService pointOfInterestService;
+    private final CreatorService creatorService;
 
     @Transactional(readOnly = false)
     public Exhibition create(@NotNull @Valid CreateExhibitionCommand cmd) {
+        var creator = creatorService.getByReference(cmd.creatorId());
+
         var exhibition = Exhibition.builder()
                 .title(cmd.title())
                 .languages(cmd.languages())
                 .createdAt(dateTimeFactory.now())
+                .createdBy(creator)
                 .build();
 
         return exhibitionRepository.save(exhibition);
@@ -35,10 +39,14 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
 
     @Transactional(readOnly = false)
     public Exhibition update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateExhibitionCommand cmd) {
+        var creator = creatorService.getByReference(cmd.creatorId());
+
         var exhibition = exhibitionRepository.getReferenceById(id); // TODO: handle exception
         exhibition.setTitle(cmd.title());
         exhibition.setLanguages(cmd.languages());
+
         exhibition.setUpdatedAt(dateTimeFactory.now());
+        exhibition.setUpdatedBy(creator);
 
         return exhibitionRepository.save(exhibition);
     }
@@ -56,5 +64,10 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
     @Override
     public DateTimeFactory getDateTimeFactory() {
         return dateTimeFactory;
+    }
+
+    @Override
+    public CreatorService getCreatorService() {
+        return creatorService;
     }
 }

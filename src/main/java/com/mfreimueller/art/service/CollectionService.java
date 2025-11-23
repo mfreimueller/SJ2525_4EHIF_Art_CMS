@@ -1,9 +1,7 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.CreateCollectionCommand;
-import com.mfreimueller.art.commands.CreateExhibitionCommand;
 import com.mfreimueller.art.commands.UpdateCollectionCommand;
-import com.mfreimueller.art.commands.UpdateExhibitionCommand;
 import com.mfreimueller.art.domain.Collection;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.CollectionRepository;
@@ -22,12 +20,16 @@ public class CollectionService extends AbstractCollectionService<Collection> {
     private final CollectionRepository collectionRepository;
     private final DateTimeFactory dateTimeFactory;
     private final PointOfInterestService pointOfInterestService;
+    private final CreatorService creatorService;
 
     @Transactional(readOnly = false)
     public Collection create(@NotNull @Valid CreateCollectionCommand cmd) {
+        var creator = creatorService.getByReference(cmd.creatorId());
+
         var collection = Collection.builder()
                 .title(cmd.title())
                 .createdAt(dateTimeFactory.now())
+                .createdBy(creator)
                 .build();
 
         return collectionRepository.save(collection);
@@ -35,9 +37,13 @@ public class CollectionService extends AbstractCollectionService<Collection> {
 
     @Transactional(readOnly = false)
     public Collection update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateCollectionCommand cmd) {
+        var creator = creatorService.getByReference(cmd.creatorId());
+
         var collection = collectionRepository.getReferenceById(id); // TODO: handle exception
         collection.setTitle(cmd.title());
+
         collection.setUpdatedAt(dateTimeFactory.now());
+        collection.setUpdatedBy(creator);
 
         return collectionRepository.save(collection);
     }
@@ -55,5 +61,10 @@ public class CollectionService extends AbstractCollectionService<Collection> {
     @Override
     public DateTimeFactory getDateTimeFactory() {
         return dateTimeFactory;
+    }
+
+    @Override
+    protected CreatorService getCreatorService() {
+        return creatorService;
     }
 }
