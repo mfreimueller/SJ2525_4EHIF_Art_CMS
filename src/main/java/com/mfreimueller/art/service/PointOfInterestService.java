@@ -1,10 +1,7 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
-import com.mfreimueller.art.commands.UpdateExhibitionCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
-import com.mfreimueller.art.domain.Collection;
-import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.PointOfInterestRepository;

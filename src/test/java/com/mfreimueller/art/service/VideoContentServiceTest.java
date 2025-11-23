@@ -1,10 +1,8 @@
 package com.mfreimueller.art.service;
 
-import com.mfreimueller.art.commands.PutAudioContentCommand;
 import com.mfreimueller.art.commands.PutVideoContentCommand;
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.foundation.DateTimeFactory;
-import com.mfreimueller.art.persistence.AudioContentRepository;
 import com.mfreimueller.art.persistence.VideoContentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
