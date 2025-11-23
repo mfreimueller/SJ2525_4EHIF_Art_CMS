@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public final class ServiceFixtures {
     private static final Faker faker = new Faker();
@@ -76,6 +77,10 @@ public final class ServiceFixtures {
 
     public static ZonedDateTime createDateTime() {
         return ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+    }
+
+    public static ZonedDateTime createPastDateTime() {
+        return faker.date().past(24, TimeUnit.HOURS).toInstant().atZone(ZoneId.systemDefault());
     }
 
     private ServiceFixtures() {}

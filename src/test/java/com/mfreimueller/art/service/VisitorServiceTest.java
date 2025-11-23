@@ -49,9 +49,9 @@ class VisitorServiceTest {
 
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
-        var creator = service.create(cmd);
+        var visitor = service.create(cmd);
 
-        assertNotNull(creator);
+        assertNotNull(visitor);
         verify(repository, times(1)).save(any());
     }
 

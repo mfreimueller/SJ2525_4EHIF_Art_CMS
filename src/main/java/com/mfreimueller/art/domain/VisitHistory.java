@@ -23,7 +23,7 @@ public class VisitHistory extends AbstractEntity {
     @EmbeddedId
     private VisitHistoryId id;
 
-    private Duration duration;
+    private Duration duration; // FIXME: Duration doesn't make sense here, as it is limited to 250 seconds
 
     @Column(name = "visited_on")
     private ZonedDateTime visitedOn;
