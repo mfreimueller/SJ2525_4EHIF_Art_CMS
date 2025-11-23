@@ -9,6 +9,7 @@ import com.mfreimueller.art.persistence.ExhibitionRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class ExhibitionService extends AbstractCollectionService<Exhibition> {
     private final ExhibitionRepository exhibitionRepository;
     private final DateTimeFactory dateTimeFactory;
@@ -34,7 +36,10 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
                 .createdBy(creator)
                 .build();
 
-        return exhibitionRepository.save(exhibition);
+        var saved = exhibitionRepository.save(exhibition);
+        log.debug("Created new exhibition with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -48,7 +53,10 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
         exhibition.setUpdatedAt(dateTimeFactory.now());
         exhibition.setUpdatedBy(creator);
 
-        return exhibitionRepository.save(exhibition);
+        var saved = exhibitionRepository.save(exhibition);
+        log.debug("Updated exhibition with id {}", saved.getId());
+
+        return saved;
     }
 
     @Override

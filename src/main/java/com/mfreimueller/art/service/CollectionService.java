@@ -8,6 +8,7 @@ import com.mfreimueller.art.persistence.CollectionRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class CollectionService extends AbstractCollectionService<Collection> {
     private final CollectionRepository collectionRepository;
     private final DateTimeFactory dateTimeFactory;
@@ -32,7 +34,10 @@ public class CollectionService extends AbstractCollectionService<Collection> {
                 .createdBy(creator)
                 .build();
 
-        return collectionRepository.save(collection);
+        var saved = collectionRepository.save(collection);
+        log.debug("Created new collection with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -45,7 +50,10 @@ public class CollectionService extends AbstractCollectionService<Collection> {
         collection.setUpdatedAt(dateTimeFactory.now());
         collection.setUpdatedBy(creator);
 
-        return collectionRepository.save(collection);
+        var saved = collectionRepository.save(collection);
+        log.debug("Updated collection with id {}", saved.getId());
+
+        return saved;
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.mfreimueller.art.persistence.TextContentRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class TextContentService {
 
     private final TextContentRepository textContentRepository;
@@ -33,7 +35,10 @@ public class TextContentService {
                 .createdBy(creator)
                 .build();
 
-        return textContentRepository.save(textContent);
+        var saved = textContentRepository.save(textContent);
+        log.debug("Created new text content with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -47,12 +52,16 @@ public class TextContentService {
         textContent.setUpdatedAt(dateTimeFactory.now());
         textContent.setUpdatedBy(creator);
 
-        return textContentRepository.save(textContent);
+        var saved = textContentRepository.save(textContent);
+        log.debug("Updated text content with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
     public void delete(@NotNull Content.ContentId id) {
         textContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
+        log.debug("Deleted text content with id {}", id.id());
     }
 
     public TextContent getByReference(@NotNull Content.ContentId id) {

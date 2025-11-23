@@ -8,6 +8,7 @@ import com.mfreimueller.art.persistence.PointOfInterestRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class PointOfInterestService {
 
     private final PointOfInterestRepository pointOfInterestRepository;
@@ -35,7 +37,10 @@ public class PointOfInterestService {
                 .createdBy(creator)
                 .build();
 
-        return pointOfInterestRepository.save(poi);
+        var saved = pointOfInterestRepository.save(poi);
+        log.debug("Created new point of interest with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -50,12 +55,16 @@ public class PointOfInterestService {
         poi.setUpdatedBy(creator);
         poi.setUpdatedAt(dateTimeFactory.now());
 
-        return pointOfInterestRepository.save(poi);
+        var saved = pointOfInterestRepository.save(poi);
+        log.debug("Updated point of interest with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
     public void delete(@NotNull PointOfInterest.PointOfInterestId id) {
         pointOfInterestRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
+        log.debug("Deleted point of interest with id {}", id.id());
     }
 
     public PointOfInterest getByReference(@NotNull PointOfInterest.PointOfInterestId id) {

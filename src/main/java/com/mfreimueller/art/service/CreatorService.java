@@ -8,6 +8,7 @@ import com.mfreimueller.art.persistence.CreatorRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class CreatorService {
 
     private final CreatorRepository creatorRepository;
@@ -26,7 +28,10 @@ public class CreatorService {
                 .role(cmd.role())
                 .build();
 
-        return creatorRepository.save(creator);
+        var saved = creatorRepository.save(creator);
+        log.debug("Created new creator with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -35,12 +40,16 @@ public class CreatorService {
         creator.setUsername(cmd.username());
         creator.setRole(cmd.role());
 
-        return creatorRepository.save(creator);
+        var saved = creatorRepository.save(creator);
+        log.debug("Updated creator with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
     public void delete(@NotNull Creator.CreatorId id) {
         creatorRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
+        log.debug("Deleted creator with id {}", id.id());
     }
 
     public Creator getByReference(@NotNull Creator.CreatorId id) {

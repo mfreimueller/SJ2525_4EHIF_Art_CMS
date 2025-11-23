@@ -11,10 +11,12 @@ import com.mfreimueller.art.foundation.DateTimeFactory;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Slf4j
 public abstract class AbstractCollectionService<T extends Collection> {
 
     @Transactional(readOnly = false)
@@ -24,6 +26,7 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
         var pois = collection.getPointsOfInterest();
         if (pois.contains(poi)) {
+            log.error("Attempted to add collection with id {} to itself, introducing a circular reference", id.id());
             throw DataConstraintException.forDuplicatedEntry(PointOfInterest.class, poi.getId().id());
         }
 
@@ -34,7 +37,10 @@ public abstract class AbstractCollectionService<T extends Collection> {
         collection.setUpdatedAt(getDateTimeFactory().now());
         collection.setUpdatedBy(creator);
 
-        return getRepository().save(collection);
+        var saved = getRepository().save(collection);
+        log.debug("Added point of interest {} to collection {}", cmd.poiId(), id.id());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -44,6 +50,7 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
         var pois = collection.getPointsOfInterest();
         if (!pois.contains(poi)) {
+            log.error("Attempted to remove a point of interest with id {} from collection {}, although they weren't connected", poi.getId(), id.id());
             throw DataConstraintException.forMissingEntry(PointOfInterest.class, poi.getId().id());
         }
 
@@ -54,7 +61,10 @@ public abstract class AbstractCollectionService<T extends Collection> {
         collection.setUpdatedAt(getDateTimeFactory().now());
         collection.setUpdatedBy(creator);
 
-        return getRepository().save(collection);
+        var saved = getRepository().save(collection);
+        log.debug("Removed point of interest {} from collection {}", cmd.poiId(), id.id());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -68,14 +78,11 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
         var topCollection = collection.getTopCollection();
         if (topCollection == collectionToAdd || topCollection.contains(collectionToAdd)) {
+            log.error("Attempted to add collection with id {} to already connected collection {}", collectionToAdd.getId(), id.id());
             throw DataConstraintException.forCircularReference(Collection.class, cmd.subcollectionId().id());
         }
 
         var subcollections = collection.getSubCollections();
-        if (subcollections.contains(collectionToAdd)) {
-            throw DataConstraintException.forDuplicatedEntry(Collection.class, collectionToAdd.getId().id());
-        }
-
         var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
 
         subcollections.add(collectionToAdd);
@@ -83,7 +90,10 @@ public abstract class AbstractCollectionService<T extends Collection> {
         collection.setUpdatedAt(getDateTimeFactory().now());
         collection.setUpdatedBy(creator);
 
-        return getRepository().save(collection);
+        var saved = getRepository().save(collection);
+        log.debug("Added subcollection {} to collection {}", cmd.subcollectionId(), id.id());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -93,6 +103,7 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
         var collections = collection.getSubCollections();
         if (!collections.contains(collectionToRemove)) {
+            log.error("Attempted to remove a collection {} from parent-collection {}, although they weren't connected", collection.getId(), id.id());
             throw DataConstraintException.forMissingEntry(Collection.class, collectionToRemove.getId().id());
         }
 
@@ -103,12 +114,16 @@ public abstract class AbstractCollectionService<T extends Collection> {
         collection.setUpdatedAt(getDateTimeFactory().now());
         collection.setUpdatedBy(creator);
 
-        return getRepository().save(collection);
+        var saved = getRepository().save(collection);
+        log.debug("Removed subcollection {} from collection {}", cmd.collectionId(), id.id());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
     public void delete(@NotNull Collection.CollectionId id) {
         getRepository().deleteById(id); // NOTE: this doesn't fail on entity not found
+        log.debug("Deleted collection {}", id.id());
     }
 
     public T getByReference(Collection.CollectionId id) {

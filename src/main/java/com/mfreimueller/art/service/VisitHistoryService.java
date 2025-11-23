@@ -6,6 +6,7 @@ import com.mfreimueller.art.persistence.VisitHistoryRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class VisitHistoryService {
 
     private final VisitHistoryRepository visitHistoryRepository;
@@ -29,7 +31,10 @@ public class VisitHistoryService {
                 .visitor(visitor)
                 .build();
 
-        return visitHistoryRepository.save(visitHistory);
+        var saved = visitHistoryRepository.save(visitHistory);
+        log.debug("Created new visit history of visitor {} with id {}", visitor.getId(), saved.getId());
+
+        return saved;
     }
 
     public VisitHistory getByReference(@NotNull VisitHistory.VisitHistoryId id) {

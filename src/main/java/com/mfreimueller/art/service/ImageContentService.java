@@ -11,6 +11,7 @@ import com.mfreimueller.art.persistence.TextContentRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class ImageContentService {
 
     private final ImageContentRepository imageContentRepository;
@@ -35,7 +37,10 @@ public class ImageContentService {
                 .createdBy(creator)
                 .build();
 
-        return imageContentRepository.save(imageContent);
+        var saved = imageContentRepository.save(imageContent);
+        log.debug("Created new image content with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
@@ -48,12 +53,16 @@ public class ImageContentService {
         imageContent.setUpdatedAt(dateTimeFactory.now());
         imageContent.setUpdatedBy(creator);
 
-        return imageContentRepository.save(imageContent);
+        var saved = imageContentRepository.save(imageContent);
+        log.debug("Updated image content with id {}", saved.getId());
+
+        return saved;
     }
 
     @Transactional(readOnly = false)
     public void delete(@NotNull Content.ContentId id) {
         imageContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
+        log.debug("Deleted image content with id {}", id.id());
     }
 
     public ImageContent getByReference(@NotNull Content.ContentId id) {
