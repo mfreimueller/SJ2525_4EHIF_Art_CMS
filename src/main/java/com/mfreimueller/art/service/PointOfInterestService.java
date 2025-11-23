@@ -21,14 +21,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class PointOfInterestService {
 
     private final PointOfInterestRepository pointOfInterestRepository;
+    private final ContentService contentService;
+    private final CreatorService creatorService;
     private final DateTimeFactory dateTimeFactory;
 
     @Transactional(readOnly = false)
     public PointOfInterest create(@NotNull @Valid CreatePointOfInterestCommand cmd) {
+        var creator = creatorService.getByReference(cmd.creatorId());
+        var content = cmd.content().stream().map(contentService::getByReference).toList();
+
         var poi = PointOfInterest.builder()
                 .title(cmd.title())
                 .description(cmd.description())
+                .content(content)
                 .createdAt(dateTimeFactory.now())
+                .createdBy(creator)
                 .build();
 
         return pointOfInterestRepository.save(poi);
@@ -36,12 +43,17 @@ public class PointOfInterestService {
 
     @Transactional(readOnly = false)
     public PointOfInterest update(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
-        var exhibition = pointOfInterestRepository.getReferenceById(id); // TODO: handle exception
-        exhibition.setTitle(cmd.title());
-        exhibition.setDescription(cmd.description());
-        exhibition.setUpdatedAt(dateTimeFactory.now());
+        var creator = creatorService.getByReference(cmd.creatorId());
+        var content = cmd.content().stream().map(contentService::getByReference).toList();
 
-        return pointOfInterestRepository.save(exhibition);
+        var poi = pointOfInterestRepository.getReferenceById(id); // TODO: handle exception
+        poi.setTitle(cmd.title());
+        poi.setDescription(cmd.description());
+        poi.setContent(content);
+        poi.setUpdatedBy(creator);
+        poi.setUpdatedAt(dateTimeFactory.now());
+
+        return pointOfInterestRepository.save(poi);
     }
 
     @Transactional(readOnly = false)

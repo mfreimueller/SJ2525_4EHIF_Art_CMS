@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +39,15 @@ public class PointOfInterest extends HistoryBase {
     @Column(name = "description")
     @Builder.Default
     private Map<Language, String> description = new HashMap<>();
+
+    @ManyToMany
+    @Builder.Default
+    @JoinTable(
+            name = "PointOfInterest_Content",
+            joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_PointOfInterest_Content_2_PointOfInterest")),
+            inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_PointOfInterest_Content_2_Content"))
+    )
+    private List<Content> content = new ArrayList<>(); // note: we use a list, as a list is ordered.
 
     public record PointOfInterestId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
