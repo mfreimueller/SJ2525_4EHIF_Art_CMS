@@ -53,6 +53,11 @@ public abstract class AbstractCollectionService<T extends Collection> {
         var collection = getRepository().getReferenceById(id); // TODO: handle exception
         var collectionToAdd = getRepository().getReferenceById(cmd.subcollectionId()); // TODO: handle exception
 
+        var topCollection = collection.getTopCollection();
+        if (topCollection == collectionToAdd || topCollection.contains(collectionToAdd)) {
+            throw DataConstraintException.forCircularReference(Collection.class, cmd.subcollectionId().id());
+        }
+
         var subcollections = collection.getSubCollections();
         if (subcollections.contains(collectionToAdd)) {
             throw DataConstraintException.forDuplicatedEntry(Collection.class, collectionToAdd.getId().id());

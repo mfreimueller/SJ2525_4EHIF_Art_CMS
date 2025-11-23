@@ -40,13 +40,42 @@ public class Collection extends HistoryBase {
     @Builder.Default
     private Set<PointOfInterest> pointsOfInterest = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "Collection_SubCollections",
-            foreignKey = @ForeignKey(name = "FK_Collection_SubCollections")
-    )
+    @OneToMany(mappedBy = "parentCollection", cascade = CascadeType.PERSIST)
     @Builder.Default
     private Set<Collection> subCollections = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(
+            name = "parent_id",
+            foreignKey = @ForeignKey(name = "FK_Collection_Parent")
+    )
+    private Collection parentCollection;
+
+    /**
+     * Gets the top most collection from the parent collections, or returns
+     * this instance if no parent collection is found.
+     * @return The collection that is the parent to all collections connected to this collection.
+     */
+    public Collection getTopCollection() {
+        if (parentCollection == null) {
+            return this;
+        }
+
+        return parentCollection.getTopCollection();
+    }
+
+    /**
+     * Recursively searches the subcollections for the given collection.
+     * @param collection The collection to find.
+     * @return True if the collection was found in any subcollection, otherwise false.
+     */
+    public boolean contains(Collection collection) {
+        if (subCollections.contains(collection)) {
+            return true;
+        }
+
+        return subCollections.stream().anyMatch(s -> s.contains(collection));
+    }
 
     public record CollectionId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")

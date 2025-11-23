@@ -223,18 +223,19 @@ class CollectionServiceTest {
     }
 
     @Test
-    public void can_not_add_subcollection_twice() {
+    public void detects_circular_subcollections() {
         var collection = createCollection();
         var subcollection = createSubcollection();
 
         when(repository.getReferenceById(collection.getId())).thenReturn(collection);
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
 
+        subcollection.setParentCollection(collection);
         collection.getSubCollections().add(subcollection);
 
-        var cmd = AddSubcollectionCommand.builder().subcollectionId(subcollection.getId()).build();
+        var cmd = AddSubcollectionCommand.builder().subcollectionId(collection.getId()).build();
 
-        assertThrows(DataConstraintException.class, () -> service.addSubcollection(collection.getId(), cmd));
+        assertThrows(DataConstraintException.class, () -> service.addSubcollection(subcollection.getId(), cmd));
     }
 
     @Test
