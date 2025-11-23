@@ -46,6 +46,10 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
     @Transactional(readOnly = false)
     public Collection addSubcollection(@NotNull Collection.CollectionId id, @NotNull @Valid AddSubcollectionCommand cmd) {
+        if (id.equals(cmd.subcollectionId())) {
+            throw DataConstraintException.forCircularReference(Collection.class, id.id());
+        }
+
         var collection = getRepository().getReferenceById(id); // TODO: handle exception
         var collectionToAdd = getRepository().getReferenceById(cmd.subcollectionId()); // TODO: handle exception
 

@@ -214,6 +214,30 @@ class CollectionServiceTest {
     }
 
     @Test
+    public void can_not_add_itself_as_subcollection() {
+        var collection = createCollection();
+
+        var cmd = AddSubcollectionCommand.builder().subcollectionId(collection.getId()).build();
+
+        assertThrows(DataConstraintException.class, () -> service.addSubcollection(collection.getId(), cmd));
+    }
+
+    @Test
+    public void can_not_add_subcollection_twice() {
+        var collection = createCollection();
+        var subcollection = createSubcollection();
+
+        when(repository.getReferenceById(collection.getId())).thenReturn(collection);
+        when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
+
+        collection.getSubCollections().add(subcollection);
+
+        var cmd = AddSubcollectionCommand.builder().subcollectionId(subcollection.getId()).build();
+
+        assertThrows(DataConstraintException.class, () -> service.addSubcollection(collection.getId(), cmd));
+    }
+
+    @Test
     public void can_remove_subcollection() {
         var collection = createCollection();
         var subcollection = createSubcollection();

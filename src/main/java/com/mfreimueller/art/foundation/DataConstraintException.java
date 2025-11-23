@@ -18,4 +18,8 @@ public class DataConstraintException extends RuntimeException {
     public static DataConstraintException forMissingEntry(Class<?> clazz, Long id) {
         return new DataConstraintException("No entry of type %s found for id %d".formatted(clazz, id));
     }
+
+    public static DataConstraintException forCircularReference(Class<?> clazz, Long id) {
+        return new DataConstraintException("Attempted to create circular reference of class %s for id %d".formatted(clazz, id));
+    }
 }
