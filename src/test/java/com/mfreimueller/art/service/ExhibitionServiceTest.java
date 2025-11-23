@@ -3,8 +3,6 @@ package com.mfreimueller.art.service;
 import com.mfreimueller.art.commands.CreateExhibitionCommand;
 import com.mfreimueller.art.commands.UpdateExhibitionCommand;
 import com.mfreimueller.art.domain.Collection;
-import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.ExhibitionRepository;
@@ -19,8 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,7 +57,7 @@ class ExhibitionServiceTest {
                 .creatorId(creator.getId())
                 .build();
 
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
 
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(creatorService.getByReference(any())).thenReturn(creator);
@@ -81,7 +77,7 @@ class ExhibitionServiceTest {
     public void can_update_existing_entity() {
         var creator = createCreator();
         var exhibition = createExhibition();
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
 
         var de = new Language("de", "Deutsch");
 

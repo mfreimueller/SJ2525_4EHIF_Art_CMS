@@ -46,7 +46,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
         var creator = createCreator();
         var en = new Language("en", "English");
 
@@ -70,7 +70,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
         var creator = createCreator();
         var collection = createCollection();
         var de = new Language("de", "Deutsch");
@@ -117,7 +117,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_add_point_of_interest() {
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
         var creator = createCreator();
         var collection = createCollection();
         when(repository.getReferenceById(any())).thenReturn(collection);
@@ -162,7 +162,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_remove_point_of_interest() {
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
         var creator = createCreator();
         var collection = createCollection();
         when(repository.getReferenceById(any())).thenReturn(collection);
@@ -207,7 +207,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_add_subcollection() {
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
         var creator = createCreator();
         var collection = createCollection();
         var subcollection = createSubcollection();
@@ -277,7 +277,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_remove_subcollection() {
-        var dateTime = createDateTime();
+        var dateTime = dateTime();
         var creator = createCreator();
         var collection = createCollection();
         var subcollection = createSubcollection();

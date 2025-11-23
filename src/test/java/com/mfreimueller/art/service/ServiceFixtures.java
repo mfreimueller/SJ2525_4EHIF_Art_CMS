@@ -12,13 +12,16 @@ import java.util.concurrent.TimeUnit;
 public final class ServiceFixtures {
     private static final Faker faker = new Faker();
 
-    public static String validEmail() {
-        return faker.bothify("????##@gmail.com");
+    public static Map<Language, String> localizedText() {
+        return Map.of(
+                new Language("en", "English"), faker.witcher().quote(),
+                new Language("de", "Deutsch"), faker.gameOfThrones().quote()
+        );
     }
 
     public static Creator createCreator() {
         return Creator.builder()
-                .id(new Creator.CreatorId(1L))
+                .id(new Creator.CreatorId(randomId()))
                 .username("editor")
                 .role(Creator.Role.Editor)
                 .build();
@@ -26,7 +29,7 @@ public final class ServiceFixtures {
 
     public static Visitor createVisitor() {
         return Visitor.builder()
-                .id(new Visitor.VisitorId(1L))
+                .id(new Visitor.VisitorId(randomId()))
                 .username(faker.name().username())
                 .emailAddress(validEmail())
                 .build();
@@ -37,7 +40,7 @@ public final class ServiceFixtures {
         var title = Map.of(en, faker.witcher().location());
 
         return Collection.builder()
-                .id(new Collection.CollectionId(1L))
+                .id(new Collection.CollectionId(randomId()))
                 .title(title)
                 .build();
     }
@@ -47,7 +50,7 @@ public final class ServiceFixtures {
         var title = Map.of(en, faker.lordOfTheRings().location());
 
         return Collection.builder()
-                .id(new Collection.CollectionId(2L))
+                .id(new Collection.CollectionId(randomId()))
                 .title(title)
                 .build();
     }
@@ -58,7 +61,7 @@ public final class ServiceFixtures {
         var description = Map.of(en, "Girl with Balloon (also, Balloon Girl or Girl and Balloon) is a series of stencil murals around London by the graffiti artist Banksy, started in 2002. They depict a young girl with her hand extended toward a red heart-shaped balloon carried away by the wind.");
 
         return PointOfInterest.builder()
-                .id(new PointOfInterest.PointOfInterestId(1L))
+                .id(new PointOfInterest.PointOfInterestId(randomId()))
                 .title(title)
                 .description(description)
                 .build();
@@ -69,13 +72,34 @@ public final class ServiceFixtures {
         var title = Map.of(en, faker.elderScrolls().city());
 
         return Exhibition.builder()
-                .id(new Collection.CollectionId(1L))
+                .id(new Collection.CollectionId(randomId()))
                 .title(title)
                 .languages(Set.of(en))
                 .build();
     }
 
-    public static ZonedDateTime createDateTime() {
+    public static TextContent createTextContent() {
+        var description = localizedText();
+        var shortText = localizedText();
+        var longText = localizedText();
+
+        return TextContent.builder()
+                .id(new Content.ContentId(randomId()))
+                .description(description)
+                .shortText(shortText)
+                .longText(longText)
+                .build();
+    }
+
+    public static String validEmail() {
+        return faker.bothify("????##@gmail.com");
+    }
+
+    public static Long randomId() {
+        return faker.random().nextLong(Long.MAX_VALUE);
+    }
+
+    public static ZonedDateTime dateTime() {
         return ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
     }
 
