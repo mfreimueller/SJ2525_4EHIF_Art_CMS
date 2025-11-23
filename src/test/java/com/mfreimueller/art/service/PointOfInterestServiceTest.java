@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
+import static com.mfreimueller.art.service.ServiceFixtures.createPointOfInterest;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -101,17 +102,5 @@ class PointOfInterestServiceTest {
         assertThat(returned.getId(), equalTo(exhibition.getId()));
 
         verify(repository, times(1)).getReferenceById(any());
-    }
-
-    private PointOfInterest createPointOfInterest() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, "Girl with Balloon");
-        var description = Map.of(en, "Girl with Balloon (also, Balloon Girl or Girl and Balloon) is a series of stencil murals around London by the graffiti artist Banksy, started in 2002. They depict a young girl with her hand extended toward a red heart-shaped balloon carried away by the wind.");
-
-        return PointOfInterest.builder()
-                .id(new PointOfInterest.PointOfInterestId(1L))
-                .title(title)
-                .description(description)
-                .build();
     }
 }

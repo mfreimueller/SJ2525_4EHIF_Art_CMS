@@ -5,7 +5,6 @@ import com.mfreimueller.art.domain.*;
 import com.mfreimueller.art.foundation.DataConstraintException;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.CollectionRepository;
-import com.mfreimueller.art.persistence.ExhibitionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -16,11 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.Set;
 
+import static com.mfreimueller.art.service.ServiceFixtures.*;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -43,11 +40,13 @@ class CollectionServiceTest {
         assumeThat(service).isNotNull();
         assumeThat(repository).isNotNull();
         assumeThat(pointOfInterestService).isNotNull();
+        assumeThat(creatorService).isNotNull();
         assumeThat(dateTimeFactory).isNotNull();
     }
 
     @Test
     public void can_create_with_valid_data() {
+        var dateTime = createDateTime();
         var creator = createCreator();
         var en = new Language("en", "English");
 
@@ -55,8 +54,6 @@ class CollectionServiceTest {
                 .title(Map.of(en, "Dauerausstellung"))
                 .creatorId(creator.getId())
                 .build();
-
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(creatorService.getByReference(any())).thenReturn(creator);
@@ -73,6 +70,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_update_existing_entity() {
+        var dateTime = createDateTime();
         var creator = createCreator();
         var collection = createCollection();
         var de = new Language("de", "Deutsch");
@@ -82,7 +80,6 @@ class CollectionServiceTest {
                 .creatorId(creator.getId())
                 .build();
 
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(repository.getReferenceById(any())).thenReturn(collection);
         when(creatorService.getByReference(any())).thenReturn(creator);
@@ -120,6 +117,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_add_point_of_interest() {
+        var dateTime = createDateTime();
         var creator = createCreator();
         var collection = createCollection();
         when(repository.getReferenceById(any())).thenReturn(collection);
@@ -127,8 +125,6 @@ class CollectionServiceTest {
         var poi = createPointOfInterest();
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
-
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
@@ -166,6 +162,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_remove_point_of_interest() {
+        var dateTime = createDateTime();
         var creator = createCreator();
         var collection = createCollection();
         when(repository.getReferenceById(any())).thenReturn(collection);
@@ -175,8 +172,6 @@ class CollectionServiceTest {
 
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
-
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
@@ -212,6 +207,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_add_subcollection() {
+        var dateTime = createDateTime();
         var creator = createCreator();
         var collection = createCollection();
         var subcollection = createSubcollection();
@@ -220,8 +216,6 @@ class CollectionServiceTest {
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
 
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
-
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
@@ -283,6 +277,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_remove_subcollection() {
+        var dateTime = createDateTime();
         var creator = createCreator();
         var collection = createCollection();
         var subcollection = createSubcollection();
@@ -293,8 +288,6 @@ class CollectionServiceTest {
         collection.getSubCollections().add(subcollection);
 
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
-
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
 
         when(creatorService.getByReference(any())).thenReturn(creator);
         when(dateTimeFactory.now()).thenReturn(dateTime);
@@ -325,41 +318,4 @@ class CollectionServiceTest {
 
         assertThrows(DataConstraintException.class, () -> service.removeSubcollection(collection.getId(), cmd));
     }
-
-    private Creator createCreator() {
-        return Creator.builder()
-                .id(new Creator.CreatorId(1L))
-                .build();
-    }
-
-    private Collection createCollection() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, "Dauerausstellung");
-
-        return Collection.builder()
-                .id(new Collection.CollectionId(1L))
-                .title(title)
-                .build();
-    }
-
-    private Collection createSubcollection() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, "Italian Artists");
-
-        return Collection.builder()
-                .id(new Collection.CollectionId(2L))
-                .title(title)
-                .build();
-    }
-
-    private PointOfInterest createPointOfInterest() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, "Mona Lisa");
-
-        return PointOfInterest.builder()
-                .id(new PointOfInterest.PointOfInterestId(2L))
-                .title(title)
-                .build();
-    }
-
 }

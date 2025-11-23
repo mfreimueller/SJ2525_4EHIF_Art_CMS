@@ -3,6 +3,7 @@ package com.mfreimueller.art.service;
 import com.mfreimueller.art.commands.CreateExhibitionCommand;
 import com.mfreimueller.art.commands.UpdateExhibitionCommand;
 import com.mfreimueller.art.domain.Collection;
+import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.foundation.DateTimeFactory;
@@ -30,6 +31,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static com.mfreimueller.art.service.ServiceFixtures.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @ExtendWith(MockitoExtension.class)
@@ -37,36 +39,50 @@ class ExhibitionServiceTest {
 
     private @InjectMocks ExhibitionService service;
     private @Mock ExhibitionRepository repository;
+    private @Mock CreatorService creatorService;
     private @Mock DateTimeFactory dateTimeFactory;
 
     @BeforeEach
     public void setup() {
         assumeThat(service).isNotNull();
         assumeThat(repository).isNotNull();
+        assumeThat(creatorService).isNotNull();
         assumeThat(dateTimeFactory).isNotNull();
     }
 
     @Test
     public void can_create_with_valid_data() {
+        var creator = createCreator();
         var en = new Language("en", "English");
 
         var cmd = CreateExhibitionCommand.builder()
                 .title(Map.of(en, "Dauerausstellung"))
                 .languages(Set.of(en))
+                .creatorId(creator.getId())
                 .build();
 
-        when(dateTimeFactory.now()).thenReturn(ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault()));
+        var dateTime = createDateTime();
+
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+        when(creatorService.getByReference(any())).thenReturn(creator);
+
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var exhibition = service.create(cmd);
 
         assertNotNull(exhibition);
+        assertEquals(exhibition.getCreatedAt(), dateTime);
+        assertThat(exhibition.getCreatedBy(), equalTo(creator));
+
         verify(repository, times(1)).save(any());
     }
 
     @Test
     public void can_update_existing_entity() {
+        var creator = createCreator();
         var exhibition = createExhibition();
+        var dateTime = createDateTime();
+
         var de = new Language("de", "Deutsch");
 
         var cmd = UpdateExhibitionCommand.builder()
@@ -74,19 +90,20 @@ class ExhibitionServiceTest {
                 .languages(Set.of(de))
                 .build();
 
-        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
-
         when(repository.getReferenceById(any())).thenReturn(exhibition);
         when(dateTimeFactory.now()).thenReturn(dateTime);
+        when(creatorService.getByReference(any())).thenReturn(creator);
+
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         var updateExhibition = service.update(exhibition.getId(), cmd);
 
         assertNotNull(updateExhibition);
-        assertEquals(updateExhibition.getUpdatedAt(), dateTime);
         assertTrue(updateExhibition.getTitle().containsKey(de));
         assertEquals(1, updateExhibition.getLanguages().size());
         assertThat(updateExhibition.getLanguages(), hasItem(de));
+        assertEquals(exhibition.getUpdatedAt(), dateTime);
+        assertThat(exhibition.getUpdatedBy(), equalTo(creator));
 
         verify(repository, times(1)).save(any());
     }
@@ -110,15 +127,6 @@ class ExhibitionServiceTest {
         verify(repository, times(1)).getReferenceById(any());
     }
 
-    private Exhibition createExhibition() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, "Dauerausstellung");
 
-        return Exhibition.builder()
-                .id(new Collection.CollectionId(1L))
-                .title(title)
-                .languages(Set.of(en))
-                .build();
-    }
 
 }

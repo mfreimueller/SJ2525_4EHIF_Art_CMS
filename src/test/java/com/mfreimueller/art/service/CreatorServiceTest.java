@@ -26,6 +26,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 
+import static com.mfreimueller.art.service.ServiceFixtures.createCreator;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -100,14 +101,6 @@ class CreatorServiceTest {
         assertThat(returned.getId(), equalTo(creator.getId()));
 
         verify(repository, times(1)).getReferenceById(any());
-    }
-
-    private Creator createCreator() {
-        return Creator.builder()
-                .id(new Creator.CreatorId(1L))
-                .username("user")
-                .role(Creator.Role.Editor)
-                .build();
     }
 
 }
