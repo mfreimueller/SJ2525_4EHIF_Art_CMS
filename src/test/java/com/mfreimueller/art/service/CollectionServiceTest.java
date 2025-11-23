@@ -152,8 +152,7 @@ class CollectionServiceTest {
         var poi = createPointOfInterest();
         collection.getPointsOfInterest().add(poi);
 
-        var duplicate = createPointOfInterest();
-        when(pointOfInterestService.getByReference(any())).thenReturn(duplicate);
+        when(pointOfInterestService.getByReference(any())).thenReturn(poi);
 
         var cmd = AddPointOfInterestCommand.builder().poiId(poi.getId()).build();
 
