@@ -1,6 +1,6 @@
 package com.mfreimueller.art.service;
 
-import com.mfreimueller.art.commands.CreateUpdateSlideshowContentCommand;
+import com.mfreimueller.art.commands.PutSlideshowContentCommand;
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.foundation.DataConstraintException;
@@ -52,7 +52,7 @@ class SlideshowContentServiceTest {
     public void can_create_with_valid_data() {
         var description = localizedText();
 
-        var cmd = CreateUpdateSlideshowContentCommand.builder()
+        var cmd = PutSlideshowContentCommand.builder()
                 .description(description)
                 .mode(SlideshowContent.Mode.Auto)
                 .speed(Duration.of(5))
@@ -77,7 +77,7 @@ class SlideshowContentServiceTest {
 
         var description = localizedText();
 
-        var cmd = CreateUpdateSlideshowContentCommand.builder()
+        var cmd = PutSlideshowContentCommand.builder()
                 .description(description)
                 .slides(List.of())
                 .build();
@@ -100,7 +100,7 @@ class SlideshowContentServiceTest {
         var slides = new ArrayList<>(slideshowContent.getSlides());
         slides.add(slideshowContent);
 
-        var cmd = CreateUpdateSlideshowContentCommand.builder()
+        var cmd = PutSlideshowContentCommand.builder()
                 .slides(slides.stream().map(Content::getId).toList())
                 .build();
 

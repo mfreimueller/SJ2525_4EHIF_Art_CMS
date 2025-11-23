@@ -1,6 +1,6 @@
 package com.mfreimueller.art.service;
 
-import com.mfreimueller.art.commands.CreateUpdateSlideshowContentCommand;
+import com.mfreimueller.art.commands.PutSlideshowContentCommand;
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.foundation.DataConstraintException;
@@ -27,7 +27,7 @@ public class SlideshowContentService {
     private final DateTimeFactory dateTimeFactory;
 
     @Transactional(readOnly = false)
-    public SlideshowContent create(@NotNull @Valid CreateUpdateSlideshowContentCommand cmd) {
+    public SlideshowContent create(@NotNull @Valid PutSlideshowContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
         var slides = cmd.slides().stream().map(contentRepository::getReferenceById).toList();
 
@@ -44,7 +44,7 @@ public class SlideshowContentService {
     }
 
     @Transactional(readOnly = false)
-    public SlideshowContent update(@NotNull Content.ContentId id, @NotNull @Valid CreateUpdateSlideshowContentCommand cmd) {
+    public SlideshowContent update(@NotNull Content.ContentId id, @NotNull @Valid PutSlideshowContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
         var slides = cmd.slides().stream().map(contentRepository::getReferenceById).toList();
 
