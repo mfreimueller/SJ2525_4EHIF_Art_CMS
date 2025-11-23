@@ -48,7 +48,7 @@ class ExhibitionServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
-        var creator = createCreator();
+        var creator = creator();
         var en = new Language("en", "English");
 
         var cmd = CreateExhibitionCommand.builder()
@@ -75,8 +75,8 @@ class ExhibitionServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var creator = createCreator();
-        var exhibition = createExhibition();
+        var creator = creator();
+        var exhibition = exhibition();
         var dateTime = dateTime();
 
         var de = new Language("de", "Deutsch");
@@ -112,7 +112,7 @@ class ExhibitionServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var exhibition = createExhibition();
+        var exhibition = exhibition();
         when(repository.getReferenceById(any())).thenReturn(exhibition);
 
         var returned = service.getByReference(new Collection.CollectionId(1L));

@@ -1,12 +1,9 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.PutAudioContentCommand;
-import com.mfreimueller.art.commands.PutTextContentCommand;
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.AudioContentRepository;
-import com.mfreimueller.art.persistence.TextContentRepository;
-import com.mfreimueller.art.richtypes.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -45,7 +42,7 @@ class AudioContentServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
-        var creator = createCreator();
+        var creator = creator();
         var dateTime = dateTime();
 
         var description = localizedText();
@@ -79,7 +76,7 @@ class AudioContentServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var creator = createCreator();
+        var creator = creator();
         var dateTime = dateTime();
 
         var audioContent = audioContent();

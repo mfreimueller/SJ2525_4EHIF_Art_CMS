@@ -1,9 +1,7 @@
 package com.mfreimueller.art.service;
 
-import com.github.javafaker.Faker;
 import com.mfreimueller.art.commands.CreateVisitHistoryCommand;
 import com.mfreimueller.art.domain.VisitHistory;
-import com.mfreimueller.art.domain.Visitor;
 import com.mfreimueller.art.persistence.VisitHistoryRepository;
 import com.mfreimueller.art.richtypes.Duration;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,10 +42,10 @@ class VisitHistoryServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
-        var visitor = createVisitor();
+        var visitor = visitor();
 
         var cmd = CreateVisitHistoryCommand.builder()
-                .visitedOn(createPastDateTime())
+                .visitedOn(pastDateTime())
                 .duration(Duration.of(60))
                 .pointsOfInterest(List.of())
                 .visitorId(visitor.getId())

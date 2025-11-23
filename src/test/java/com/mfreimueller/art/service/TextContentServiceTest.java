@@ -13,7 +13,6 @@ import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.sym.NameN;
 
 import static com.mfreimueller.art.service.ServiceFixtures.*;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -42,7 +41,7 @@ class TextContentServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
-        var creator = createCreator();
+        var creator = creator();
         var dateTime = dateTime();
 
         var description = localizedText();
@@ -74,10 +73,10 @@ class TextContentServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var creator = createCreator();
+        var creator = creator();
         var dateTime = dateTime();
 
-        var textContent = createTextContent();
+        var textContent = textContent();
 
         var shortText = localizedText();
 
@@ -108,7 +107,7 @@ class TextContentServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var textContent = createTextContent();
+        var textContent = textContent();
         when(repository.getReferenceById(any())).thenReturn(textContent);
 
         var returned = service.getByReference(new Content.ContentId(1L));

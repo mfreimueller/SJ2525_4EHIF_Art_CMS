@@ -47,7 +47,7 @@ class CollectionServiceTest {
     @Test
     public void can_create_with_valid_data() {
         var dateTime = dateTime();
-        var creator = createCreator();
+        var creator = creator();
         var en = new Language("en", "English");
 
         var cmd = CreateCollectionCommand.builder()
@@ -71,8 +71,8 @@ class CollectionServiceTest {
     @Test
     public void can_update_existing_entity() {
         var dateTime = dateTime();
-        var creator = createCreator();
-        var collection = createCollection();
+        var creator = creator();
+        var collection = collection();
         var de = new Language("de", "Deutsch");
 
         var cmd = UpdateCollectionCommand.builder()
@@ -104,7 +104,7 @@ class CollectionServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var collection = createCollection();
+        var collection = collection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
         var returned = service.getByReference(new Collection.CollectionId(1L));
@@ -118,11 +118,11 @@ class CollectionServiceTest {
     @Test
     public void can_add_point_of_interest() {
         var dateTime = dateTime();
-        var creator = createCreator();
-        var collection = createCollection();
+        var creator = creator();
+        var collection = collection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
-        var poi = createPointOfInterest();
+        var poi = pointOfInterest();
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
@@ -146,10 +146,10 @@ class CollectionServiceTest {
 
     @Test
     public void can_not_add_point_of_interest_twice() {
-        var collection = createCollection();
+        var collection = collection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
-        var poi = createPointOfInterest();
+        var poi = pointOfInterest();
         collection.getPointsOfInterest().add(poi);
 
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
@@ -162,11 +162,11 @@ class CollectionServiceTest {
     @Test
     public void can_remove_point_of_interest() {
         var dateTime = dateTime();
-        var creator = createCreator();
-        var collection = createCollection();
+        var creator = creator();
+        var collection = collection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
-        var poi = createPointOfInterest();
+        var poi = pointOfInterest();
         collection.getPointsOfInterest().add(poi);
 
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
@@ -191,12 +191,12 @@ class CollectionServiceTest {
 
     @Test
     public void can_not_remove_non_existing_point_of_interest() {
-        var collection = createCollection();
+        var collection = collection();
         when(repository.getReferenceById(any())).thenReturn(collection);
 
-        var poi = createPointOfInterest();
+        var poi = pointOfInterest();
 
-        var duplicate = createPointOfInterest();
+        var duplicate = pointOfInterest();
         when(pointOfInterestService.getByReference(any())).thenReturn(duplicate);
 
         var cmd = RemovePointOfInterestCommand.builder().poiId(poi.getId()).build();
@@ -207,9 +207,9 @@ class CollectionServiceTest {
     @Test
     public void can_add_subcollection() {
         var dateTime = dateTime();
-        var creator = createCreator();
-        var collection = createCollection();
-        var subcollection = createSubcollection();
+        var creator = creator();
+        var collection = collection();
+        var subcollection = collection();
 
         when(repository.getReferenceById(collection.getId())).thenReturn(collection);
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
@@ -236,8 +236,8 @@ class CollectionServiceTest {
 
     @Test
     public void can_not_add_subcollection_twice() {
-        var collection = createCollection();
-        var subcollection = createSubcollection();
+        var collection = collection();
+        var subcollection = collection();
 
         when(repository.getReferenceById(collection.getId())).thenReturn(collection);
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
@@ -251,7 +251,7 @@ class CollectionServiceTest {
 
     @Test
     public void can_not_add_itself_as_subcollection() {
-        var collection = createCollection();
+        var collection = collection();
 
         var cmd = AddSubcollectionCommand.builder().subcollectionId(collection.getId()).build();
 
@@ -260,8 +260,8 @@ class CollectionServiceTest {
 
     @Test
     public void detects_circular_subcollections() {
-        var collection = createCollection();
-        var subcollection = createSubcollection();
+        var collection = collection();
+        var subcollection = collection();
 
         when(repository.getReferenceById(collection.getId())).thenReturn(collection);
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
@@ -277,9 +277,9 @@ class CollectionServiceTest {
     @Test
     public void can_remove_subcollection() {
         var dateTime = dateTime();
-        var creator = createCreator();
-        var collection = createCollection();
-        var subcollection = createSubcollection();
+        var creator = creator();
+        var collection = collection();
+        var subcollection = collection();
 
         when(repository.getReferenceById(collection.getId())).thenReturn(collection);
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);
@@ -307,8 +307,8 @@ class CollectionServiceTest {
 
     @Test
     public void can_not_remove_non_existing_subcollection() {
-        var collection = createCollection();
-        var subcollection = createSubcollection();
+        var collection = collection();
+        var subcollection = collection();
 
         when(repository.getReferenceById(collection.getId())).thenReturn(collection);
         when(repository.getReferenceById(subcollection.getId())).thenReturn(subcollection);

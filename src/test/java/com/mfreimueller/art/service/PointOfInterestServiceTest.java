@@ -18,7 +18,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
-import static com.mfreimueller.art.service.ServiceFixtures.createPointOfInterest;
+import static com.mfreimueller.art.service.ServiceFixtures.pointOfInterest;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -61,7 +61,7 @@ class PointOfInterestServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var exhibition = createPointOfInterest();
+        var exhibition = pointOfInterest();
         var de = new Language("de", "Deutsch");
 
         var cmd = UpdatePointOfInterestCommand.builder()
@@ -93,7 +93,7 @@ class PointOfInterestServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var exhibition = createPointOfInterest();
+        var exhibition = pointOfInterest();
         when(repository.getReferenceById(any())).thenReturn(exhibition);
 
         var returned = service.getByReference(new PointOfInterest.PointOfInterestId(1L));

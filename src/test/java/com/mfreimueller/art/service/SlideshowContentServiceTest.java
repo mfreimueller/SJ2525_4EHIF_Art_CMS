@@ -73,7 +73,7 @@ class SlideshowContentServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var slideshowContent = createSlideshowContent();
+        var slideshowContent = slideshowContent();
 
         var description = localizedText();
 
@@ -95,7 +95,7 @@ class SlideshowContentServiceTest {
 
     @Test
     public void detects_circular_references() {
-        var slideshowContent = createSlideshowContent();
+        var slideshowContent = slideshowContent();
 
         var slides = new ArrayList<>(slideshowContent.getSlides());
         slides.add(slideshowContent);
@@ -121,7 +121,7 @@ class SlideshowContentServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var slideshowContent = createSlideshowContent();
+        var slideshowContent = slideshowContent();
         when(repository.getReferenceById(any())).thenReturn(slideshowContent);
 
         var returned = service.getByReference(new Content.ContentId(1L));

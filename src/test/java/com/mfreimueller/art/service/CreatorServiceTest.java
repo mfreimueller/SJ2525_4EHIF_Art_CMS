@@ -1,16 +1,9 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.CreateCreatorCommand;
-import com.mfreimueller.art.commands.CreateExhibitionCommand;
 import com.mfreimueller.art.commands.UpdateCreatorCommand;
-import com.mfreimueller.art.commands.UpdateExhibitionCommand;
-import com.mfreimueller.art.domain.Collection;
 import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.Exhibition;
-import com.mfreimueller.art.domain.Language;
-import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.CreatorRepository;
-import com.mfreimueller.art.persistence.ExhibitionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -21,12 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Map;
-import java.util.Set;
-
-import static com.mfreimueller.art.service.ServiceFixtures.createCreator;
+import static com.mfreimueller.art.service.ServiceFixtures.creator;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -65,7 +53,7 @@ class CreatorServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var creator = createCreator();
+        var creator = creator();
 
         var cmd = UpdateCreatorCommand.builder()
                 .username("guest")
@@ -92,7 +80,7 @@ class CreatorServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var creator = createCreator();
+        var creator = creator();
         when(repository.getReferenceById(any())).thenReturn(creator);
 
         var returned = service.getByReference(new Creator.CreatorId(1L));

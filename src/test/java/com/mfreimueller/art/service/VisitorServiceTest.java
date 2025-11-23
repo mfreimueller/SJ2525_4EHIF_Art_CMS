@@ -2,9 +2,7 @@ package com.mfreimueller.art.service;
 
 import com.github.javafaker.Faker;
 import com.mfreimueller.art.commands.CreateVisitorCommand;
-import com.mfreimueller.art.commands.UpdateCreatorCommand;
 import com.mfreimueller.art.commands.UpdateVisitorCommand;
-import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.Visitor;
 import com.mfreimueller.art.persistence.VisitorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +55,7 @@ class VisitorServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var visitor = createVisitor();
+        var visitor = visitor();
 
         final String username = faker.name().username();
         final String email = validEmail();
@@ -87,7 +85,7 @@ class VisitorServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var visitor = createVisitor();
+        var visitor = visitor();
         when(repository.getReferenceById(any())).thenReturn(visitor);
 
         var returned = service.getByReference(new Visitor.VisitorId(1L));

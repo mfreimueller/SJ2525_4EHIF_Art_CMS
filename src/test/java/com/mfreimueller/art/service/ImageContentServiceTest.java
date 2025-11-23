@@ -42,7 +42,7 @@ class ImageContentServiceTest {
 
     @Test
     public void can_create_with_valid_data() {
-        var creator = createCreator();
+        var creator = creator();
         var dateTime = dateTime();
 
         var description = localizedText();
@@ -71,10 +71,10 @@ class ImageContentServiceTest {
 
     @Test
     public void can_update_existing_entity() {
-        var creator = createCreator();
+        var creator = creator();
         var dateTime = dateTime();
 
-        var imageContent = createImageContent();
+        var imageContent = imageContent();
         var source = source();
 
         var cmd = PutImageContentCommand.builder()
@@ -104,7 +104,7 @@ class ImageContentServiceTest {
 
     @Test
     public void returns_existing_entity() {
-        var imageContent = createImageContent();
+        var imageContent = imageContent();
         when(repository.getReferenceById(any())).thenReturn(imageContent);
 
         var returned = service.getByReference(new Content.ContentId(1L));

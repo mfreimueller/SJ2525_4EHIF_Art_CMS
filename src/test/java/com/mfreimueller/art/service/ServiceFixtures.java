@@ -1,7 +1,6 @@
 package com.mfreimueller.art.service;
 
 import com.github.javafaker.Faker;
-import com.mfreimueller.art.commands.PutAudioContentCommand;
 import com.mfreimueller.art.domain.*;
 import com.mfreimueller.art.richtypes.Duration;
 
@@ -22,7 +21,7 @@ public final class ServiceFixtures {
         );
     }
 
-    public static Creator createCreator() {
+    public static Creator creator() {
         return Creator.builder()
                 .id(new Creator.CreatorId(randomId()))
                 .username("editor")
@@ -30,7 +29,7 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static Visitor createVisitor() {
+    public static Visitor visitor() {
         return Visitor.builder()
                 .id(new Visitor.VisitorId(randomId()))
                 .username(faker.name().username())
@@ -38,7 +37,7 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static Collection createCollection() {
+    public static Collection collection() {
         var en = new Language("en", "English");
         var title = Map.of(en, faker.witcher().location());
 
@@ -48,17 +47,7 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static Collection createSubcollection() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, faker.lordOfTheRings().location());
-
-        return Collection.builder()
-                .id(new Collection.CollectionId(randomId()))
-                .title(title)
-                .build();
-    }
-
-    public static PointOfInterest createPointOfInterest() {
+    public static PointOfInterest pointOfInterest() {
         var en = new Language("en", "English");
         var title = Map.of(en, "Girl with Balloon");
         var description = Map.of(en, "Girl with Balloon (also, Balloon Girl or Girl and Balloon) is a series of stencil murals around London by the graffiti artist Banksy, started in 2002. They depict a young girl with her hand extended toward a red heart-shaped balloon carried away by the wind.");
@@ -70,7 +59,7 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static Exhibition createExhibition() {
+    public static Exhibition exhibition() {
         var en = new Language("en", "English");
         var title = Map.of(en, faker.elderScrolls().city());
 
@@ -81,7 +70,7 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static TextContent createTextContent() {
+    public static TextContent textContent() {
         var description = localizedText();
         var shortText = localizedText();
         var longText = localizedText();
@@ -94,7 +83,7 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static ImageContent createImageContent() {
+    public static ImageContent imageContent() {
         var description = localizedText();
         var source = source();
 
@@ -119,10 +108,10 @@ public final class ServiceFixtures {
                 .build();
     }
 
-    public static SlideshowContent createSlideshowContent() {
+    public static SlideshowContent slideshowContent() {
         var description = localizedText();
         List<Content> slides = List.of(
-                createTextContent()
+                textContent()
         );
 
         return SlideshowContent.builder()
@@ -167,7 +156,7 @@ public final class ServiceFixtures {
         return ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
     }
 
-    public static ZonedDateTime createPastDateTime() {
+    public static ZonedDateTime pastDateTime() {
         return faker.date().past(24, TimeUnit.HOURS).toInstant().atZone(ZoneId.systemDefault());
     }
 
