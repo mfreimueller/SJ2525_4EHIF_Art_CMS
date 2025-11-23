@@ -94,8 +94,8 @@ class TextContentServiceTest {
 
         assertNotNull(returned);
         assertThat(returned.getShortText(), equalTo(shortText));
-        assertThat(textContent.getUpdatedBy(), equalTo(creator));
-        assertThat(textContent.getUpdatedAt(), equalTo(dateTime));
+        assertThat(returned.getUpdatedBy(), equalTo(creator));
+        assertThat(returned.getUpdatedAt(), equalTo(dateTime));
 
         verify(repository, times(1)).save(any());
     }
