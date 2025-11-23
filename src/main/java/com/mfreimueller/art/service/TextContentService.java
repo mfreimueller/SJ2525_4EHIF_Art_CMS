@@ -31,12 +31,12 @@ public class TextContentService {
 
     @Transactional(readOnly = false)
     public TextContent update(@NotNull Content.ContentId id, @NotNull @Valid CreateUpdateTextContentCommand cmd) {
-        var creator = textContentRepository.getReferenceById(id); // TODO: handle exception
-        creator.setDescription(cmd.description());
-        creator.setShortText(cmd.shortText());
-        creator.setLongText(cmd.longText());
+        var textContent = textContentRepository.getReferenceById(id); // TODO: handle exception
+        textContent.setDescription(cmd.description());
+        textContent.setShortText(cmd.shortText());
+        textContent.setLongText(cmd.longText());
 
-        return textContentRepository.save(creator);
+        return textContentRepository.save(textContent);
     }
 
     @Transactional(readOnly = false)
