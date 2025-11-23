@@ -52,4 +52,9 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
     public PointOfInterestService getPointOfInterestService() {
         return pointOfInterestService;
     }
+
+    @Override
+    public DateTimeFactory getDateTimeFactory() {
+        return dateTimeFactory;
+    }
 }

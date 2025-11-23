@@ -7,6 +7,7 @@ import com.mfreimueller.art.commands.RemoveSubcollectionCommand;
 import com.mfreimueller.art.domain.Collection;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.foundation.DataConstraintException;
+import com.mfreimueller.art.foundation.DateTimeFactory;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ public abstract class AbstractCollectionService<T extends Collection> {
         }
 
         pois.add(poi);
+        collection.setUpdatedAt(getDateTimeFactory().now());
+
         return getRepository().save(collection);
     }
 
@@ -41,6 +44,8 @@ public abstract class AbstractCollectionService<T extends Collection> {
         }
 
         pois.remove(poi);
+        collection.setUpdatedAt(getDateTimeFactory().now());
+
         return getRepository().save(collection);
     }
 
@@ -64,6 +69,8 @@ public abstract class AbstractCollectionService<T extends Collection> {
         }
 
         subcollections.add(collectionToAdd);
+        collection.setUpdatedAt(getDateTimeFactory().now());
+
         return getRepository().save(collection);
     }
 
@@ -78,6 +85,8 @@ public abstract class AbstractCollectionService<T extends Collection> {
         }
 
         collections.remove(collectionToRemove);
+        collection.setUpdatedAt(getDateTimeFactory().now());
+
         return getRepository().save(collection);
     }
 
@@ -93,4 +102,6 @@ public abstract class AbstractCollectionService<T extends Collection> {
     protected abstract JpaRepository<T, Collection.CollectionId> getRepository();
 
     protected abstract PointOfInterestService getPointOfInterestService();
+
+    protected abstract DateTimeFactory getDateTimeFactory();
 }

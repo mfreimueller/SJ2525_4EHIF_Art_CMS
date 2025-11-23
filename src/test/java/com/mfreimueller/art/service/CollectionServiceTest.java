@@ -117,12 +117,16 @@ class CollectionServiceTest {
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
+        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+
         var cmd = AddPointOfInterestCommand.builder().poiId(poi.getId()).build();
 
         var returned = service.addPointOfInterest(collection.getId(), cmd);
 
         assertThat(returned.getPointsOfInterest(), hasSize(1));
         assertThat(returned.getPointsOfInterest(), hasItem(poi));
+        assertThat(returned.getUpdatedAt(), equalTo(dateTime));
 
         verify(repository, times(1)).getReferenceById(any());
     }
@@ -154,11 +158,15 @@ class CollectionServiceTest {
         when(pointOfInterestService.getByReference(any())).thenReturn(poi);
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
+        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+
         var cmd = RemovePointOfInterestCommand.builder().poiId(poi.getId()).build();
 
         var returned = service.removePointOfInterest(collection.getId(), cmd);
 
         assertThat(returned.getPointsOfInterest(), hasSize(0));
+        assertThat(returned.getUpdatedAt(), equalTo(dateTime));
 
         verify(repository, times(1)).getReferenceById(any());
     }
@@ -188,12 +196,16 @@ class CollectionServiceTest {
 
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
+        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+
         var cmd = AddSubcollectionCommand.builder().subcollectionId(subcollection.getId()).build();
 
         var returned = service.addSubcollection(collection.getId(), cmd);
 
         assertThat(returned.getSubCollections(), hasSize(1));
         assertThat(returned.getSubCollections(), hasItem(subcollection));
+        assertThat(returned.getUpdatedAt(), equalTo(dateTime));
 
         verify(repository, times(1)).save(any());
     }
@@ -250,11 +262,15 @@ class CollectionServiceTest {
 
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
+        var dateTime = ZonedDateTime.of(2025, 1, 1, 1, 1, 1, 1, ZoneId.systemDefault());
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+
         var cmd = RemoveSubcollectionCommand.builder().collectionId(subcollection.getId()).build();
 
         var returned = service.removeSubcollection(collection.getId(), cmd);
 
         assertThat(returned.getSubCollections(), hasSize(0));
+        assertThat(returned.getUpdatedAt(), equalTo(dateTime));
 
         verify(repository, times(1)).save(any());
     }

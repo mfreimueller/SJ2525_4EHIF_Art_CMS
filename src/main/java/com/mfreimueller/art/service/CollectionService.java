@@ -51,4 +51,9 @@ public class CollectionService extends AbstractCollectionService<Collection> {
     public PointOfInterestService getPointOfInterestService() {
         return pointOfInterestService;
     }
+
+    @Override
+    public DateTimeFactory getDateTimeFactory() {
+        return dateTimeFactory;
+    }
 }
