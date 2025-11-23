@@ -15,4 +15,24 @@ import lombok.experimental.SuperBuilder;
 public abstract class AbstractEntity {
     @Version
     private Long version;
+
+    @Override
+    @SuppressWarnings("JavaReflectionMemberAccess")
+    public boolean equals(Object obj) {
+        if (obj instanceof AbstractEntity ae) {
+            // some black magic... until I find a better solution
+            try {
+                var getIdMethod = AbstractEntity.class.getDeclaredMethod("getId");
+
+                var objId = getIdMethod.invoke(ae);
+                var thisId = getIdMethod.invoke(this);
+
+                return thisId.equals(objId);
+            } catch (Exception e) {
+                return false; // TODO: log this
+            }
+        }
+
+        return false;
+    }
 }
