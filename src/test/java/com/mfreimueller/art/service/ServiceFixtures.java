@@ -2,9 +2,11 @@ package com.mfreimueller.art.service;
 
 import com.github.javafaker.Faker;
 import com.mfreimueller.art.domain.*;
+import com.mfreimueller.art.richtypes.Duration;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -88,6 +90,21 @@ public final class ServiceFixtures {
                 .description(description)
                 .shortText(shortText)
                 .longText(longText)
+                .build();
+    }
+
+    public static SlideshowContent createSlideshowContent() {
+        var description = localizedText();
+        List<Content> slides = List.of(
+                createTextContent()
+        );
+
+        return SlideshowContent.builder()
+                .id(new Content.ContentId(randomId()))
+                .description(description)
+                .mode(SlideshowContent.Mode.Auto)
+                .speed(Duration.of(5))
+                .slides(slides)
                 .build();
     }
 
