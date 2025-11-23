@@ -20,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "Visitor")
 public class Visitor extends AbstractEntity {
+    // TODO: add way to uniquely identify identical visitors across different visits if they don't provide username/password
 
     @EmbeddedId
     private VisitorId id;
@@ -30,13 +31,9 @@ public class Visitor extends AbstractEntity {
 
     @Email
     @Column(name = "email_address")
-    private String emailAddress;
+    private String emailAddress; // TODO: create rich type
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "Visitor_VisitHistories",
-            joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_Visitor_VisitHistories"))
-    )
+    @OneToMany(mappedBy = "visitor", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<VisitHistory> visitHistories = new ArrayList<>();
 

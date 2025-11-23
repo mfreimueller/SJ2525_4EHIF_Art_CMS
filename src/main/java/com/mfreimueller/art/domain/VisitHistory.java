@@ -37,6 +37,13 @@ public class VisitHistory extends AbstractEntity {
     )
     private List<PointOfInterest> pointsOfInterest = new ArrayList<>(); // note: we use a list, as a list is ordered.
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(
+            name = "visitor_id",
+            foreignKey = @ForeignKey(name = "FK_VisitHistory_Visitor")
+    )
+    private Visitor visitor;
+
     public record VisitHistoryId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
             @NotNull Long id) {}
