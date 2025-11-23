@@ -10,4 +10,12 @@ public class DataConstraintException extends RuntimeException {
     public static DataConstraintException forUnmappedEnumValue(Character c, Class<? extends Enum<?>> enumClass) {
         return new DataConstraintException("Unmapped enum value '%c' for enum %s".formatted(c, enumClass));
     }
+
+    public static DataConstraintException forDuplicatedEntry(Class<?> clazz, Long id) {
+        return new DataConstraintException("Duplicated entry of type %s for id %d".formatted(clazz, id));
+    }
+
+    public static DataConstraintException forMissingEntry(Class<?> clazz, Long id) {
+        return new DataConstraintException("No entry of type %s found for id %d".formatted(clazz, id));
+    }
 }

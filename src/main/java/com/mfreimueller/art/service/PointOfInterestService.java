@@ -30,4 +30,8 @@ public class PointOfInterestService {
         return pointOfInterestRepository.save(poi);
     }
 
+    public PointOfInterest getByReference(@NotNull PointOfInterest.PointOfInterestId id) {
+        return pointOfInterestRepository.getReferenceById(id);
+    }
+
 }

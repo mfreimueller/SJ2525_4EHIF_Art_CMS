@@ -1,11 +1,12 @@
 package com.mfreimueller.art.service;
 
+import com.mfreimueller.art.commands.CreateCollectionCommand;
 import com.mfreimueller.art.commands.CreateExhibitionCommand;
+import com.mfreimueller.art.commands.UpdateCollectionCommand;
 import com.mfreimueller.art.commands.UpdateExhibitionCommand;
 import com.mfreimueller.art.domain.Collection;
-import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.foundation.DateTimeFactory;
-import com.mfreimueller.art.persistence.ExhibitionRepository;
+import com.mfreimueller.art.persistence.CollectionRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -17,35 +18,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
-public class ExhibitionService extends AbstractCollectionService<Exhibition> {
-    private final ExhibitionRepository exhibitionRepository;
+public class CollectionService extends AbstractCollectionService<Collection> {
+    private final CollectionRepository collectionRepository;
     private final DateTimeFactory dateTimeFactory;
     private final PointOfInterestService pointOfInterestService;
 
     @Transactional(readOnly = false)
-    public Exhibition create(@NotNull @Valid CreateExhibitionCommand cmd) {
-        var exhibition = Exhibition.builder()
+    public Collection create(@NotNull @Valid CreateCollectionCommand cmd) {
+        var collection = Collection.builder()
                 .title(cmd.title())
-                .languages(cmd.languages())
                 .createdAt(dateTimeFactory.now())
                 .build();
 
-        return exhibitionRepository.save(exhibition);
+        return collectionRepository.save(collection);
     }
 
     @Transactional(readOnly = false)
-    public Exhibition update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateExhibitionCommand cmd) {
-        var exhibition = exhibitionRepository.getReferenceById(id); // TODO: handle exception
-        exhibition.setTitle(cmd.title());
-        exhibition.setLanguages(cmd.languages());
-        exhibition.setUpdatedAt(dateTimeFactory.now());
+    public Collection update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateCollectionCommand cmd) {
+        var collection = collectionRepository.getReferenceById(id); // TODO: handle exception
+        collection.setTitle(cmd.title());
+        collection.setUpdatedAt(dateTimeFactory.now());
 
-        return exhibitionRepository.save(exhibition);
+        return collectionRepository.save(collection);
     }
 
     @Override
-    protected JpaRepository<Exhibition, Collection.CollectionId> getRepository() {
-        return exhibitionRepository;
+    protected JpaRepository<Collection, Collection.CollectionId> getRepository() {
+        return collectionRepository;
     }
 
     @Override
