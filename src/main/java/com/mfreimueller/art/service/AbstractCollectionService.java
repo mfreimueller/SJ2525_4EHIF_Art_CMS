@@ -14,20 +14,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 public abstract class AbstractCollectionService<T extends Collection> {
 
     @Transactional(readOnly = false)
     public Collection addPointOfInterest(@NotNull Collection.CollectionId id, @NotNull @Valid AddPointOfInterestCommand cmd) {
-        var collection = getRepository().getReferenceById(id); // TODO: handle exception
-        var poi = getPointOfInterestService().getByReference(cmd.poiId()); // TODO: handle exception
+        var collection = getRepository().getReferenceById(id);
+        var poi = getPointOfInterestService().getByReference(cmd.poiId());
 
         var pois = collection.getPointsOfInterest();
         if (pois.contains(poi)) {
             throw DataConstraintException.forDuplicatedEntry(PointOfInterest.class, poi.getId().id());
         }
 
-        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+        var creator = getCreatorService().getByReference(cmd.creatorId());
 
         pois.add(poi);
 
@@ -39,15 +41,15 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
     @Transactional(readOnly = false)
     public Collection removePointOfInterest(@NotNull Collection.CollectionId id, @NotNull @Valid RemovePointOfInterestCommand cmd) {
-        var collection = getRepository().getReferenceById(id); // TODO: handle exception
-        var poi = getPointOfInterestService().getByReference(cmd.poiId()); // TODO: handle exception
+        var collection = getRepository().getReferenceById(id);
+        var poi = getPointOfInterestService().getByReference(cmd.poiId());
 
         var pois = collection.getPointsOfInterest();
         if (!pois.contains(poi)) {
             throw DataConstraintException.forMissingEntry(PointOfInterest.class, poi.getId().id());
         }
 
-        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+        var creator = getCreatorService().getByReference(cmd.creatorId());
 
         pois.remove(poi);
 
@@ -63,8 +65,8 @@ public abstract class AbstractCollectionService<T extends Collection> {
             throw DataConstraintException.forCircularReference(Collection.class, id.id());
         }
 
-        var collection = getRepository().getReferenceById(id); // TODO: handle exception
-        var collectionToAdd = getRepository().getReferenceById(cmd.subcollectionId()); // TODO: handle exception
+        var collection = getRepository().getReferenceById(id);
+        var collectionToAdd = getRepository().getReferenceById(cmd.subcollectionId());
 
         var topCollection = collection.getTopCollection();
         if (topCollection == collectionToAdd || topCollection.contains(collectionToAdd)) {
@@ -76,7 +78,7 @@ public abstract class AbstractCollectionService<T extends Collection> {
             throw DataConstraintException.forDuplicatedEntry(Collection.class, collectionToAdd.getId().id());
         }
 
-        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+        var creator = getCreatorService().getByReference(cmd.creatorId());
 
         subcollections.add(collectionToAdd);
 
@@ -88,15 +90,15 @@ public abstract class AbstractCollectionService<T extends Collection> {
 
     @Transactional(readOnly = false)
     public Collection removeSubcollection(@NotNull Collection.CollectionId id, @NotNull @Valid RemoveSubcollectionCommand cmd) {
-        var collection = getRepository().getReferenceById(id); // TODO: handle exception
-        var collectionToRemove = getRepository().getReferenceById(cmd.collectionId()); // TODO: handle exception
+        var collection = getRepository().getReferenceById(id);
+        var collectionToRemove = getRepository().getReferenceById(cmd.collectionId());
 
         var collections = collection.getSubCollections();
         if (!collections.contains(collectionToRemove)) {
             throw DataConstraintException.forMissingEntry(Collection.class, collectionToRemove.getId().id());
         }
 
-        var creator = getCreatorService().getByReference(cmd.creatorId()); // TODO: handle exception
+        var creator = getCreatorService().getByReference(cmd.creatorId());
 
         collections.remove(collectionToRemove);
 

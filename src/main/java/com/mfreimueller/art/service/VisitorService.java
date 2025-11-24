@@ -30,7 +30,7 @@ public class VisitorService {
 
     @Transactional(readOnly = false)
     public Visitor update(@NotNull Visitor.VisitorId id, @NotNull @Valid UpdateVisitorCommand cmd) {
-        var visitor = visitorRepository.getReferenceById(id); // TODO: handle exception
+        var visitor = visitorRepository.getReferenceById(id);
         visitor.setUsername(cmd.username());
         visitor.setEmailAddress(cmd.email());
 

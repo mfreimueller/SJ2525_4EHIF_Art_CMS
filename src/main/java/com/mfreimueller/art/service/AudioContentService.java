@@ -41,7 +41,7 @@ public class AudioContentService {
     public AudioContent update(@NotNull Content.ContentId id, @NotNull @Valid PutAudioContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
-        var audioContent = audioContentRepository.getReferenceById(id); // TODO: handle exception
+        var audioContent = audioContentRepository.getReferenceById(id);
         audioContent.setDescription(cmd.description());
         audioContent.setSource(cmd.source());
         audioContent.setDuration(cmd.duration());
