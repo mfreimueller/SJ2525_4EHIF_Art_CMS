@@ -6,12 +6,14 @@ import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
 @MappedSuperclass
 @SuperBuilder
 @SequenceGenerator(name = "globalSeq", sequenceName = "global_seq", allocationSize = 1)
+@Slf4j
 public abstract class AbstractEntity {
     @Version
     private Long version;
@@ -29,7 +31,8 @@ public abstract class AbstractEntity {
 
                 return thisId.equals(objId);
             } catch (Exception e) {
-                return false; // TODO: log this
+                log.error(e.getMessage(), e);
+                return false;
             }
         }
 
