@@ -47,7 +47,7 @@ public class ImageContentService {
     public ImageContent update(@NotNull Content.ContentId id, @NotNull @Valid PutImageContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
-        var imageContent = imageContentRepository.getReferenceById(id); // TODO: handle exception
+        var imageContent = imageContentRepository.getReferenceById(id);
         imageContent.setDescription(cmd.description());
         imageContent.setSource(cmd.source());
         imageContent.setUpdatedAt(dateTimeFactory.now());

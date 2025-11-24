@@ -48,7 +48,7 @@ public class PointOfInterestService {
         var creator = creatorService.getByReference(cmd.creatorId());
         var content = cmd.content().stream().map(contentService::getByReference).toList();
 
-        var poi = pointOfInterestRepository.getReferenceById(id); // TODO: handle exception
+        var poi = pointOfInterestRepository.getReferenceById(id);
         poi.setTitle(cmd.title());
         poi.setDescription(cmd.description());
         poi.setContent(content);

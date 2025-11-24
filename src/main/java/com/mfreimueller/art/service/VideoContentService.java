@@ -46,7 +46,7 @@ public class VideoContentService {
     public VideoContent update(@NotNull Content.ContentId id, @NotNull @Valid PutVideoContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
-        var audioContent = videoContentRepository.getReferenceById(id); // TODO: handle exception
+        var audioContent = videoContentRepository.getReferenceById(id);
         audioContent.setDescription(cmd.description());
         audioContent.setSource(cmd.source());
         audioContent.setDuration(cmd.duration());

@@ -46,7 +46,7 @@ public class ExhibitionService extends AbstractCollectionService<Exhibition> {
     public Exhibition update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateExhibitionCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
-        var exhibition = exhibitionRepository.getReferenceById(id); // TODO: handle exception
+        var exhibition = exhibitionRepository.getReferenceById(id);
         exhibition.setTitle(cmd.title());
         exhibition.setLanguages(cmd.languages());
 

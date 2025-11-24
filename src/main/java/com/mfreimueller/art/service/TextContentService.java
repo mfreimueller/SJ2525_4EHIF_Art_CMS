@@ -45,7 +45,7 @@ public class TextContentService {
     public TextContent update(@NotNull Content.ContentId id, @NotNull @Valid PutTextContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
-        var textContent = textContentRepository.getReferenceById(id); // TODO: handle exception
+        var textContent = textContentRepository.getReferenceById(id);
         textContent.setDescription(cmd.description());
         textContent.setShortText(cmd.shortText());
         textContent.setLongText(cmd.longText());

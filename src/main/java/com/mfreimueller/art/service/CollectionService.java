@@ -44,7 +44,7 @@ public class CollectionService extends AbstractCollectionService<Collection> {
     public Collection update(@NotNull Collection.CollectionId id, @NotNull @Valid UpdateCollectionCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
-        var collection = collectionRepository.getReferenceById(id); // TODO: handle exception
+        var collection = collectionRepository.getReferenceById(id);
         collection.setTitle(cmd.title());
 
         collection.setUpdatedAt(dateTimeFactory.now());
