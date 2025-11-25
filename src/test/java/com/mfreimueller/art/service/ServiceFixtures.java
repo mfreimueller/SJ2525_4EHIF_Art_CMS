@@ -25,7 +25,7 @@ public final class ServiceFixtures {
         return Creator.builder()
                 .id(new Creator.CreatorId(randomId()))
                 .username("editor")
-                .role(Creator.Role.Editor)
+                .role(Creator.Role.EDITOR)
                 .build();
     }
 
@@ -131,7 +131,7 @@ public final class ServiceFixtures {
         return SlideshowContent.builder()
                 .id(new Content.ContentId(randomId()))
                 .description(description)
-                .mode(SlideshowContent.Mode.Auto)
+                .mode(SlideshowContent.Mode.AUTO)
                 .speed(Duration.of(5))
                 .slides(slides)
                 .build();

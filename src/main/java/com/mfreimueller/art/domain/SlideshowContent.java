@@ -36,9 +36,9 @@ public class SlideshowContent extends Content {
     private Duration speed;
 
     public enum Mode {
-        Manual,
-        Auto,
-        Hybrid
+        MANUAL,
+        AUTO,
+        HYBRID
     }
 
 }

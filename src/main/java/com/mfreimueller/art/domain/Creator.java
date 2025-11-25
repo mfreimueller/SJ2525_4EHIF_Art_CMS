@@ -31,8 +31,8 @@ public class Creator extends AbstractEntity {
             @NotNull Long id) {}
 
     public enum Role {
-        Viewer,
-        Editor,
-        Admin;
+        VIEWER,
+        EDITOR,
+        ADMIN;
     }
 }
