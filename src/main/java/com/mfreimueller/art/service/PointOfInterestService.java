@@ -3,6 +3,7 @@ package com.mfreimueller.art.service;
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.PointOfInterest;
+import com.mfreimueller.art.dto.PointOfInterestDto;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.PointOfInterestRepository;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 
@@ -25,7 +28,7 @@ public class PointOfInterestService {
     private final DateTimeFactory dateTimeFactory;
 
     @Transactional(readOnly = false)
-    public PointOfInterest create(@NotNull @Valid CreatePointOfInterestCommand cmd) {
+    public PointOfInterestDto create(@NotNull @Valid CreatePointOfInterestCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
         var content = cmd.content().stream().map(contentService::getByReference).toList();
 
@@ -40,7 +43,7 @@ public class PointOfInterestService {
         var saved = pointOfInterestRepository.save(poi);
         log.debug("Created new point of interest with id {}", saved.getId());
 
-        return saved;
+        return new PointOfInterestDto(saved);
     }
 
     @Transactional(readOnly = false)
@@ -71,4 +74,7 @@ public class PointOfInterestService {
         return pointOfInterestRepository.getReferenceById(id);
     }
 
+    public List<PointOfInterestDto> getAll() {
+        return pointOfInterestRepository.findAllProjectedBy(PointOfInterestDto.class);
+    }
 }
