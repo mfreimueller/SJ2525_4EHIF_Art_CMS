@@ -13,4 +13,9 @@ public record Language(String code, String name) {
 
         return false;
     }
+
+    @Override
+    public String toString() {
+        return code;
+    }
 }

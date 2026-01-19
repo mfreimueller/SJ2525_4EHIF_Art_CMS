@@ -11,9 +11,9 @@ import java.util.Map;
 
 @Builder
 public record CreatePointOfInterestCommand(
-        Map<Language, String> title,
-        Map<Language, String> description,
-        @NotNull List<Content.ContentId> content,
+        Map<String, String> title,
+        Map<String, String> description,
+        List<Content.ContentId> content,
         @NotNull Creator.CreatorId creatorId
 ) {
 }

@@ -27,18 +27,16 @@ public class PointOfInterest extends HistoryBase {
     @ElementCollection
     @CollectionTable(name = "PointOfInterest_Titles",
             foreignKey = @ForeignKey(name = "FK_PointOfInterest_Titles"))
-    @MapKeyColumn(name = "code")
     @Column(name = "title")
     @Builder.Default
-    private Map<Language, String> title = new HashMap<>();
+    private Map<String, String> title = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "PointOfInterest_Descriptions",
             foreignKey = @ForeignKey(name = "FK_PointOfInterest_Descriptions"))
-    @MapKeyColumn(name = "code")
     @Column(name = "description")
     @Builder.Default
-    private Map<Language, String> description = new HashMap<>();
+    private Map<String, String> description = new HashMap<>();
 
     @ManyToMany
     @Builder.Default

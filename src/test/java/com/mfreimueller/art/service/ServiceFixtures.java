@@ -48,9 +48,8 @@ public final class ServiceFixtures {
     }
 
     public static PointOfInterest pointOfInterest() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, "Girl with Balloon");
-        var description = Map.of(en, "Girl with Balloon (also, Balloon Girl or Girl and Balloon) is a series of stencil murals around London by the graffiti artist Banksy, started in 2002. They depict a young girl with her hand extended toward a red heart-shaped balloon carried away by the wind.");
+        var title = Map.of("en", "Girl with Balloon");
+        var description = Map.of("en", "Girl with Balloon (also, Balloon Girl or Girl and Balloon) is a series of stencil murals around London by the graffiti artist Banksy, started in 2002. They depict a young girl with her hand extended toward a red heart-shaped balloon carried away by the wind.");
 
         return PointOfInterest.builder()
                 .id(new PointOfInterest.PointOfInterestId(randomId()))

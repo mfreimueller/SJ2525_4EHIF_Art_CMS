@@ -35,7 +35,7 @@ class ExhibitionRepositoryTest {
         var titleEn = "Mona Lisa";
 
         var poi = PointOfInterest.builder()
-                .title(Map.of(languageEn, titleEn))
+                .title(Map.of("en", titleEn))
                 .build();
 
         var exhibition = Exhibition.builder()

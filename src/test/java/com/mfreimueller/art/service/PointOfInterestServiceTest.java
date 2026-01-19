@@ -52,8 +52,8 @@ class PointOfInterestServiceTest {
         var dateTime = dateTime();
 
         var cmd = CreatePointOfInterestCommand.builder()
-                .title(Map.of(en, "Mona Lisa"))
-                .description(Map.of(en, "Portrait painting of Lisa del Giocondo, oil on poplar wood"))
+                .title(Map.of("en", "Mona Lisa"))
+                .description(Map.of("en", "Portrait painting of Lisa del Giocondo, oil on poplar wood"))
                 .content(List.of())
                 .creatorId(creator.getId())
                 .build();
@@ -80,7 +80,7 @@ class PointOfInterestServiceTest {
         var dateTime = dateTime();
 
         var cmd = UpdatePointOfInterestCommand.builder()
-                .title(Map.of(de, "Mädchen mit Balloon"))
+                .title(Map.of("de", "Mädchen mit Balloon"))
                 .build();
 
         when(repository.findById(any())).thenReturn(Optional.of(poi));
@@ -91,8 +91,8 @@ class PointOfInterestServiceTest {
         var updatedPOI = service.update(poi.getId(), cmd).orElseThrow();
 
         assertThat(updatedPOI, notNullValue());
-        assertThat(updatedPOI.getTitle(), hasKey(de));
-        assertThat(updatedPOI.getTitle().get(de), equalTo("Mädchen mit Balloon"));
+        assertThat(updatedPOI.getTitle(), hasKey("de"));
+        assertThat(updatedPOI.getTitle().get("de"), equalTo("Mädchen mit Balloon"));
         assertEquals(1, updatedPOI.getDescription().size());
         assertThat(updatedPOI.getUpdatedAt(), equalTo(dateTime));
         assertThat(poi.getUpdatedBy(), equalTo(creator));
@@ -104,7 +104,7 @@ class PointOfInterestServiceTest {
         var de = new Language("de", "Deutsch");
 
         var cmd = UpdatePointOfInterestCommand.builder()
-                .title(Map.of(de, "Mädchen mit Balloon"))
+                .title(Map.of("de", "Mädchen mit Balloon"))
                 .build();
 
         when(repository.findById(any())).thenReturn(Optional.empty());
@@ -120,7 +120,7 @@ class PointOfInterestServiceTest {
         var dateTime = dateTime();
 
         var cmd = UpdatePointOfInterestCommand.builder()
-                .title(Map.of(de, "Mädchen mit Balloon"))
+                .title(Map.of("de", "Mädchen mit Balloon"))
                 .description(Map.of())
                 .content(List.of())
                 .build();
@@ -133,7 +133,7 @@ class PointOfInterestServiceTest {
         var updatePOI = service.replace(poi.getId(), cmd).orElseThrow();
 
         assertThat(updatePOI, notNullValue());
-        assertThat(updatePOI.getTitle(), hasKey(de));
+        assertThat(updatePOI.getTitle(), hasKey("de"));
         assertEquals(0, updatePOI.getDescription().size());
         assertThat(updatePOI.getUpdatedAt(), equalTo(dateTime));
         assertThat(poi.getUpdatedBy(), equalTo(creator));
@@ -145,7 +145,7 @@ class PointOfInterestServiceTest {
         var de = new Language("de", "Deutsch");
 
         var cmd = UpdatePointOfInterestCommand.builder()
-                .title(Map.of(de, "Mädchen mit Balloon"))
+                .title(Map.of("de", "Mädchen mit Balloon"))
                 .description(Map.of())
                 .content(List.of())
                 .build();

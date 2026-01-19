@@ -29,11 +29,10 @@ class PointOfInterestRepositoryTest {
                 .username("admin")
                 .build();
 
-        var languageEn = new Language("en", "English");
         var titleEn = "Mona Lisa";
 
         var poi = PointOfInterest.builder()
-                .title(Map.of(languageEn, titleEn))
+                .title(Map.of("en", titleEn))
                 .createdAt(ZonedDateTime.now())
                 .createdBy(creator)
                 .build();
