@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.mfreimueller.art.service.ServiceFixtures.*;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -57,7 +58,6 @@ class PointOfInterestServiceTest {
                 .creatorId(creator.getId())
                 .build();
 
-
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(creatorService.getByReference(any())).thenReturn(creator);
 
@@ -75,7 +75,47 @@ class PointOfInterestServiceTest {
     @Test
     public void can_update_existing_entity() {
         var creator = creator();
-        var exhibition = pointOfInterest();
+        var poi = pointOfInterest();
+        var de = new Language("de", "Deutsch");
+        var dateTime = dateTime();
+
+        var cmd = UpdatePointOfInterestCommand.builder()
+                .title(Map.of(de, "Mädchen mit Balloon"))
+                .build();
+
+        when(repository.findById(any())).thenReturn(Optional.of(poi));
+
+        when(dateTimeFactory.now()).thenReturn(dateTime);
+        when(creatorService.getByReference(any())).thenReturn(creator);
+
+        var updatedPOI = service.update(poi.getId(), cmd);
+
+        assertThat(updatedPOI, notNullValue());
+        assertThat(updatedPOI.getTitle(), hasKey(de));
+        assertThat(updatedPOI.getTitle().get(de), equalTo("Mädchen mit Balloon"));
+        assertEquals(1, updatedPOI.getDescription().size());
+        assertThat(updatedPOI.getUpdatedAt(), equalTo(dateTime));
+        assertThat(poi.getUpdatedBy(), equalTo(creator));
+    }
+
+    @Test
+    public void throws_on_update_attempt_for_non_existing_entity() {
+        var poi = pointOfInterest();
+        var de = new Language("de", "Deutsch");
+
+        var cmd = UpdatePointOfInterestCommand.builder()
+                .title(Map.of(de, "Mädchen mit Balloon"))
+                .build();
+
+        when(repository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> service.update(poi.getId(), cmd));
+    }
+
+    @Test
+    public void can_replace_existing_entity() {
+        var creator = creator();
+        var poi = pointOfInterest();
         var de = new Language("de", "Deutsch");
         var dateTime = dateTime();
 
@@ -85,28 +125,54 @@ class PointOfInterestServiceTest {
                 .content(List.of())
                 .build();
 
-        when(repository.getReferenceById(any())).thenReturn(exhibition);
+        when(repository.findById(any())).thenReturn(Optional.of(poi));
 
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(creatorService.getByReference(any())).thenReturn(creator);
 
-        when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        var updatePOI = service.replace(poi.getId(), cmd);
 
-        var updateExhibition = service.update(exhibition.getId(), cmd);
+        assertThat(updatePOI, notNullValue());
+        assertThat(updatePOI.getTitle(), hasKey(de));
+        assertEquals(0, updatePOI.getDescription().size());
+        assertThat(updatePOI.getUpdatedAt(), equalTo(dateTime));
+        assertThat(poi.getUpdatedBy(), equalTo(creator));
+    }
 
-        assertThat(updateExhibition, notNullValue());
-        assertThat(updateExhibition.getTitle(), hasKey(de));
-        assertEquals(0, updateExhibition.getDescription().size());
-        assertThat(updateExhibition.getUpdatedAt(), equalTo(dateTime));
-        assertThat(exhibition.getUpdatedBy(), equalTo(creator));
+    @Test
+    public void throws_on_replace_attempt_for_non_existing_entity() {
+        var poi = pointOfInterest();
+        var de = new Language("de", "Deutsch");
 
-        verify(repository, times(1)).save(any());
+        var cmd = UpdatePointOfInterestCommand.builder()
+                .title(Map.of(de, "Mädchen mit Balloon"))
+                .description(Map.of())
+                .content(List.of())
+                .build();
+
+        when(repository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> service.replace(poi.getId(), cmd));
     }
 
     @Test
     public void can_delete_existing_entity() {
-        service.delete(new PointOfInterest.PointOfInterestId(1L));
+        when(repository.existsById(any())).thenReturn(true);
+
+        var result = service.delete(new PointOfInterest.PointOfInterestId(1L));
+
+        assertTrue(result);
         verify(repository, times(1)).deleteById(any());
+    }
+
+    @Test
+    public void return_false_for_deleting_non_existing_entity() {
+        when(repository.existsById(any())).thenReturn(false);
+
+        var result = service.delete(new PointOfInterest.PointOfInterestId(1L));
+
+        assertFalse(result);
+        verify(repository, times(0)).deleteById(any());
     }
 
     @Test

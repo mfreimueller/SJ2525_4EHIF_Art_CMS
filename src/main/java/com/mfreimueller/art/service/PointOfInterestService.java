@@ -93,7 +93,7 @@ public class PointOfInterestService {
                     logExit(log);
 
                     return poi;
-                }).orElseThrow();
+                }).orElseThrow(() -> new IllegalArgumentException("Could not find PointOfInterest with id: " + id));
     }
 
     @Transactional
@@ -123,7 +123,7 @@ public class PointOfInterestService {
                     logExit(log);
 
                    return poi;
-                }).orElseThrow();
+                }).orElseThrow(() -> new IllegalArgumentException("Could not find PointOfInterest with id: " + id));
     }
 
     @Transactional
