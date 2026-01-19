@@ -33,9 +33,9 @@ class RoleConverterTest {
 
     private static Stream<Arguments> mappingData() {
         return Stream.of(
-                Arguments.of(Creator.Role.Admin, 'a'),
-                Arguments.of(Creator.Role.Editor, 'e'),
-                Arguments.of(Creator.Role.Viewer, 'v')
+                Arguments.of(Creator.Role.ADMIN, 'a'),
+                Arguments.of(Creator.Role.EDITOR, 'e'),
+                Arguments.of(Creator.Role.VIEWER, 'v')
         );
     }
 }

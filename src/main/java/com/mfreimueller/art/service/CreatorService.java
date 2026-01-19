@@ -36,7 +36,7 @@ public class CreatorService {
 
     @Transactional(readOnly = false)
     public Creator update(@NotNull Creator.CreatorId id, @NotNull @Valid UpdateCreatorCommand cmd) {
-        var creator = creatorRepository.getReferenceById(id); // TODO: handle exception
+        var creator = creatorRepository.getReferenceById(id);
         creator.setUsername(cmd.username());
         creator.setRole(cmd.role());
 

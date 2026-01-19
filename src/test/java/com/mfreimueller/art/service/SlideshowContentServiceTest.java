@@ -54,7 +54,7 @@ class SlideshowContentServiceTest {
 
         var cmd = PutSlideshowContentCommand.builder()
                 .description(description)
-                .mode(SlideshowContent.Mode.Auto)
+                .mode(SlideshowContent.Mode.AUTO)
                 .speed(Duration.of(5))
                 .slides(List.of())
                 .build();
@@ -65,7 +65,7 @@ class SlideshowContentServiceTest {
 
         assertNotNull(slideshowContent);
         assertEquals(description, slideshowContent.getDescription());
-        assertEquals(SlideshowContent.Mode.Auto, slideshowContent.getMode());
+        assertEquals(SlideshowContent.Mode.AUTO, slideshowContent.getMode());
         assertEquals(5, slideshowContent.getSpeed().value());
 
         verify(repository, times(1)).save(any());

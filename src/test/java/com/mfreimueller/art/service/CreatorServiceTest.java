@@ -39,7 +39,7 @@ class CreatorServiceTest {
     public void can_create_with_valid_data() {
         var cmd = CreateCreatorCommand.builder()
                 .username("admin") // security best practice
-                .role(Creator.Role.Admin)
+                .role(Creator.Role.ADMIN)
                 .build();
 
         when(repository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
@@ -56,7 +56,7 @@ class CreatorServiceTest {
 
         var cmd = UpdateCreatorCommand.builder()
                 .username("guest")
-                .role(Creator.Role.Viewer)
+                .role(Creator.Role.VIEWER)
                 .build();
 
         when(repository.getReferenceById(any())).thenReturn(creator);
@@ -66,7 +66,7 @@ class CreatorServiceTest {
 
         assertNotNull(returned);
         assertThat(returned.getUsername(), equalTo("guest"));
-        assertThat(returned.getRole(), equalTo(Creator.Role.Viewer));
+        assertThat(returned.getRole(), equalTo(Creator.Role.VIEWER));
 
         verify(repository, times(1)).save(any());
     }

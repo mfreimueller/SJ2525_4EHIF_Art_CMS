@@ -53,7 +53,7 @@ public class SlideshowContentService {
         var creator = creatorService.getByReference(cmd.creatorId());
         var slides = cmd.slides().stream().map(contentRepository::getReferenceById).toList();
 
-        var slideshow = slideshowContentRepository.getReferenceById(id); // TODO: handle exception
+        var slideshow = slideshowContentRepository.getReferenceById(id);
 
         // we need to manually check for a circular reference here
         if (containsSlideshow(slides, slideshow)) {

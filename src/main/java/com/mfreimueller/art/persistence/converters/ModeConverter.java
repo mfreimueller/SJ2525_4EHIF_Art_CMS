@@ -12,9 +12,9 @@ public class ModeConverter implements AttributeConverter<SlideshowContent.Mode, 
     public Character convertToDatabaseColumn(SlideshowContent.Mode mode) {
         return switch (mode) {
             case null -> null;
-            case SlideshowContent.Mode.Auto -> 'a';
-            case SlideshowContent.Mode.Hybrid -> 'h';
-            case SlideshowContent.Mode.Manual -> 'm';
+            case SlideshowContent.Mode.AUTO -> 'a';
+            case SlideshowContent.Mode.HYBRID -> 'h';
+            case SlideshowContent.Mode.MANUAL -> 'm';
         };
     }
 
@@ -22,9 +22,9 @@ public class ModeConverter implements AttributeConverter<SlideshowContent.Mode, 
     public SlideshowContent.Mode convertToEntityAttribute(Character character) {
         return switch (character) {
             case null -> null;
-            case 'a' -> SlideshowContent.Mode.Auto;
-            case 'h' -> SlideshowContent.Mode.Hybrid;
-            case 'm' -> SlideshowContent.Mode.Manual;
+            case 'a' -> SlideshowContent.Mode.AUTO;
+            case 'h' -> SlideshowContent.Mode.HYBRID;
+            case 'm' -> SlideshowContent.Mode.MANUAL;
             default -> throw DataConstraintException.forUnmappedEnumValue(character, Creator.Role.class);
         };
     }

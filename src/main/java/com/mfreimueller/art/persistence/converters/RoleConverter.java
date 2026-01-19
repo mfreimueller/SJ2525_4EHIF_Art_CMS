@@ -11,9 +11,9 @@ public class RoleConverter implements AttributeConverter<Creator.Role, Character
     public Character convertToDatabaseColumn(Creator.Role role) {
         return switch (role) {
             case null -> null;
-            case Creator.Role.Admin -> 'a';
-            case Creator.Role.Editor -> 'e';
-            case Creator.Role.Viewer -> 'v';
+            case Creator.Role.ADMIN -> 'a';
+            case Creator.Role.EDITOR -> 'e';
+            case Creator.Role.VIEWER -> 'v';
         };
     }
 
@@ -21,9 +21,9 @@ public class RoleConverter implements AttributeConverter<Creator.Role, Character
     public Creator.Role convertToEntityAttribute(Character character) {
         return switch (character) {
             case null -> null;
-            case 'a' -> Creator.Role.Admin;
-            case 'e' -> Creator.Role.Editor;
-            case 'v' -> Creator.Role.Viewer;
+            case 'a' -> Creator.Role.ADMIN;
+            case 'e' -> Creator.Role.EDITOR;
+            case 'v' -> Creator.Role.VIEWER;
             default -> throw DataConstraintException.forUnmappedEnumValue(character, Creator.Role.class);
         };
     }

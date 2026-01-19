@@ -22,7 +22,7 @@ class CreatorRepositoryTest {
     void can_save_and_reread() {
         var exam = Creator.builder()
                 .username("admin")
-                .role(Creator.Role.Admin)
+                .role(Creator.Role.ADMIN)
                 .build();
 
         var saved = creatorRepository.save(exam);

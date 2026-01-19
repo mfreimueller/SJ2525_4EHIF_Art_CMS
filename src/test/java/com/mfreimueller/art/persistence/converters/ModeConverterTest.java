@@ -33,9 +33,9 @@ class ModeConverterTest {
 
     private static Stream<Arguments> mappingData() {
         return Stream.of(
-                Arguments.of(SlideshowContent.Mode.Auto, 'a'),
-                Arguments.of(SlideshowContent.Mode.Hybrid, 'h'),
-                Arguments.of(SlideshowContent.Mode.Manual, 'm')
+                Arguments.of(SlideshowContent.Mode.AUTO, 'a'),
+                Arguments.of(SlideshowContent.Mode.HYBRID, 'h'),
+                Arguments.of(SlideshowContent.Mode.MANUAL, 'm')
         );
     }
 }
