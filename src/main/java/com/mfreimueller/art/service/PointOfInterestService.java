@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.mfreimueller.art.util.LogHelper.logEnter;
+import static com.mfreimueller.art.util.LogHelper.logExit;
+
 @RequiredArgsConstructor
 
 @Service
@@ -24,9 +27,19 @@ public class PointOfInterestService {
     private final CreatorService creatorService;
     private final DateTimeFactory dateTimeFactory;
 
-    @Transactional(readOnly = false)
+    @Transactional
     public PointOfInterest create(@NotNull @Valid CreatePointOfInterestCommand cmd) {
+        logEnter(log);
+        log.trace("PointOfInterest creation command: {}", cmd);
+
         var creator = creatorService.getByReference(cmd.creatorId());
+        log.info("Creating PointOfInterest with creator id: {}", cmd.creatorId());
+
+        if (creator == null) {
+            log.error("Invalid creator of PointOfInterest");
+            throw new IllegalArgumentException("Could not find user with id: " + cmd.creatorId());
+        }
+
         var content = cmd.content().stream().map(contentService::getByReference).toList();
 
         var poi = PointOfInterest.builder()
@@ -38,33 +51,97 @@ public class PointOfInterestService {
                 .build();
 
         var saved = pointOfInterestRepository.save(poi);
-        log.debug("Created new point of interest with id {}", saved.getId());
+        log.info("PointOfInterest created and saved with id {}", saved.getId());
+        logExit(log);
 
         return saved;
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public PointOfInterest update(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
-        var creator = creatorService.getByReference(cmd.creatorId());
-        var content = cmd.content().stream().map(contentService::getByReference).toList();
+        logEnter(log);
+        log.trace("Updating PointOfInterest {} with {}", id, cmd);
 
-        var poi = pointOfInterestRepository.getReferenceById(id); // TODO: handle exception
-        poi.setTitle(cmd.title());
-        poi.setDescription(cmd.description());
-        poi.setContent(content);
-        poi.setUpdatedBy(creator);
-        poi.setUpdatedAt(dateTimeFactory.now());
+        return pointOfInterestRepository.findById(id)
+                .map(poi -> {
+                    var creator = creatorService.getByReference(cmd.creatorId());
+                    log.info("Updating PointOfInterest with creator id: {}", cmd.creatorId());
 
-        var saved = pointOfInterestRepository.save(poi);
-        log.debug("Updated point of interest with id {}", saved.getId());
+                    if (creator == null) {
+                        log.error("Invalid creator of PointOfInterest");
+                        throw new IllegalArgumentException("Could not find user with id: " + cmd.creatorId());
+                    }
 
-        return saved;
+                    if (cmd.title() != null) {
+                        poi.setTitle(cmd.title());
+                    }
+
+                    if (cmd.description() != null) {
+                        poi.setDescription(cmd.description());
+                    }
+
+                    if (cmd.content() != null) {
+                        var content = cmd.content().stream().map(contentService::getByReference).toList();
+                        poi.setContent(content);
+                    }
+
+                    // this part is mandatory:
+                    poi.setUpdatedBy(creator);
+                    poi.setUpdatedAt(dateTimeFactory.now());
+
+                    log.debug("Updated PointOfInterest {} successfully", poi.getId());
+                    logExit(log);
+
+                    return poi;
+                }).orElseThrow();
     }
 
-    @Transactional(readOnly = false)
-    public void delete(@NotNull PointOfInterest.PointOfInterestId id) {
-        pointOfInterestRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
+    @Transactional
+    public PointOfInterest replace(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
+        logEnter(log);
+        log.trace("Replacing PointOfInterest {} with {}", id, cmd);
+
+        return pointOfInterestRepository.findById(id)
+                .map(poi -> {
+                    var creator = creatorService.getByReference(cmd.creatorId());
+                    log.info("Replacing PointOfInterest with creator id: {}", cmd.creatorId());
+
+                    if (creator == null) {
+                        log.error("Invalid creator of PointOfInterest");
+                        throw new IllegalArgumentException("Could not find user with id: " + cmd.creatorId());
+                    }
+
+                    var content = cmd.content().stream().map(contentService::getByReference).toList();
+
+                    poi.setTitle(cmd.title());
+                    poi.setDescription(cmd.description());
+                    poi.setContent(content);
+                    poi.setUpdatedBy(creator);
+                    poi.setUpdatedAt(dateTimeFactory.now());
+
+                    log.debug("Replaced PointOfInterest {} successfully", poi.getId());
+                    logExit(log);
+
+                   return poi;
+                }).orElseThrow();
+    }
+
+    @Transactional
+    public boolean delete(@NotNull PointOfInterest.PointOfInterestId id) {
+        logEnter(log);
+        log.trace("Deleting PointOfInterest with id: {}", id);
+
+        if (!pointOfInterestRepository.existsById(id)) {
+            log.info("PointOfInterest with id {} not found", id);
+            return false;
+        }
+
+        pointOfInterestRepository.deleteById(id);
+
         log.debug("Deleted point of interest with id {}", id.id());
+        logExit(log);
+
+        return true;
     }
 
     public PointOfInterest getByReference(@NotNull PointOfInterest.PointOfInterestId id) {
