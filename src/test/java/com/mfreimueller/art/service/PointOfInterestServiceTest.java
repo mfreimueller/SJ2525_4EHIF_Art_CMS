@@ -88,7 +88,7 @@ class PointOfInterestServiceTest {
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(creatorService.getByReference(any())).thenReturn(creator);
 
-        var updatedPOI = service.update(poi.getId(), cmd);
+        var updatedPOI = service.update(poi.getId(), cmd).orElseThrow();
 
         assertThat(updatedPOI, notNullValue());
         assertThat(updatedPOI.getTitle(), hasKey(de));
@@ -109,7 +109,7 @@ class PointOfInterestServiceTest {
 
         when(repository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> service.update(poi.getId(), cmd));
+        assertTrue(service.update(poi.getId(), cmd).isEmpty());
     }
 
     @Test
@@ -130,7 +130,7 @@ class PointOfInterestServiceTest {
         when(dateTimeFactory.now()).thenReturn(dateTime);
         when(creatorService.getByReference(any())).thenReturn(creator);
 
-        var updatePOI = service.replace(poi.getId(), cmd);
+        var updatePOI = service.replace(poi.getId(), cmd).orElseThrow();
 
         assertThat(updatePOI, notNullValue());
         assertThat(updatePOI.getTitle(), hasKey(de));
@@ -152,7 +152,7 @@ class PointOfInterestServiceTest {
 
         when(repository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> service.replace(poi.getId(), cmd));
+        assertTrue(service.replace(poi.getId(), cmd).isEmpty());
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.mfreimueller.art.service;
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.PointOfInterest;
+import com.mfreimueller.art.dto.PointOfInterestDto;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.PointOfInterestRepository;
 import jakarta.validation.Valid;
@@ -11,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.mfreimueller.art.util.LogHelper.logEnter;
 import static com.mfreimueller.art.util.LogHelper.logExit;
@@ -58,7 +62,7 @@ public class PointOfInterestService {
     }
 
     @Transactional
-    public PointOfInterest update(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
+    public Optional<PointOfInterest> update(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
         logEnter(log);
         log.trace("Updating PointOfInterest {} with {}", id, cmd);
 
@@ -93,11 +97,11 @@ public class PointOfInterestService {
                     logExit(log);
 
                     return poi;
-                }).orElseThrow(() -> new IllegalArgumentException("Could not find PointOfInterest with id: " + id));
+                });
     }
 
     @Transactional
-    public PointOfInterest replace(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
+    public Optional<PointOfInterest> replace(@NotNull PointOfInterest.PointOfInterestId id, @NotNull @Valid UpdatePointOfInterestCommand cmd) {
         logEnter(log);
         log.trace("Replacing PointOfInterest {} with {}", id, cmd);
 
@@ -123,7 +127,7 @@ public class PointOfInterestService {
                     logExit(log);
 
                    return poi;
-                }).orElseThrow(() -> new IllegalArgumentException("Could not find PointOfInterest with id: " + id));
+                });
     }
 
     @Transactional
@@ -146,6 +150,14 @@ public class PointOfInterestService {
 
     public PointOfInterest getByReference(@NotNull PointOfInterest.PointOfInterestId id) {
         return pointOfInterestRepository.getReferenceById(id);
+    }
+
+    public Optional<PointOfInterestDto> getPointOfInterest(@NotNull PointOfInterest.PointOfInterestId id) {
+        return pointOfInterestRepository.findProjectedBy(PointOfInterestDto.class, id);
+    }
+
+    public List<PointOfInterestDto> getPointsOfInterest() {
+        return pointOfInterestRepository.findAllProjectedBy(PointOfInterestDto.class);
     }
 
 }
