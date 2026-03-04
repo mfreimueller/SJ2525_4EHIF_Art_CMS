@@ -5,13 +5,16 @@ import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.PointOfInterest;
-import com.mfreimueller.art.dto.PointOfInterestDto;
+import com.mfreimueller.art.mappers.ContentMapperImpl;
+import com.mfreimueller.art.mappers.PointOfInterestMapper;
+import com.mfreimueller.art.mappers.PointOfInterestMapperImpl;
 import com.mfreimueller.art.service.PointOfInterestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -32,12 +35,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest(PointOfInterestController.class)
+@Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class })
 class PointOfInterestControllerTest {
     private @MockitoBean PointOfInterestService service;
+    private @MockitoSpyBean PointOfInterestMapper mapper;
 
     private @Autowired MockMvc mockMvc;
 
-    private @Autowired ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void can_create_point_of_interest() throws Exception {
@@ -80,9 +85,12 @@ class PointOfInterestControllerTest {
         var titleMap = Map.of("de", title);
         var id = new PointOfInterest.PointOfInterestId(1L);
 
-        var pointOfInterestDto = new PointOfInterestDto(id, titleMap);
+        var pointOfInterest = PointOfInterest.builder()
+                .id(id)
+                .title(titleMap)
+                .build();
 
-        when(service.getPointsOfInterest()).thenReturn(List.of(pointOfInterestDto));
+        when(service.getPointsOfInterest()).thenReturn(List.of(pointOfInterest));
 
         mockMvc
                 .perform(get("/api/pois"))
@@ -112,7 +120,7 @@ class PointOfInterestControllerTest {
         var titleMap = Map.of("de", title);
         var id = new PointOfInterest.PointOfInterestId(1L);
 
-        var dto = new PointOfInterestDto(id, titleMap);
+        var dto = PointOfInterest.builder().id(id).title(titleMap).build();
 
         when(service.getPointOfInterest(any())).thenReturn(Optional.of(dto));
 

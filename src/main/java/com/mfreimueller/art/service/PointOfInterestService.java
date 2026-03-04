@@ -152,12 +152,12 @@ public class PointOfInterestService {
         return pointOfInterestRepository.getReferenceById(id);
     }
 
-    public Optional<PointOfInterestDto> getPointOfInterest(@NotNull PointOfInterest.PointOfInterestId id) {
-        return pointOfInterestRepository.findProjectedBy(PointOfInterestDto.class, id);
+    public Optional<PointOfInterest> getPointOfInterest(@NotNull PointOfInterest.PointOfInterestId id) {
+        return pointOfInterestRepository.findById(id);
     }
 
-    public List<PointOfInterestDto> getPointsOfInterest() {
-        return pointOfInterestRepository.findAllProjectedBy(PointOfInterestDto.class);
+    public List<PointOfInterest> getPointsOfInterest() {
+        return pointOfInterestRepository.findAll();
     }
 
 }

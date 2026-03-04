@@ -4,6 +4,7 @@ import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.dto.PointOfInterestDto;
+import com.mfreimueller.art.mappers.PointOfInterestMapper;
 import com.mfreimueller.art.service.PointOfInterestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequestMapping("/api/pois")
 public class PointOfInterestController {
     private final PointOfInterestService service;
+    private final PointOfInterestMapper mapper;
 
     @PostMapping
     public ResponseEntity<PointOfInterestDto> createPointOfInterest(
@@ -47,7 +49,7 @@ public class PointOfInterestController {
 
         logExit(log);
 
-        return ResponseEntity.created(location.toUri()).body(new PointOfInterestDto(poi));
+        return ResponseEntity.created(location.toUri()).body(mapper.toDto(poi));
     }
 
     @DeleteMapping("/{key}")
@@ -68,6 +70,7 @@ public class PointOfInterestController {
         log.trace("Getting PointOfInterest with key: {}", key);
         var result = service
                 .getPointOfInterest(new PointOfInterest.PointOfInterestId(key))
+                .map(mapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
 
@@ -84,7 +87,7 @@ public class PointOfInterestController {
         log.info("Retrieved {} PointOfInterest entities", pois.size());
         logExit(log);
 
-        return pois.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pois);
+        return pois.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pois.stream().map(mapper::toDto).toList());
     }
 
     @PutMapping("/{key}")
@@ -112,7 +115,7 @@ public class PointOfInterestController {
 
         var location = linkTo(methodOn(PointOfInterestController.class).getPointOfInterest(poi.getId().id()))
                 .withSelfRel();
-        return ResponseEntity.ok().location(location.toUri()).body(new PointOfInterestDto(poi));
+        return ResponseEntity.ok().location(location.toUri()).body(mapper.toDto(poi));
     }
 
     @PatchMapping("/{key}")
@@ -140,6 +143,6 @@ public class PointOfInterestController {
 
         var location = linkTo(methodOn(PointOfInterestController.class).getPointOfInterest(poi.getId().id()))
                 .withSelfRel();
-        return ResponseEntity.ok().location(location.toUri()).body(new PointOfInterestDto(poi));
+        return ResponseEntity.ok().location(location.toUri()).body(mapper.toDto(poi));
     }
 }
