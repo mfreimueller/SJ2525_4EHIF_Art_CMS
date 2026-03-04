@@ -1,8 +1,11 @@
 package com.mfreimueller.art.dto;
 
+import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.PointOfInterest;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +16,11 @@ public record PointOfInterestDto(
         PointOfInterest.PointOfInterestId id,
         Map<String, String> title,
         Map<String, String> description,
-        List<ContentDto> content) {
+        List<ContentDto> content,
+        ZonedDateTime createdAt,
+        ZonedDateTime updatedAt,
+        CreatorDto createdBy,
+        CreatorDto updatedBy) {
 
     // note: because we are using a record, we cannot use @Builder.Default, instead we provide a custom
     // builder class and set our default values

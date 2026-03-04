@@ -1,8 +1,12 @@
 package com.mfreimueller.art.mapper;
 
+import com.mfreimueller.art.domain.AudioContent;
+import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.PointOfInterest;
+import com.mfreimueller.art.dto.ContentDto;
 import com.mfreimueller.art.dto.PointOfInterestDto;
 import com.mfreimueller.art.foundation.DateTimeFactory;
+import com.mfreimueller.art.mappers.ContentMapper;
 import com.mfreimueller.art.mappers.PointOfInterestMapper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,21 +20,20 @@ import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class PointOfInterestMapperTest {
+class ContentMapperTest {
 
     @Autowired
     private DateTimeFactory dateTimeFactory;
 
     @Autowired
-    private PointOfInterestMapper mapper;
+    private ContentMapper mapper;
 
-    private PointOfInterest poi;
+    private AudioContent content;
 
     @BeforeEach
     void setUp() {
-        poi = PointOfInterest.builder()
-                .id(new PointOfInterest.PointOfInterestId(1L))
-                .title(Map.of("en", "A title"))
+        content = AudioContent.builder()
+                .id(new Content.ContentId(1L))
                 .description(Map.of("en", "A description"))
                 .createdAt(dateTimeFactory.now())
                 .build();
@@ -38,10 +41,12 @@ class PointOfInterestMapperTest {
 
     @Test
     void ensure_that_mapping_to_dto_works_properly() {
-        var dto = mapper.toDto(poi);
-        assertThat(dto).extracting(PointOfInterestDto::title)
+        var dto = mapper.toDto(content);
+        
+        assertThat(dto).isNotNull();
+        assertThat(dto).extracting(ContentDto::getDescription)
                 .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
-                .contains(entry("en", "A title"));
+                .contains(entry("en", "A description"));
     }
 
 }

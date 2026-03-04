@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = { ContentMapper.class })
+@Mapper(componentModel = "spring", uses = { ContentMapper.class, CreatorMapper.class })
 public interface PointOfInterestMapper {
     PointOfInterestDto toDto(PointOfInterest poi);
 
