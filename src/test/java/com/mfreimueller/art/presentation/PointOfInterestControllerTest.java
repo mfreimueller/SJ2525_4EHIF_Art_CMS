@@ -7,6 +7,7 @@ import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.mappers.*;
 import com.mfreimueller.art.service.PointOfInterestService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -26,15 +27,9 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PointOfInterestController.class)
 @Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class })
@@ -75,7 +70,9 @@ class PointOfInterestControllerTest {
                                 .content(objectMapper.writeValueAsBytes(cmd))
                 )
                 .andExpect(status().isCreated())
-                .andExpect(header().stringValues("Location", "http://localhost/api/pois/1"))
+                .andExpect(header().string("Location",
+                        Matchers.matchesPattern("http://localhost(?::8080)?/api/pois/1")
+                ))
                 .andExpect(jsonPath("$.title.de").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
                 .andDo(print());
@@ -248,7 +245,8 @@ class PointOfInterestControllerTest {
                                 .content(objectMapper.writeValueAsBytes(cmd))
                 )
                 .andExpect(status().isOk())
-                .andExpect(header().string("Location", "http://localhost/api/pois/1"))
+                .andExpect(header().string("Location",
+                        Matchers.matchesPattern("http://localhost(?::8080)?/api/pois/1")))
                 .andExpect(jsonPath("$.title.en").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
                 .andDo(print());
@@ -299,7 +297,9 @@ class PointOfInterestControllerTest {
                                 .content(objectMapper.writeValueAsBytes(cmd))
                 )
                 .andExpect(status().isOk())
-                .andExpect(header().string("Location", "http://localhost/api/pois/1"))
+                .andExpect(header().string("Location",
+                        Matchers.matchesPattern("http://localhost(?::8080)?/api/pois/1")
+                ))
                 .andExpect(jsonPath("$.title.en").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
                 .andDo(print());
