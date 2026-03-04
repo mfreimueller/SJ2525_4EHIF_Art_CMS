@@ -6,6 +6,7 @@ import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.mappers.*;
+import com.mfreimueller.art.presentation.assembler.PointOfInterestModelAssembler;
 import com.mfreimueller.art.service.PointOfInterestService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -32,12 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PointOfInterestController.class)
-@Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class })
+@Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class, PointOfInterestModelAssembler.class })
 class PointOfInterestControllerTest {
     private @MockitoBean PointOfInterestService service;
 
     private @MockitoSpyBean PointOfInterestMapper mapper;
     private @MockitoSpyBean CreatorMapper creatorMapper;
+    private @MockitoSpyBean PointOfInterestModelAssembler assembler;
 
     private @Autowired MockMvc mockMvc;
 
@@ -98,11 +100,11 @@ class PointOfInterestControllerTest {
         mockMvc
                 .perform(get("/api/pois/search/de/Bildnis"))
                 .andExpect(status().isOk())
-                .andExpect(header().stringValues("Content-Type", "application/json"))
-                .andExpect(jsonPath("$.content[0].title.de").value(title))
-                .andExpect(jsonPath("$.content[0].id.id").value(id.id()))
-                .andExpect(jsonPath("$.size").value(5))
-                .andExpect(jsonPath("$.number").value(1))
+                .andExpect(header().stringValues("Content-Type", "application/hal+json"))
+                .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].title.de").value(title))
+                .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.page.size").value(5))
+                .andExpect(jsonPath("$.page.number").value(1))
                 .andDo(print());
 
         verify(service).search(any(), any(), any(Pageable.class));
@@ -124,11 +126,11 @@ class PointOfInterestControllerTest {
         mockMvc
                 .perform(get("/api/pois"))
                 .andExpect(status().isOk())
-                .andExpect(header().stringValues("Content-Type", "application/json"))
-                .andExpect(jsonPath("$.content[0].title.de").value(title))
-                .andExpect(jsonPath("$.content[0].id.id").value(id.id()))
-                .andExpect(jsonPath("$.size").value(20))
-                .andExpect(jsonPath("$.number").value(0))
+                .andExpect(header().stringValues("Content-Type", "application/hal+json"))
+                .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].title.de").value(title))
+                .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.page.size").value(20))
+                .andExpect(jsonPath("$.page.number").value(0))
                 .andDo(print());
 
         verify(service).getPointsOfInterest(any(Pageable.class));
@@ -150,11 +152,11 @@ class PointOfInterestControllerTest {
         mockMvc
                 .perform(get("/api/pois").param("page", "1").param("size", "5"))
                 .andExpect(status().isOk())
-                .andExpect(header().stringValues("Content-Type", "application/json"))
-                .andExpect(jsonPath("$.content[0].title.de").value(title))
-                .andExpect(jsonPath("$.content[0].id.id").value(id.id()))
-                .andExpect(jsonPath("$.size").value(5))
-                .andExpect(jsonPath("$.number").value(1))
+                .andExpect(header().stringValues("Content-Type", "application/hal+json"))
+                .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].title.de").value(title))
+                .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.page.size").value(5))
+                .andExpect(jsonPath("$.page.number").value(1))
                 .andDo(print());
 
         verify(service).getPointsOfInterest(any(Pageable.class));
@@ -165,7 +167,7 @@ class PointOfInterestControllerTest {
         when(service.getPointsOfInterest(any(Pageable.class))).thenReturn(new SliceImpl<>(Collections.emptyList(), PageRequest.of(0, 20), false));
 
         mockMvc.perform(get("/api/pois"))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(print());
 
         verify(service).getPointsOfInterest(any(Pageable.class));
@@ -184,7 +186,7 @@ class PointOfInterestControllerTest {
         mockMvc
                 .perform(get("/api/pois/1"))
                 .andExpect(status().isOk())
-                .andExpect(header().stringValues("Content-Type", "application/json"))
+                .andExpect(header().stringValues("Content-Type", "application/hal+json"))
                 .andExpect(jsonPath("$.title.de").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
                 .andDo(print());
