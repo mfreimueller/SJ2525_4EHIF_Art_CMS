@@ -1,7 +1,6 @@
 package com.mfreimueller.art.commands;
 
 import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.domain.Source;
 import com.mfreimueller.art.richtypes.Duration;
 import jakarta.validation.constraints.NotNull;
@@ -11,10 +10,10 @@ import java.util.Map;
 
 @Builder
 public record PutAudioContentCommand(
-        Map<Language, String> description,
-        Map<Language, Source> source,
-        Map<Language, Duration> duration,
-        Map<Language, Source> transcriptions,
+        Map<String, String> description,
+        Map<String, Source> source,
+        Map<String, Duration> duration,
+        Map<String, Source> transcriptions,
         @NotNull Creator.CreatorId creatorId
 ) {
 }

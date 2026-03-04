@@ -2,7 +2,6 @@ package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
-import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.PointOfInterestRepository;
@@ -48,7 +47,6 @@ class PointOfInterestServiceTest {
     @Test
     void can_create_with_valid_data() {
         var creator = creator();
-        var en = new Language("en", "English");
         var dateTime = dateTime();
 
         var cmd = CreatePointOfInterestCommand.builder()
@@ -76,7 +74,6 @@ class PointOfInterestServiceTest {
     public void can_update_existing_entity() {
         var creator = creator();
         var poi = pointOfInterest();
-        var de = new Language("de", "Deutsch");
         var dateTime = dateTime();
 
         var cmd = UpdatePointOfInterestCommand.builder()
@@ -101,7 +98,6 @@ class PointOfInterestServiceTest {
     @Test
     public void throws_on_update_attempt_for_non_existing_entity() {
         var poi = pointOfInterest();
-        var de = new Language("de", "Deutsch");
 
         var cmd = UpdatePointOfInterestCommand.builder()
                 .title(Map.of("de", "Mädchen mit Balloon"))
@@ -116,7 +112,6 @@ class PointOfInterestServiceTest {
     public void can_replace_existing_entity() {
         var creator = creator();
         var poi = pointOfInterest();
-        var de = new Language("de", "Deutsch");
         var dateTime = dateTime();
 
         var cmd = UpdatePointOfInterestCommand.builder()
@@ -142,7 +137,6 @@ class PointOfInterestServiceTest {
     @Test
     public void throws_on_replace_attempt_for_non_existing_entity() {
         var poi = pointOfInterest();
-        var de = new Language("de", "Deutsch");
 
         var cmd = UpdatePointOfInterestCommand.builder()
                 .title(Map.of("de", "Mädchen mit Balloon"))

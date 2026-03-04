@@ -14,10 +14,10 @@ import java.util.concurrent.TimeUnit;
 public final class ServiceFixtures {
     private static final Faker faker = new Faker();
 
-    public static Map<Language, String> localizedText() {
+    public static Map<String, String> localizedText() {
         return Map.of(
-                new Language("en", "English"), faker.witcher().quote(),
-                new Language("de", "Deutsch"), faker.gameOfThrones().quote()
+                "en", faker.witcher().quote(),
+                "de", faker.gameOfThrones().quote()
         );
     }
 
@@ -38,8 +38,7 @@ public final class ServiceFixtures {
     }
 
     public static Collection collection() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, faker.witcher().location());
+        var title = Map.of("en", faker.witcher().location());
 
         return Collection.builder()
                 .id(new Collection.CollectionId(randomId()))
@@ -59,13 +58,12 @@ public final class ServiceFixtures {
     }
 
     public static Exhibition exhibition() {
-        var en = new Language("en", "English");
-        var title = Map.of(en, faker.elderScrolls().city());
+        var title = Map.of("en", faker.elderScrolls().city());
 
         return Exhibition.builder()
                 .id(new Collection.CollectionId(randomId()))
                 .title(title)
-                .languages(Set.of(en))
+                .languages(Set.of("en"))
                 .build();
     }
 
@@ -143,17 +141,17 @@ public final class ServiceFixtures {
         );
     }
     
-    public static Map<Language, Source> localizedSources() {
+    public static Map<String, Source> localizedSources() {
         return Map.of(
-                new Language("en", "English"), source(),
-                new Language("de", "Deutsch"), source()
+                "en", source(),
+                "de", source()
         );
     }
 
-    public static Map<Language, Duration> localizedDurations() {
+    public static Map<String, Duration> localizedDurations() {
         return Map.of(
-                new Language("en", "English"), Duration.of(40),
-                new Language("de", "Deutsch"), Duration.of(55)
+                "en", Duration.of(40),
+                "de", Duration.of(55)
         );
     }
 

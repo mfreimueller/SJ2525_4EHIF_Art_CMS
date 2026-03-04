@@ -28,7 +28,7 @@ public class TextContent extends Content {
     @MapKeyColumn(name = "language_code")
     @Column(name = "shortText")
     @Builder.Default
-    private Map<Language, String> shortText = new HashMap<>();
+    private Map<String, String> shortText = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "TextContent_LongTexts",
@@ -36,6 +36,6 @@ public class TextContent extends Content {
     @MapKeyColumn(name = "language_code")
     @Column(name = "longText")
     @Builder.Default
-    private Map<Language, String> longText = new HashMap<>();
+    private Map<String, String> longText = new HashMap<>();
 
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,9 +26,9 @@ public abstract class Content extends HistoryBase {
     @ElementCollection
     @CollectionTable(name = "Content_LocalizedDescriptions",
             foreignKey = @ForeignKey(name = "FK_Content_LocalizedDescriptions"))
-    @MapKeyColumn(name = "language_code")
     @Column(name = "description")
-    private Map<Language, String> description;
+    @Builder.Default
+    private Map<String, String> description = new HashMap<>();
 
     public record ContentId(
             @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")

@@ -28,6 +28,6 @@ public class VideoContent extends MediaContent {
     @MapKeyColumn(name = "language_code")
     @Column(name = "subtitles")
     @Builder.Default
-    private Map<Language, Source> subtitles = new HashMap<>();
+    private Map<String, Source> subtitles = new HashMap<>();
 
 }

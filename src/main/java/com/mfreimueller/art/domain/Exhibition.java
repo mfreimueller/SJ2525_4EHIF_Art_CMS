@@ -26,6 +26,6 @@ public class Exhibition extends Collection {
     @CollectionTable(name = "Exhibition_Languages",
             foreignKey = @ForeignKey(name = "FK_Exhibition_Languages"))
     @Builder.Default
-    private Set<Language> languages = new HashSet<>();
+    private Set<String> languages = new HashSet<>();
 
 }

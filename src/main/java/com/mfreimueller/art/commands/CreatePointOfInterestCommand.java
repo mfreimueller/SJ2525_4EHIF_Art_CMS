@@ -2,7 +2,6 @@ package com.mfreimueller.art.commands;
 
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.Language;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 

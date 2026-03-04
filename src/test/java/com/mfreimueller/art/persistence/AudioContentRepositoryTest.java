@@ -3,7 +3,6 @@ package com.mfreimueller.art.persistence;
 import com.mfreimueller.art.TestcontainersConfiguration;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.AudioContent;
-import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.domain.Source;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -31,10 +30,9 @@ class AudioContentRepositoryTest {
                 .build();
 
         var sourceEn = new Source("https://google.com/...", Source.LinkType.Url);
-        var languageEn = new Language("en", "English");
 
         var content = AudioContent.builder()
-                .source(Map.of(languageEn, sourceEn))
+                .source(Map.of("en", sourceEn))
                 .createdAt(ZonedDateTime.now())
                 .createdBy(creator)
                 .build();

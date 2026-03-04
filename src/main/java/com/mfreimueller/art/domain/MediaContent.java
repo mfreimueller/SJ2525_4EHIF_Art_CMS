@@ -28,7 +28,7 @@ public class MediaContent extends Content {
     @MapKeyColumn(name = "language_code")
     @Column(name = "source")
     @Builder.Default
-    private Map<Language, Source> source = new HashMap<>();
+    private Map<String, Source> source = new HashMap<>();
 
     @ElementCollection
     @CollectionTable(name = "MediaContent_Durations",
@@ -36,6 +36,6 @@ public class MediaContent extends Content {
     @MapKeyColumn(name = "language_code")
     @Column(name = "duration")
     @Builder.Default
-    private Map<Language, Duration> duration = new HashMap<>();
+    private Map<String, Duration> duration = new HashMap<>();
 
 }

@@ -3,7 +3,6 @@ package com.mfreimueller.art.persistence;
 import com.mfreimueller.art.TestcontainersConfiguration;
 import com.mfreimueller.art.domain.TextContent;
 import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.Language;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -29,11 +28,10 @@ class TextContentRepositoryTest {
                 .username("admin")
                 .build();
 
-        var languageEn = new Language("en", "English");
         var shortTextEn = "This famous painting by Leonardo da Vinci...";
 
         var content = TextContent.builder()
-                .shortText(Map.of(languageEn, shortTextEn))
+                .shortText(Map.of("en", shortTextEn))
                 .createdAt(ZonedDateTime.now())
                 .createdBy(creator)
                 .build();

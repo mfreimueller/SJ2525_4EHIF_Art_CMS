@@ -7,5 +7,5 @@ import lombok.Builder;
 import java.util.Map;
 
 @Builder
-public record PutImageContentCommand(Map<Language, String> description, Source source, @NotNull Creator.CreatorId creatorId) {
+public record PutImageContentCommand(Map<String, String> description, Source source, @NotNull Creator.CreatorId creatorId) {
 }

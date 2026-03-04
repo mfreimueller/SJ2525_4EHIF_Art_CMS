@@ -25,8 +25,7 @@ public class AudioContent extends MediaContent {
     @ElementCollection
     @CollectionTable(name = "AudioContent_Transcriptions",
             foreignKey = @ForeignKey(name = "FK_AudioContent_Transcriptions"))
-    @MapKeyColumn(name = "language_code")
     @Builder.Default
-    private Map<Language, Source> transcriptions = new HashMap<>();
+    private Map<String, Source> transcriptions = new HashMap<>();
 
 }

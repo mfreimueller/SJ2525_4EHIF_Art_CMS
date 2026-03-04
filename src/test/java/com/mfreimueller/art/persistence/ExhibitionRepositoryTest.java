@@ -4,7 +4,6 @@ import com.mfreimueller.art.TestcontainersConfiguration;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.Exhibition;
 import com.mfreimueller.art.domain.PointOfInterest;
-import com.mfreimueller.art.domain.Language;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,6 @@ class ExhibitionRepositoryTest {
                 .username("admin")
                 .build();
 
-        var languageEn = new Language("en", "English");
         var titleEn = "Mona Lisa";
 
         var poi = PointOfInterest.builder()
@@ -39,7 +37,7 @@ class ExhibitionRepositoryTest {
                 .build();
 
         var exhibition = Exhibition.builder()
-                .languages(Set.of(languageEn))
+                .languages(Set.of("en"))
                 .createdBy(creator)
                 .pointsOfInterest(Set.of(poi))
                 .build();

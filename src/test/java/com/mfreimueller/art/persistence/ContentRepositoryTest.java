@@ -29,10 +29,9 @@ class ContentRepositoryTest {
                 .build();
 
         var sourceEn = new Source("https://google.com/...", Source.LinkType.Url);
-        var languageEn = new Language("en", "English");
 
         var content = AudioContent.builder()
-                .source(Map.of(languageEn, sourceEn))
+                .source(Map.of("en", sourceEn))
                 .createdAt(ZonedDateTime.now())
                 .createdBy(creator)
                 .build();

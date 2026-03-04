@@ -48,10 +48,9 @@ class CollectionServiceTest {
     public void can_create_with_valid_data() {
         var dateTime = dateTime();
         var creator = creator();
-        var en = new Language("en", "English");
 
         var cmd = CreateCollectionCommand.builder()
-                .title(Map.of(en, "Dauerausstellung"))
+                .title(Map.of("en", "Dauerausstellung"))
                 .creatorId(creator.getId())
                 .build();
 
@@ -73,10 +72,9 @@ class CollectionServiceTest {
         var dateTime = dateTime();
         var creator = creator();
         var collection = collection();
-        var de = new Language("de", "Deutsch");
 
         var cmd = UpdateCollectionCommand.builder()
-                .title(Map.of(de, "Dauerausstellung"))
+                .title(Map.of("de", "Dauerausstellung"))
                 .creatorId(creator.getId())
                 .build();
 
@@ -89,7 +87,7 @@ class CollectionServiceTest {
         var updateCollection = service.update(collection.getId(), cmd);
 
         assertNotNull(updateCollection);
-        assertTrue(updateCollection.getTitle().containsKey(de));
+        assertTrue(updateCollection.getTitle().containsKey("de"));
         assertEquals(updateCollection.getUpdatedAt(), dateTime);
         assertThat(updateCollection.getUpdatedBy(), equalTo(creator));
 

@@ -5,7 +5,6 @@ import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.domain.TextContent;
-import com.mfreimueller.art.domain.Language;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -33,11 +32,10 @@ class SlideshowContentRepositoryTest {
                 .username("admin")
                 .build();
 
-        var languageEn = new Language("en", "English");
         var shortTextEn = "This famous painting by Leonardo da Vinci...";
 
         var textContent = TextContent.builder()
-                .shortText(Map.of(languageEn, shortTextEn))
+                .shortText(Map.of("en", shortTextEn))
                 .build();
 
         var content = SlideshowContent.builder()

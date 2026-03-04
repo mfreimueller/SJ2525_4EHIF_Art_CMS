@@ -2,7 +2,6 @@ package com.mfreimueller.art.commands;
 
 import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.Creator;
-import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.domain.SlideshowContent;
 import com.mfreimueller.art.richtypes.Duration;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Builder
-public record PutSlideshowContentCommand(Map<Language, String> description, @NotNull List<Content.ContentId> slides,
+public record PutSlideshowContentCommand(Map<String, String> description, @NotNull List<Content.ContentId> slides,
                                          SlideshowContent.Mode mode, Duration speed,
                                          @NotNull Creator.CreatorId creatorId) {
 }

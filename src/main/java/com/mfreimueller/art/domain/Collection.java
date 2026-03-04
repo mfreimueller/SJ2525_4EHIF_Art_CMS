@@ -27,9 +27,8 @@ public class Collection extends HistoryBase {
     @ElementCollection
     @CollectionTable(name = "Collection_Titles",
             foreignKey = @ForeignKey(name = "FK_Collection_Titles"))
-    @MapKeyColumn(name = "language_code")
     @Column(name = "title")
-    private Map<Language, String> title;
+    private Map<String, String> title;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(

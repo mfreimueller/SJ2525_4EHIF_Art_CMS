@@ -3,7 +3,6 @@ package com.mfreimueller.art.service;
 import com.mfreimueller.art.commands.CreateExhibitionCommand;
 import com.mfreimueller.art.commands.UpdateExhibitionCommand;
 import com.mfreimueller.art.domain.Collection;
-import com.mfreimueller.art.domain.Language;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.ExhibitionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,11 +48,10 @@ class ExhibitionServiceTest {
     @Test
     public void can_create_with_valid_data() {
         var creator = creator();
-        var en = new Language("en", "English");
 
         var cmd = CreateExhibitionCommand.builder()
-                .title(Map.of(en, "Dauerausstellung"))
-                .languages(Set.of(en))
+                .title(Map.of("en", "Dauerausstellung"))
+                .languages(Set.of("en"))
                 .creatorId(creator.getId())
                 .build();
 
@@ -79,11 +77,9 @@ class ExhibitionServiceTest {
         var exhibition = exhibition();
         var dateTime = dateTime();
 
-        var de = new Language("de", "Deutsch");
-
         var cmd = UpdateExhibitionCommand.builder()
-                .title(Map.of(de, "Dauerausstellung"))
-                .languages(Set.of(de))
+                .title(Map.of("de", "Dauerausstellung"))
+                .languages(Set.of("de"))
                 .build();
 
         when(repository.getReferenceById(any())).thenReturn(exhibition);
@@ -95,9 +91,9 @@ class ExhibitionServiceTest {
         var updateExhibition = service.update(exhibition.getId(), cmd);
 
         assertNotNull(updateExhibition);
-        assertTrue(updateExhibition.getTitle().containsKey(de));
+        assertTrue(updateExhibition.getTitle().containsKey("de"));
         assertEquals(1, updateExhibition.getLanguages().size());
-        assertThat(updateExhibition.getLanguages(), hasItem(de));
+        assertThat(updateExhibition.getLanguages(), hasItem("de"));
         assertEquals(exhibition.getUpdatedAt(), dateTime);
         assertThat(exhibition.getUpdatedBy(), equalTo(creator));
 
