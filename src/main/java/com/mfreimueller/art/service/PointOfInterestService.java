@@ -3,13 +3,14 @@ package com.mfreimueller.art.service;
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.PointOfInterest;
-import com.mfreimueller.art.dto.PointOfInterestDto;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.PointOfInterestRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -158,6 +159,14 @@ public class PointOfInterestService {
 
     public List<PointOfInterest> getPointsOfInterest() {
         return pointOfInterestRepository.findAll();
+    }
+
+    public Slice<PointOfInterest> getPointsOfInterest(Pageable pageable) {
+        return pointOfInterestRepository.findAll(pageable);
+    }
+
+    public Slice<PointOfInterest> search(String lang, String search, Pageable pageable) {
+        return pointOfInterestRepository.findByTitleInLanguage(lang, search, pageable);
     }
 
 }

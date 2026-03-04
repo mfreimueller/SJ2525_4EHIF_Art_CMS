@@ -5,18 +5,20 @@ import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.domain.PointOfInterest;
-import com.mfreimueller.art.mappers.ContentMapperImpl;
-import com.mfreimueller.art.mappers.PointOfInterestMapper;
-import com.mfreimueller.art.mappers.PointOfInterestMapperImpl;
+import com.mfreimueller.art.mappers.*;
 import com.mfreimueller.art.service.PointOfInterestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,10 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest(PointOfInterestController.class)
-@Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class })
+@Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class })
 class PointOfInterestControllerTest {
     private @MockitoBean PointOfInterestService service;
+
     private @MockitoSpyBean PointOfInterestMapper mapper;
+    private @MockitoSpyBean CreatorMapper creatorMapper;
 
     private @Autowired MockMvc mockMvc;
 
@@ -79,39 +83,95 @@ class PointOfInterestControllerTest {
         verify(service).create(any());
     }
 
+
+
     @Test
-    void can_fetch_all_existing_points_of_interest() throws Exception {
+    void can_search_slice() throws Exception {
         var title = "Das Bildnis des Dorian Gray";
         var titleMap = Map.of("de", title);
         var id = new PointOfInterest.PointOfInterestId(1L);
 
-        var pointOfInterest = PointOfInterest.builder()
+        var poi = PointOfInterest.builder()
                 .id(id)
                 .title(titleMap)
                 .build();
 
-        when(service.getPointsOfInterest()).thenReturn(List.of(pointOfInterest));
+        when(service.search(any(), any(), any(Pageable.class))).thenReturn(new SliceImpl<>(List.of(poi), PageRequest.of(1, 5), true));
+
+        mockMvc
+                .perform(get("/api/pois/search/de/Bildnis"))
+                .andExpect(status().isOk())
+                .andExpect(header().stringValues("Content-Type", "application/json"))
+                .andExpect(jsonPath("$.content[0].title.de").value(title))
+                .andExpect(jsonPath("$.content[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.size").value(5))
+                .andExpect(jsonPath("$.number").value(1))
+                .andDo(print());
+
+        verify(service).search(any(), any(), any(Pageable.class));
+    }
+
+    @Test
+    void can_fetch_existing_pois() throws Exception {
+        var title = "Das Bildnis des Dorian Gray";
+        var titleMap = Map.of("de", title);
+        var id = new PointOfInterest.PointOfInterestId(1L);
+
+        var poi = PointOfInterest.builder()
+                .id(id)
+                .title(titleMap)
+                .build();
+
+        when(service.getPointsOfInterest(any(Pageable.class))).thenReturn(new SliceImpl<PointOfInterest>(List.of(poi), PageRequest.of(0, 20), false));
 
         mockMvc
                 .perform(get("/api/pois"))
                 .andExpect(status().isOk())
                 .andExpect(header().stringValues("Content-Type", "application/json"))
-                .andExpect(jsonPath("$[0].title.de").value(title))
-                .andExpect(jsonPath("$[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.content[0].title.de").value(title))
+                .andExpect(jsonPath("$.content[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.size").value(20))
+                .andExpect(jsonPath("$.number").value(0))
                 .andDo(print());
 
-        verify(service).getPointsOfInterest();
+        verify(service).getPointsOfInterest(any(Pageable.class));
+    }
+
+    @Test
+    void can_fetch_existing_pois_slice() throws Exception {
+        var title = "Das Bildnis des Dorian Gray";
+        var titleMap = Map.of("de", title);
+        var id = new PointOfInterest.PointOfInterestId(1L);
+
+        var poi = PointOfInterest.builder()
+                .id(id)
+                .title(titleMap)
+                .build();
+
+        when(service.getPointsOfInterest(any(Pageable.class))).thenReturn(new SliceImpl<PointOfInterest>(List.of(poi), PageRequest.of(1, 5), true));
+
+        mockMvc
+                .perform(get("/api/pois").param("page", "1").param("size", "5"))
+                .andExpect(status().isOk())
+                .andExpect(header().stringValues("Content-Type", "application/json"))
+                .andExpect(jsonPath("$.content[0].title.de").value(title))
+                .andExpect(jsonPath("$.content[0].id.id").value(id.id()))
+                .andExpect(jsonPath("$.size").value(5))
+                .andExpect(jsonPath("$.number").value(1))
+                .andDo(print());
+
+        verify(service).getPointsOfInterest(any(Pageable.class));
     }
 
     @Test
     void returns_proper_status_code_on_empty_database() throws Exception {
-        when(service.getPointsOfInterest()).thenReturn(List.of());
+        when(service.getPointsOfInterest(any(Pageable.class))).thenReturn(new SliceImpl<>(Collections.emptyList(), PageRequest.of(0, 20), false));
 
         mockMvc.perform(get("/api/pois"))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 
-        verify(service).getPointsOfInterest();
+        verify(service).getPointsOfInterest(any(Pageable.class));
     }
 
     @Test

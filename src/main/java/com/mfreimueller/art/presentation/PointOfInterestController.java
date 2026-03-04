@@ -9,11 +9,11 @@ import com.mfreimueller.art.service.PointOfInterestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.mfreimueller.art.util.LogHelper.logEnter;
 import static com.mfreimueller.art.util.LogHelper.logExit;
@@ -79,15 +79,27 @@ public class PointOfInterestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PointOfInterestDto>> getPointsOfInterest() {
+    public ResponseEntity<Slice<PointOfInterestDto>> getPointsOfInterest(Pageable pageable) {
         logEnter(log);
 
-        var pois = service.getPointsOfInterest();
+        var pois = service.getPointsOfInterest(pageable);
 
-        log.info("Retrieved {} PointOfInterest entities", pois.size());
+        log.info("Retrieved {} PointOfInterest entities (paging with slices)", pois.getSize());
         logExit(log);
 
-        return pois.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pois.stream().map(mapper::toDto).toList());
+        return pois.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pois.map(mapper::toDto));
+    }
+
+    @GetMapping("/search/{lang}/{search}")
+    public ResponseEntity<Slice<PointOfInterestDto>> search(@PathVariable String lang, @PathVariable String search, Pageable pageable) {
+        logEnter(log);
+
+        var pois = service.search(lang, search, pageable);
+
+        log.info("Retrieved {} PointOfInterest entities after search (paging with slices)", pois.getSize());
+        logExit(log);
+
+        return pois.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pois.map(mapper::toDto));
     }
 
     @PutMapping("/{key}")
