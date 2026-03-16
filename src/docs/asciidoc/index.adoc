@@ -1,0 +1,6 @@
+:toc: left
+:source-highlighter: rouge
+
+## API Documentation
+
+include::create-poi.adoc[]

@@ -30,6 +30,14 @@
         <java.version>25</java.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+
+        <asciidoctor.maven.plugin.version>2.2.1</asciidoctor.maven.plugin.version>
+        <spring-restdocs-asciidoctor.version>4.0.0</spring-restdocs-asciidoctor.version>
+        <asciidoctorj.version>3.0.1</asciidoctorj.version>
+        <asciidoctorj.diagram.version>3.1.0</asciidoctorj.diagram.version>
+        <asciidoctorj-diagram-ditaamini.version>1.0.3</asciidoctorj-diagram-ditaamini.version>
+        <asciidoctorj-diagram-plantuml.version>1.2025.2</asciidoctorj-diagram-plantuml.version>
+        <jruby.version>9.2.17.0</jruby.version>
     </properties>
     <dependencies>
         <dependency>
@@ -99,6 +107,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -197,27 +210,60 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>generate-docs</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html</backend>
-                            <doctype>book</doctype>
-                        </configuration>
-                    </execution>
-                </executions>
+                <version>${asciidoctor.maven.plugin.version}</version>
+                <configuration>
+                    <requires>
+                        <require>asciidoctor-diagram</require>
+                    </requires>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.springframework.restdocs</groupId>
                         <artifactId>spring-restdocs-asciidoctor</artifactId>
-                        <version>4.0.0</version>
+                        <version>${spring-restdocs-asciidoctor.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.jruby</groupId>
+                        <artifactId>jruby</artifactId>
+                        <version>${jruby.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj</artifactId>
+                        <version>${asciidoctorj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-diagram</artifactId>
+                        <version>${asciidoctorj.diagram.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-diagram-plantuml</artifactId>
+                        <version>${asciidoctorj-diagram-plantuml.version}</version>
+                    </dependency>
+                    <!--
+                    Doesn't exist anymore, it seems?
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-diagram-ditaamini</artifactId>
+                        <version>${asciidoctorj-diagram-ditaamini.version}</version>
+                    </dependency>
+                    -->
                 </dependencies>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <backend>html5</backend>
+                            <doctype>book</doctype>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

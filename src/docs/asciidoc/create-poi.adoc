@@ -1,0 +1,36 @@
+## Create POI Endpoint
+
+Create a new Point of Interest (POI).
+
+### CURL Command
+
+include::{snippets}/create-poi-1/curl-request.adoc[]
+
+### HTTPie Command
+
+include::{snippets}/create-poi-1/httpie-request.adoc[]
+
+### HTTP Request
+
+include::{snippets}/create-poi-1/http-request.adoc[]
+
+### HTTP Response
+
+include::{snippets}/create-poi-1/http-response.adoc[]
+
+### Response Body
+
+include::{snippets}/create-poi-1/response-body.adoc[]
+
+### Raw Response Body
+
+include::{snippets}/create-poi-1/raw-response-body.adoc[]
+
+### visualized
+
+[plantuml,generated/create-poi-response,svg]
+----
+@startjson
+include::{snippets}/create-poi-1/raw-response-body.adoc[]
+@endjson
+----

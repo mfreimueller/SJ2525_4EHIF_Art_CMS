@@ -1,6 +1,7 @@
 package com.mfreimueller.art.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mfreimueller.art.RawResponseBodySnippet;
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.Creator;
@@ -9,16 +10,22 @@ import com.mfreimueller.art.mappers.*;
 import com.mfreimueller.art.presentation.assembler.PointOfInterestModelAssembler;
 import com.mfreimueller.art.service.PointOfInterestService;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,11 +35,16 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PointOfInterestController.class)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class, PointOfInterestModelAssembler.class })
 class PointOfInterestControllerTest {
     private @MockitoBean PointOfInterestService service;
@@ -41,14 +53,31 @@ class PointOfInterestControllerTest {
     private @MockitoSpyBean CreatorMapper creatorMapper;
     private @MockitoSpyBean PointOfInterestModelAssembler assembler;
 
-    private @Autowired MockMvc mockMvc;
+    private MockMvc mockMvc;
+
+    private RawResponseBodySnippet rawResponseBodySnippet = new RawResponseBodySnippet();
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    public void setUp(WebApplicationContext webApplicationContext,
+                      RestDocumentationContextProvider restDocumentation) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .apply(documentationConfiguration(restDocumentation)
+                        .snippets()
+                        .withDefaults(rawResponseBodySnippet).and()
+                        .operationPreprocessors()
+                        .withRequestDefaults(prettyPrint())
+                        .withResponseDefaults(prettyPrint())
+                ).build();
+    }
 
     @Test
     void can_create_point_of_interest() throws Exception {
         var title = "Das Bildnis des Dorian Gray";
         var titleMap = Map.of("de", title);
+        var description = "Nicht ganz ein Kunstwerk, aber immerhin klassische Literatur.";
+        var descriptionMap = Map.of("de", description);
         var creatorId = new Creator.CreatorId(1L);
         var creator = Creator.builder().username("idefix").id(creatorId).build();
 
@@ -56,6 +85,7 @@ class PointOfInterestControllerTest {
         var poi = PointOfInterest
                 .builder()
                 .title(titleMap)
+                .description(descriptionMap)
                 .id(id)
                 .createdBy(creator)
                 .build();
@@ -77,12 +107,11 @@ class PointOfInterestControllerTest {
                 ))
                 .andExpect(jsonPath("$.title.de").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("create-poi-1"));
 
         verify(service).create(any());
     }
-
-
 
     @Test
     void can_search_slice() throws Exception {
@@ -105,7 +134,8 @@ class PointOfInterestControllerTest {
                 .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].id.id").value(id.id()))
                 .andExpect(jsonPath("$.page.size").value(5))
                 .andExpect(jsonPath("$.page.number").value(1))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("search-poi-slice-1")) ;
 
         verify(service).search(any(), any(), any(Pageable.class));
     }
@@ -131,7 +161,8 @@ class PointOfInterestControllerTest {
                 .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].id.id").value(id.id()))
                 .andExpect(jsonPath("$.page.size").value(20))
                 .andExpect(jsonPath("$.page.number").value(0))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("fetch-pois"));
 
         verify(service).getPointsOfInterest(any(Pageable.class));
     }
@@ -157,7 +188,8 @@ class PointOfInterestControllerTest {
                 .andExpect(jsonPath("$._embedded.pointOfInterestDtoList[0].id.id").value(id.id()))
                 .andExpect(jsonPath("$.page.size").value(5))
                 .andExpect(jsonPath("$.page.number").value(1))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("fetch-pois-slice"));
 
         verify(service).getPointsOfInterest(any(Pageable.class));
     }
@@ -168,7 +200,8 @@ class PointOfInterestControllerTest {
 
         mockMvc.perform(get("/api/pois"))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("fetch-pois-empty"));
 
         verify(service).getPointsOfInterest(any(Pageable.class));
     }
@@ -189,7 +222,8 @@ class PointOfInterestControllerTest {
                 .andExpect(header().stringValues("Content-Type", "application/hal+json"))
                 .andExpect(jsonPath("$.title.de").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("fetch-poi-1"));
 
         verify(service).getPointOfInterest(any());
     }
@@ -200,7 +234,8 @@ class PointOfInterestControllerTest {
 
         mockMvc.perform(get("/api/pois/1"))
                 .andExpect(status().isNotFound())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("fetch-poi-1-not-found"));
     }
 
     @Test
@@ -209,7 +244,8 @@ class PointOfInterestControllerTest {
 
         mockMvc.perform(delete("/api/pois/1"))
                 .andExpect(status().isNoContent())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("delete-poi-1"));
 
         verify(service).delete(any());
     }
@@ -220,7 +256,8 @@ class PointOfInterestControllerTest {
 
         mockMvc.perform(delete("/api/pois/1"))
                 .andExpect(status().isNotFound())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("delete-poi-1-not-found"));
 
         verify(service).delete(any());
     }
@@ -251,7 +288,8 @@ class PointOfInterestControllerTest {
                         Matchers.matchesPattern("http://localhost(?::8080)?/api/pois/1")))
                 .andExpect(jsonPath("$.title.en").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("replace-poi-1"));
 
         verify(service).replace(any(), any());
     }
@@ -272,7 +310,8 @@ class PointOfInterestControllerTest {
                                 .content(objectMapper.writeValueAsBytes(cmd))
                 )
                 .andExpect(status().isNotFound())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("replace-poi-1-not-found"));
 
         verify(service).replace(any(), any());
     }
@@ -304,7 +343,8 @@ class PointOfInterestControllerTest {
                 ))
                 .andExpect(jsonPath("$.title.en").value(title))
                 .andExpect(jsonPath("$.id.id").value(id.id()))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("update-poi-1"));
 
         verify(service).update(any(), any());
     }
@@ -325,7 +365,8 @@ class PointOfInterestControllerTest {
                                 .content(objectMapper.writeValueAsBytes(cmd))
                 )
                 .andExpect(status().isNotFound())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("update-poi-1-not-found"));
 
         verify(service).update(any(), any());
     }
