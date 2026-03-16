@@ -42,7 +42,7 @@ public class TextContentService {
     }
 
     @Transactional(readOnly = false)
-    public TextContent update(@NotNull Content.ContentId id, @NotNull @Valid PutTextContentCommand cmd) {
+    public TextContent update(@NotNull Long id, @NotNull @Valid PutTextContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
         var textContent = textContentRepository.getReferenceById(id);
@@ -59,12 +59,12 @@ public class TextContentService {
     }
 
     @Transactional(readOnly = false)
-    public void delete(@NotNull Content.ContentId id) {
+    public void delete(@NotNull Long id) {
         textContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
-        log.debug("Deleted text content with id {}", id.id());
+        log.debug("Deleted text content with id {}", id);
     }
 
-    public TextContent getByReference(@NotNull Content.ContentId id) {
+    public TextContent getByReference(@NotNull Long id) {
         return textContentRepository.getReferenceById(id);
     }
 

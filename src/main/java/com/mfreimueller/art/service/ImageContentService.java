@@ -44,7 +44,7 @@ public class ImageContentService {
     }
 
     @Transactional(readOnly = false)
-    public ImageContent update(@NotNull Content.ContentId id, @NotNull @Valid PutImageContentCommand cmd) {
+    public ImageContent update(@NotNull Long id, @NotNull @Valid PutImageContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
         var imageContent = imageContentRepository.getReferenceById(id);
@@ -60,12 +60,12 @@ public class ImageContentService {
     }
 
     @Transactional(readOnly = false)
-    public void delete(@NotNull Content.ContentId id) {
+    public void delete(@NotNull Long id) {
         imageContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
-        log.debug("Deleted image content with id {}", id.id());
+        log.debug("Deleted image content with id {}", id);
     }
 
-    public ImageContent getByReference(@NotNull Content.ContentId id) {
+    public ImageContent getByReference(@NotNull Long id) {
         return imageContentRepository.getReferenceById(id);
     }
 

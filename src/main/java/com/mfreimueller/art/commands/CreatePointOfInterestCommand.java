@@ -12,7 +12,7 @@ import java.util.Map;
 public record CreatePointOfInterestCommand(
         Map<String, String> title,
         Map<String, String> description,
-        List<Content.ContentId> content,
+        List<Long> content,
         @NotNull Creator.CreatorId creatorId
 ) {
 }

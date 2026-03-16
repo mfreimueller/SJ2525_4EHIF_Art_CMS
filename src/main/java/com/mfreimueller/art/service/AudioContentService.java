@@ -44,7 +44,7 @@ public class AudioContentService {
     }
 
     @Transactional(readOnly = false)
-    public AudioContent update(@NotNull Content.ContentId id, @NotNull @Valid PutAudioContentCommand cmd) {
+    public AudioContent update(@NotNull Long id, @NotNull @Valid PutAudioContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
         var audioContent = audioContentRepository.getReferenceById(id);
@@ -62,12 +62,12 @@ public class AudioContentService {
     }
 
     @Transactional(readOnly = false)
-    public void delete(@NotNull Content.ContentId id) {
+    public void delete(@NotNull Long id) {
         audioContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
-        log.debug("Deleted audio content with id {}", id.id());
+        log.debug("Deleted audio content with id {}", id);
     }
 
-    public AudioContent getByReference(@NotNull Content.ContentId id) {
+    public AudioContent getByReference(@NotNull Long id) {
         return audioContentRepository.getReferenceById(id);
     }
 

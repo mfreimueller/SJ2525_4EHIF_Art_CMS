@@ -14,7 +14,7 @@ import java.util.Map;
 
 @SuperBuilder
 public class ContentDto {
-    private Content.ContentId id;
+    private Long id;
     @Builder.Default
     private Map<String, String> description = new HashMap<>();
 }

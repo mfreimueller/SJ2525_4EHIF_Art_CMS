@@ -104,7 +104,7 @@ class VideoContentServiceTest {
 
     @Test
     public void can_delete_existing_entity() {
-        service.delete(new Content.ContentId(1L));
+        service.delete(1L);
         verify(repository, times(1)).deleteById(any());
     }
 
@@ -113,7 +113,7 @@ class VideoContentServiceTest {
         var videoContent = videoContent();
         when(repository.getReferenceById(any())).thenReturn(videoContent);
 
-        var returned = service.getByReference(new Content.ContentId(1L));
+        var returned = service.getByReference(1L);
 
         assertNotNull(returned);
         assertThat(returned.getId(), equalTo(videoContent.getId()));

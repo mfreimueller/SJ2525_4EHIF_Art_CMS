@@ -104,7 +104,7 @@ class AudioContentServiceTest {
 
     @Test
     public void can_delete_existing_entity() {
-        service.delete(new Content.ContentId(1L));
+        service.delete(new Long(1L));
         verify(repository, times(1)).deleteById(any());
     }
 
@@ -113,7 +113,7 @@ class AudioContentServiceTest {
         var audioContent = audioContent();
         when(repository.getReferenceById(any())).thenReturn(audioContent);
 
-        var returned = service.getByReference(new Content.ContentId(1L));
+        var returned = service.getByReference(new Long(1L));
 
         assertNotNull(returned);
         assertThat(returned.getId(), equalTo(audioContent.getId()));

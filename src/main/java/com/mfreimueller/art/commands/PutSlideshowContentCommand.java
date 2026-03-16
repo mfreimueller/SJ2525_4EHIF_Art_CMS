@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Builder
-public record PutSlideshowContentCommand(Map<String, String> description, @NotNull List<Content.ContentId> slides,
+public record PutSlideshowContentCommand(Map<String, String> description, @NotNull List<Long> slides,
                                          SlideshowContent.Mode mode, Duration speed,
                                          @NotNull Creator.CreatorId creatorId) {
 }

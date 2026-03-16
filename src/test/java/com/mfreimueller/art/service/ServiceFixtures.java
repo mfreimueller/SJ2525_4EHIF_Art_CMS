@@ -73,7 +73,7 @@ public final class ServiceFixtures {
         var longText = localizedText();
 
         return TextContent.builder()
-                .id(new Content.ContentId(randomId()))
+                .id(randomId())
                 .description(description)
                 .shortText(shortText)
                 .longText(longText)
@@ -85,7 +85,7 @@ public final class ServiceFixtures {
         var source = source();
 
         return ImageContent.builder()
-                .id(new Content.ContentId(randomId()))
+                .id(randomId())
                 .description(description)
                 .source(source)
                 .build();
@@ -126,7 +126,7 @@ public final class ServiceFixtures {
         );
 
         return SlideshowContent.builder()
-                .id(new Content.ContentId(randomId()))
+                .id(randomId())
                 .description(description)
                 .mode(SlideshowContent.Mode.AUTO)
                 .speed(Duration.of(5))

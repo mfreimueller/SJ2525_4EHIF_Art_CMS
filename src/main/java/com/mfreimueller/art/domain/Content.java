@@ -20,8 +20,10 @@ import java.util.Map;
 @Table(name = "ContentBase")
 public abstract class Content extends HistoryBase {
 
-    @EmbeddedId
-    private ContentId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
+    @NotNull
+    private Long id;
 
     @ElementCollection
     @CollectionTable(name = "Content_LocalizedDescriptions",
@@ -29,8 +31,4 @@ public abstract class Content extends HistoryBase {
     @Column(name = "description")
     @Builder.Default
     private Map<String, String> description = new HashMap<>();
-
-    public record ContentId(
-            @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")
-            @NotNull Long id) {}
 }

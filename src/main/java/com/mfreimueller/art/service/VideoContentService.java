@@ -43,7 +43,7 @@ public class VideoContentService {
     }
 
     @Transactional(readOnly = false)
-    public VideoContent update(@NotNull Content.ContentId id, @NotNull @Valid PutVideoContentCommand cmd) {
+    public VideoContent update(@NotNull Long id, @NotNull @Valid PutVideoContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
 
         var audioContent = videoContentRepository.getReferenceById(id);
@@ -61,12 +61,12 @@ public class VideoContentService {
     }
 
     @Transactional(readOnly = false)
-    public void delete(@NotNull Content.ContentId id) {
+    public void delete(@NotNull Long id) {
         videoContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
-        log.debug("Deleted video content with id {}", id.id());
+        log.debug("Deleted video content with id {}", id);
     }
 
-    public VideoContent getByReference(@NotNull Content.ContentId id) {
+    public VideoContent getByReference(@NotNull Long id) {
         return videoContentRepository.getReferenceById(id);
     }
 

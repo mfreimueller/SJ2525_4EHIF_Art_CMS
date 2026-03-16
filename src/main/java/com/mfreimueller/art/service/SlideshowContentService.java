@@ -49,7 +49,7 @@ public class SlideshowContentService {
     }
 
     @Transactional(readOnly = false)
-    public SlideshowContent update(@NotNull Content.ContentId id, @NotNull @Valid PutSlideshowContentCommand cmd) {
+    public SlideshowContent update(@NotNull Long id, @NotNull @Valid PutSlideshowContentCommand cmd) {
         var creator = creatorService.getByReference(cmd.creatorId());
         var slides = cmd.slides().stream().map(contentRepository::getReferenceById).toList();
 
@@ -58,7 +58,7 @@ public class SlideshowContentService {
         // we need to manually check for a circular reference here
         if (containsSlideshow(slides, slideshow)) {
             log.error("Attempted to add slideshow with id {} to itself", slideshow.getId());
-            throw DataConstraintException.forCircularReference(SlideshowContent.class, slideshow.getId().id());
+            throw DataConstraintException.forCircularReference(SlideshowContent.class, slideshow.getId());
         }
 
         slideshow.setDescription(cmd.description());
@@ -76,12 +76,12 @@ public class SlideshowContentService {
     }
 
     @Transactional(readOnly = false)
-    public void delete(@NotNull Content.ContentId id) {
+    public void delete(@NotNull Long id) {
         slideshowContentRepository.deleteById(id); // NOTE: this doesn't fail on entity not found
-        log.debug("Deleted slideshow content with id {}", id.id());
+        log.debug("Deleted slideshow content with id {}", id);
     }
 
-    public SlideshowContent getByReference(@NotNull Content.ContentId id) {
+    public SlideshowContent getByReference(@NotNull Long id) {
         return slideshowContentRepository.getReferenceById(id);
     }
 

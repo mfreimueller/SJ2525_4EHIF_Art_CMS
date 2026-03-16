@@ -12,6 +12,6 @@ import java.util.Map;
 public record UpdatePointOfInterestCommand(
         Map<String, String> title,
         Map<String, String> description,
-        List<Content.ContentId> content,
+        List<Long> content,
         @NotNull Creator.CreatorId creatorId) {
 }
