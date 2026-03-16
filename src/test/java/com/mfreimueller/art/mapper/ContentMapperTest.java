@@ -33,7 +33,7 @@ class ContentMapperTest {
     @BeforeEach
     void setUp() {
         content = AudioContent.builder()
-                .id(new Content.ContentId(1L))
+                .id(new Long(1L))
                 .description(Map.of("en", "A description"))
                 .createdAt(dateTimeFactory.now())
                 .build();
