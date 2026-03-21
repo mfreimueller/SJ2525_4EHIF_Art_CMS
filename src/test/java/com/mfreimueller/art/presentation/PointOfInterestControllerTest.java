@@ -46,30 +46,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PointOfInterestController.class)
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class, PointOfInterestModelAssembler.class })
-class PointOfInterestControllerTest {
+class PointOfInterestControllerTest extends AbstractDocumentationControllerTest {
     private @MockitoBean PointOfInterestService service;
 
     private @MockitoSpyBean PointOfInterestMapper mapper;
     private @MockitoSpyBean CreatorMapper creatorMapper;
     private @MockitoSpyBean PointOfInterestModelAssembler assembler;
 
-    private MockMvc mockMvc;
-
-    private RawResponseBodySnippet rawResponseBodySnippet = new RawResponseBodySnippet();
-
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,
                       RestDocumentationContextProvider restDocumentation) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(documentationConfiguration(restDocumentation)
-                        .snippets()
-                        .withDefaults(rawResponseBodySnippet).and()
-                        .operationPreprocessors()
-                        .withRequestDefaults(prettyPrint())
-                        .withResponseDefaults(prettyPrint())
-                ).build();
+        super.setUp(webApplicationContext, restDocumentation);
     }
 
     @Test
