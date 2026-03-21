@@ -5,6 +5,7 @@ import com.mfreimueller.art.dto.ContentDto;
 import com.mfreimueller.art.dto.KeysetPaged;
 import com.mfreimueller.art.presentation.assembler.ContentModelAssembler;
 import com.mfreimueller.art.service.ContentService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
@@ -31,8 +32,8 @@ public class ContentController {
 
     private final ContentModelAssembler assembler;
 
-    @GetMapping
-    public ResponseEntity<EntityModel<ContentDto>> getContent(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<EntityModel<ContentDto>> getContent(@PathParam("id") Long id) {
         throw new NotImplementedException();
     }
 
