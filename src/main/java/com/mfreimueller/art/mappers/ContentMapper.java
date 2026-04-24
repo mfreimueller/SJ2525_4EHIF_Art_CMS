@@ -9,7 +9,7 @@ import org.mapstruct.SubclassMapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = { CreatorMapper.class })
+@Mapper(config = SpringMapperConfig.class, uses = { CreatorMapper.class })
 public interface ContentMapper {
     @SubclassMapping(source = AudioContent.class, target = AudioContentDto.class)
     ContentDto toDto(Content content);

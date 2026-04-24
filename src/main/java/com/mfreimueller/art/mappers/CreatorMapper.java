@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(config = SpringMapperConfig.class)
 public interface CreatorMapper {
     CreatorDto toDto(Creator creator);
 }

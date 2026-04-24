@@ -1,7 +1,7 @@
 package com.mfreimueller.art.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mfreimueller.art.RawResponseBodySnippet;
+import com.mfreimueller.art.MapperTestConfig;
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
 import com.mfreimueller.art.domain.Creator;
@@ -23,8 +23,6 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
@@ -45,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(PointOfInterestController.class)
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@Import({ PointOfInterestMapperImpl.class, ContentMapperImpl.class, CreatorMapperImpl.class, PointOfInterestModelAssembler.class })
+@Import({ MapperTestConfig.class, PointOfInterestModelAssembler.class })
 class PointOfInterestControllerTest extends AbstractDocumentationControllerTest {
     private @MockitoBean PointOfInterestService service;
 
