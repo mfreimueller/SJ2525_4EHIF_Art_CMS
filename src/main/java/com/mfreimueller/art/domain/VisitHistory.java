@@ -18,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "VisitHistory")
-public class VisitHistory extends AbstractEntity {
+public class VisitHistory extends AbstractEntity<VisitHistory.VisitHistoryId> {
 
     @EmbeddedId
     private VisitHistoryId id;

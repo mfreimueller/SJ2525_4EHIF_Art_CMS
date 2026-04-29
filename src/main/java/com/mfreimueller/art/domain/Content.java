@@ -18,7 +18,7 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "ContentBase")
-public abstract class Content extends HistoryBase {
+public abstract class Content extends HistoryBase<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "globalSeq")

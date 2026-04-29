@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Collection")
-public class Collection extends HistoryBase {
+public class Collection extends HistoryBase<Collection.CollectionId> {
 
     @EmbeddedId
     private CollectionId id;

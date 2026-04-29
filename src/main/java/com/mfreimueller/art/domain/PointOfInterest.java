@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "PointOfInterest")
-public class PointOfInterest extends HistoryBase {
+public class PointOfInterest extends HistoryBase<PointOfInterest.PointOfInterestId> {
 
     @EmbeddedId
     private PointOfInterestId id;

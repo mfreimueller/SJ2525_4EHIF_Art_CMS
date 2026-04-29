@@ -16,7 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Visitor")
-public class Visitor extends AbstractEntity {
+public class Visitor extends AbstractEntity<Visitor.VisitorId> {
     // TODO: add way to uniquely identify identical visitors across different visits if they don't provide username/password
 
     @EmbeddedId

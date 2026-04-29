@@ -14,26 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 @SuperBuilder
 @SequenceGenerator(name = "globalSeq", sequenceName = "global_seq", allocationSize = 1)
 @Slf4j
-public abstract class AbstractEntity {
+public abstract class AbstractEntity<T> {
     @Version
     private Long version;
 
+    public abstract T getId();
+
     @Override
-    @SuppressWarnings("JavaReflectionMemberAccess")
     public boolean equals(Object obj) {
         if (obj instanceof AbstractEntity ae) {
-            // some black magic... until I find a better solution
-            try {
-                var getIdMethod = AbstractEntity.class.getDeclaredMethod("getId");
-
-                var objId = getIdMethod.invoke(ae);
-                var thisId = getIdMethod.invoke(this);
-
-                return thisId.equals(objId);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return false;
-            }
+            return getId().equals(ae.getId());
         }
 
         return false;

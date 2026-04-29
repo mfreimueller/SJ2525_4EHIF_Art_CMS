@@ -15,7 +15,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "Creator")
-public class Creator extends AbstractEntity {
+public class Creator extends AbstractEntity<Creator.CreatorId> {
 
     @EmbeddedId
     private CreatorId id;
