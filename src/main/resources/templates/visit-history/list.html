@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Visit History')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <h1>Visit History</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Visitor</th>
+                <th>Visited On</th>
+                <th>Duration</th>
+                <th>POIs</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="vh : ${histories}">
+                <td th:text="${vh.id.id()}">1</td>
+                <td th:text="${vh.visitor?.username}">visitor</td>
+                <td th:text="${vh.visitedOn}">2024-01-01</td>
+                <td th:text="${vh.duration}">120</td>
+                <td th:text="${vh.pointsOfInterest.size()}">0</td>
+                <td><a th:href="@{/web/visit-histories/{id}(id=${vh.id.id()})}" class="btn btn-sm">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

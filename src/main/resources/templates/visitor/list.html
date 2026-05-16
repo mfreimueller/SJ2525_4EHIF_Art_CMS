@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Visitors')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <h1>Visitors</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="v : ${visitors}">
+                <td th:text="${v.id.id()}">1</td>
+                <td th:text="${v.username}">visitor</td>
+                <td th:text="${v.emailAddress}">visitor@example.com</td>
+                <td><a th:href="@{/web/visitors/{id}(id=${v.id.id()})}" class="btn btn-sm">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

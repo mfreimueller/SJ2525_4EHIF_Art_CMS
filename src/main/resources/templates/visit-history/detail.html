@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Visit History Detail')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/visit-histories}">Visit History</a> &raquo;
+        <span th:text="${history.id.id()}">123</span>
+    </div>
+    <h1>Visit History #<span th:text="${history.id.id()}">123</span></h1>
+    <table>
+        <tr><th>ID</th><td th:text="${history.id.id()}">1</td></tr>
+        <tr><th>Visitor</th><td><a th:href="@{/web/visitors/{id}(id=${history.visitor?.id?.id()})}" th:text="${history.visitor?.username}">visitor</a></td></tr>
+        <tr><th>Visited On</th><td th:text="${history.visitedOn}">2024-01-01</td></tr>
+        <tr><th>Duration</th><td th:text="${history.duration}">120</td></tr>
+    </table>
+    <h2>Visited POIs (<span th:text="${history.pointsOfInterest.size()}">0</span>)</h2>
+    <table th:if="${!history.pointsOfInterest.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="poi : ${history.pointsOfInterest}">
+                <td th:text="${poi.id.id()}">1</td>
+                <td th:text="${#strings.listJoin(poi.title.values(), ', ')}">Title</td>
+                <td><a th:href="@{/web/pois/{id}(id=${poi.id.id()})}" class="btn btn-sm">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${history.pointsOfInterest.isEmpty()}">No POIs visited.</p>
+    <div class="actions" style="margin-top:1rem">
+        <a th:href="@{/web/visit-histories}" class="btn">Back to List</a>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
