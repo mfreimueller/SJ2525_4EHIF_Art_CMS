@@ -26,12 +26,16 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.mfreimueller.art.dto.CommentDto;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -358,5 +362,49 @@ class PointOfInterestControllerTest extends AbstractDocumentationControllerTest 
                 .andDo(document("update-poi-1-not-found"));
 
         verify(service).update(any(), any());
+    }
+
+    @Test
+    void can_fetch_comments_for_point_of_interest() throws Exception {
+        var restClient = mock(RestClient.class);
+        var spec = mock(RestClient.RequestHeadersUriSpec.class);
+        var responseSpec = mock(RestClient.ResponseSpec.class);
+        var commentResponse = new CommentDto.CommentResponse(
+                List.of(new CommentDto("Great artwork!"), new CommentDto("Very inspiring.")));
+
+        when(restClientBuilder.build()).thenReturn(restClient);
+        when(restClient.get()).thenReturn(spec);
+        when(spec.uri(anyString(), anyInt())).thenReturn(spec);
+        when(spec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.body(CommentDto.CommentResponse.class)).thenReturn(commentResponse);
+
+        mockMvc
+                .perform(get("/api/pois/1/comments"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].body").value("Great artwork!"))
+                .andExpect(jsonPath("$[1].body").value("Very inspiring."))
+                .andDo(print())
+                .andDo(document("fetch-poi-comments"));
+    }
+
+    @Test
+    void returns_empty_list_when_comment_response_is_null() throws Exception {
+        var restClient = mock(RestClient.class);
+        var spec = mock(RestClient.RequestHeadersUriSpec.class);
+        var responseSpec = mock(RestClient.ResponseSpec.class);
+
+        when(restClientBuilder.build()).thenReturn(restClient);
+        when(restClient.get()).thenReturn(spec);
+        when(spec.uri(anyString(), anyInt())).thenReturn(spec);
+        when(spec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.body(CommentDto.CommentResponse.class)).thenReturn(null);
+
+        mockMvc
+                .perform(get("/api/pois/1/comments"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0))
+                .andDo(print())
+                .andDo(document("fetch-poi-comments-empty"));
     }
 }
