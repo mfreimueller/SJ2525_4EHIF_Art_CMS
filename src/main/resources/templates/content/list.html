@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Content')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <h1>Content</h1>
+    <a th:href="@{/web/content/pool}" class="btn btn-warning">Content Pool</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${contents}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.getClass().getSimpleName()}">TextContent</td>
+                <td th:text="${#strings.listJoin(c.description.values(), ', ')}">Description</td>
+                <td><a th:href="@{/web/content/{id}(id=${c.id})}" class="btn btn-sm">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
