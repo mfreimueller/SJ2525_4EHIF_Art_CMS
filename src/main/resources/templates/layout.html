@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title} + ' - Art CMS'">Art CMS</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; }
+        header { background: #2c3e50; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: white; text-decoration: none; }
+        nav { background: #34495e; padding: 0.5rem 1rem; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+        nav a { color: #ecf0f1; text-decoration: none; font-size: 0.9rem; }
+        nav a:hover { color: #3498db; }
+        main { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
+        th { background: #f5f5f5; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .btn { display: inline-block; padding: 0.4rem 0.8rem; background: #3498db; color: white; text-decoration: none; border: none; border-radius: 3px; cursor: pointer; font-size: 0.9rem; }
+        .btn-danger { background: #e74c3c; }
+        .btn-warning { background: #f39c12; }
+        .btn-success { background: #27ae60; }
+        .btn-sm { padding: 0.2rem 0.5rem; font-size: 0.8rem; }
+        .breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+        .breadcrumb a { color: #3498db; text-decoration: none; }
+        .pagination { margin-top: 1rem; }
+        .flash { padding: 0.5rem 1rem; margin-bottom: 1rem; border-radius: 3px; }
+        .flash-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .form-group { margin-bottom: 0.75rem; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 0.25rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; max-width: 400px; padding: 0.4rem; border: 1px solid #ddd; border-radius: 3px; box-sizing: border-box; }
+        .form-group input[type="checkbox"] { width: auto; }
+        .actions { display: flex; gap: 0.5rem; }
+        footer { background: #2c3e50; color: white; text-align: center; padding: 1rem; margin-top: 2rem; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+<header th:fragment="header">
+    <h1><a th:href="@{/web/pois}">Art CMS</a></h1>
+    <div th:if="${#authentication != null}">
+        <span th:text="${#authentication.name}">user</span>
+        <span th:text="${#authentication.authorities}">[ROLES]</span>
+        |
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" style="background:none;border:none;color:white;cursor:pointer;text-decoration:underline">Logout</button>
+        </form>
+    </div>
+</header>
+<nav th:fragment="nav">
+    <ul>
+        <li><a th:href="@{/web/pois}">POIs</a></li>
+        <li><a th:href="@{/web/content}">Content</a></li>
+        <li><a th:href="@{/web/collections}">Collections</a></li>
+        <li><a th:href="@{/web/exhibitions}">Exhibitions</a></li>
+        <li><a th:href="@{/web/creators}">Creators</a></li>
+        <li><a th:href="@{/web/visitors}">Visitors</a></li>
+        <li><a th:href="@{/web/visit-histories}">Visit History</a></li>
+        <li><a th:href="@{/web/content/pool}">Content Pool</a></li>
+        <li><a th:href="@{/web/pois/pool}">POI Pool</a></li>
+    </ul>
+</nav>
+<footer th:fragment="footer">
+    <p>Art CMS &mdash; HTL Teaching Project</p>
+</footer>
+</body>
+</html>
