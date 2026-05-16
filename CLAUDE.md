@@ -226,3 +226,25 @@ Rich types encapsulate domain constraints (e.g., duration must be 0-250) and pre
 1. Add method to repository interface
 2. Use JPA projections for efficient selects: `<T> Optional<T> findProjectedBy(...)`
 3. Use `@Query` with JPQL for complex queries (localized text queries, aggregations)
+
+## Commit Convention
+
+Create a git commit **after every individual task** from `task.md`. Follow these rules:
+
+### Commit message format
+- Use present tense imperative ("Add password to Creator", not "Added password")
+- Reference the task number from `task.md` in the message body (`Task: 0.1`)
+- Keep the subject line concise (≤72 chars), add detail in the body
+
+### Which files to include
+- `git add -A` (let pre-commit hooks handle exclusions from `.gitignore`)
+- Never commit `.env`, `credentials.json`, or other secrets (even test ones)
+
+### When NOT to commit
+- If a pre-commit hook fails, fix the issue and create a new commit — do NOT amend
+- Do NOT push to remote unless explicitly asked
+- Do NOT commit if there are no changes (empty commits are never allowed)
+
+### After every commit
+- Run `git status` to confirm the commit succeeded
+- Verify the commit message is accurate by reviewing `git log -1`
