@@ -41,7 +41,7 @@
 
 ### D.2 — Missing REST Controller Test
 
-- [ ] **D.2.1** Create `CreatorControllerTest` extending `AbstractDocumentationControllerTest`. Test POST/GET/PUT/PATCH/DELETE with `@MockitoBean` service + `@MockitoSpyBean` mapper/assembler. Generate REST Docs snippets.
+- [x] **D.2.1** Create `CreatorControllerTest` extending `AbstractDocumentationControllerTest`. Test POST/GET/PUT/PATCH/DELETE with `@MockitoBean` service + `@MockitoSpyBean` mapper/assembler. Generate REST Docs snippets.
 
 ### D.3 — Missing Mapper Tests
 
