@@ -45,14 +45,14 @@
 
 ## Phase 2: Spring Security
 
-- [ ] **2.1** Create `CreatorDetails` class implementing `UserDetails` wrapping `Creator`, mapping `Role` to `GrantedAuthority`
-- [ ] **2.2** Create `CreatorUserDetailsService` implementing `UserDetailsService`, delegating to `CreatorRepository.findByUsername()`
-- [ ] **2.3** Create `SecurityConfig` with `@EnableWebSecurity` and `SecurityFilterChain` bean:
+- [x] **2.1** Create `CreatorDetails` class implementing `UserDetails` wrapping `Creator`, mapping `Role` to `GrantedAuthority`
+- [x] **2.2** Create `CreatorUserDetailsService` implementing `UserDetailsService`, delegating to `CreatorRepository.findByUsername()`
+- [x] **2.3** Create `SecurityConfig` with `@EnableWebSecurity` and `SecurityFilterChain` bean:
   - Permit `/login`, `/register`, `/css/**`, `/js/**`
   - Require authentication for all other paths (including `/api/**`)
   - Configure form login with custom login page
-- [ ] **2.4** Create `AdminInitializer` (`CommandLineRunner`) that seeds admin Creator (username=admin, password=admin, role=ADMIN) if not exists
-- [ ] **2.5** Configure role-based authorization: EDITOR/ADMIN for write operations, VIEWER for read-only
+- [x] **2.4** Create `AdminInitializer` (`CommandLineRunner`) that seeds admin Creator (username=admin, password=admin, role=ADMIN) if not exists
+- [x] **2.5** Configure role-based authorization: EDITOR/ADMIN for write operations, VIEWER for read-only
 
 ## Phase 3: Thymeleaf Web Interface
 
