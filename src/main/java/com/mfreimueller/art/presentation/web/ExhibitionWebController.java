@@ -4,7 +4,6 @@ import com.mfreimueller.art.commands.*;
 import com.mfreimueller.art.domain.Collection;
 import com.mfreimueller.art.domain.PointOfInterest;
 import com.mfreimueller.art.security.CurrentCreator;
-import com.mfreimueller.art.service.CollectionService;
 import com.mfreimueller.art.service.ExhibitionService;
 import com.mfreimueller.art.service.PointOfInterestService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +38,8 @@ public class ExhibitionWebController {
         var exhibition = service.getByReference(new Collection.CollectionId(key));
         model.addAttribute("exhibition", exhibition);
         model.addAttribute("allPois", poiService.getPointsOfInterest());
+        model.addAttribute("allSubcollections", service.getExhibitions(Pageable.unpaged()).getContent()
+                .stream().filter(e -> !e.getId().equals(exhibition.getId())).toList());
         return "exhibition/detail";
     }
 

@@ -23,6 +23,13 @@
             </td>
         </tr>
         <tr><th>Languages</th><td th:text="${#strings.setJoin(exhibition.languages, ', ')}">en, de</td></tr>
+        <tr>
+            <th>Parent Collection</th>
+            <td>
+                <a th:if="${exhibition.parentCollection != null}" th:href="@{/web/collections/{id}(id=${exhibition.parentCollection.id.id()})}" th:text="${#strings.listJoin(exhibition.parentCollection.title.values(), ', ')}">Parent</a>
+                <span th:unless="${exhibition.parentCollection != null}">None</span>
+            </td>
+        </tr>
         <tr><th>Created</th><td th:text="${exhibition.createdAt}">2024-01-01</td></tr>
         <tr><th>Updated</th><td th:text="${exhibition.updatedAt}">2024-01-01</td></tr>
         <tr><th>Created By</th><td th:text="${exhibition.createdBy?.username}">creator</td></tr>
@@ -91,7 +98,7 @@
             <div class="form-group">
                 <label for="subcollectionId">Select Collection</label>
                 <select id="subcollectionId" name="subcollectionId">
-                    <option th:each="c : ${allPois}" th:value="${c.id.id()}" th:text="${c.id.id()} + ': ' + ${#strings.listJoin(c.title.values(), ', ')}">1: Title</option>
+                    <option th:each="c : ${allSubcollections}" th:value="${c.id.id()}" th:text="${c.id.id()} + ': ' + ${#strings.listJoin(c.title.values(), ', ')}">1: Title</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-sm btn-success">Add Subcollection</button>
