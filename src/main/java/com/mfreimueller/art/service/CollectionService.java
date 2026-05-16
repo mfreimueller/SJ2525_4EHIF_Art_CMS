@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +56,10 @@ public class CollectionService extends AbstractCollectionService<Collection> {
         log.debug("Updated collection with id {}", saved.getId());
 
         return saved;
+    }
+
+    public Slice<Collection> getCollections(Pageable pageable) {
+        return collectionRepository.findAll(pageable);
     }
 
     @Override

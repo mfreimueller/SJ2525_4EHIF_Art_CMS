@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +55,10 @@ public class VisitorService {
 
     public Visitor getByReference(@NotNull Visitor.VisitorId id) {
         return visitorRepository.getReferenceById(id);
+    }
+
+    public Slice<Visitor> getVisitors(Pageable pageable) {
+        return visitorRepository.findAll(pageable);
     }
 
 }
