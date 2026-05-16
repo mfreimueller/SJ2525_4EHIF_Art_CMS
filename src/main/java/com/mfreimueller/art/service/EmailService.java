@@ -1,5 +1,6 @@
 package com.mfreimueller.art.service;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,14 +8,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final MeterRegistry meterRegistry;
 
     public void sendEmail(String to, String subject, String htmlBody) {
+        var start = System.nanoTime();
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -22,7 +27,9 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(htmlBody, true);
             mailSender.send(message);
-            log.debug("Email sent to {} with subject '{}'", to, subject);
+            var elapsed = System.nanoTime() - start;
+            meterRegistry.timer("email.send.duration").record(elapsed, TimeUnit.NANOSECONDS);
+            log.debug("Email sent to {} with subject '{}' (took {} ms)", to, subject, elapsed / 1_000_000);
         } catch (Exception e) {
             log.warn("Failed to send email to {} with subject '{}': {}", to, subject, e.getMessage());
         }

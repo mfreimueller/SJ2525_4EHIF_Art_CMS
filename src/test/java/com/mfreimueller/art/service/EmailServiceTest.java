@@ -27,7 +27,7 @@ class EmailServiceTest {
         var props = new Properties();
         props.setProperty("mail.smtp.auth", "false");
         sender.setJavaMailProperties(props);
-        return new EmailService(sender);
+        return new EmailService(sender, null);
     }
 
     @Test
@@ -65,7 +65,7 @@ class EmailServiceTest {
 
     @Test
     void does_not_throw_on_send_failure() {
-        var service = new EmailService(null);
+        var service = new EmailService(null, null);
         service.sendWelcomeEmail("nowhere@example.com", "Ghost");
     }
 

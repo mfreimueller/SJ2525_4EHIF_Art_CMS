@@ -1,6 +1,7 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.foundation.UploadProperties;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class FileStorageService {
     );
 
     private final UploadProperties uploadProperties;
+    private final MeterRegistry meterRegistry;
 
     private Path uploadDir;
 
@@ -68,6 +70,7 @@ public class FileStorageService {
 
         try {
             file.transferTo(targetPath);
+            meterRegistry.counter("files.uploaded").increment();
             log.debug("Stored file {} as {}", originalFilename, storedFilename);
             return storedFilename;
         } catch (IOException e) {
@@ -99,6 +102,7 @@ public class FileStorageService {
                 throw new IllegalArgumentException("Cannot delete file outside upload directory");
             }
             Files.deleteIfExists(filePath);
+            meterRegistry.counter("files.deleted").increment();
             log.debug("Deleted file {}", filename);
         } catch (IOException e) {
             log.warn("Failed to delete file {}: {}", filename, e.getMessage());
