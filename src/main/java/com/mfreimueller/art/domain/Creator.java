@@ -1,5 +1,6 @@
 package com.mfreimueller.art.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +24,10 @@ public class Creator extends AbstractEntity<Creator.CreatorId> {
     @NotBlank
     @Size(min = 3, max = 64)
     private String username;
+
+    @JsonIgnore
+    @NotBlank
+    private String password;
 
     private Role role;
 
