@@ -10,6 +10,7 @@ import com.mfreimueller.art.mappers.*;
 import com.mfreimueller.art.presentation.assembler.PointOfInterestModelAssembler;
 import com.mfreimueller.art.service.PointOfInterestService;
 import org.hamcrest.Matchers;
+import org.springframework.web.client.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import({ MapperTestConfig.class, PointOfInterestModelAssembler.class })
 class PointOfInterestControllerTest extends AbstractDocumentationControllerTest {
     private @MockitoBean PointOfInterestService service;
+    private @MockitoBean RestClient.Builder restClientBuilder;
 
     private @MockitoSpyBean PointOfInterestMapper mapper;
     private @MockitoSpyBean CreatorMapper creatorMapper;
