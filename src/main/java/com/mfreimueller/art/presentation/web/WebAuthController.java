@@ -3,6 +3,7 @@ package com.mfreimueller.art.presentation.web;
 import com.mfreimueller.art.commands.CreateCreatorCommand;
 import com.mfreimueller.art.domain.Creator;
 import com.mfreimueller.art.service.CreatorService;
+import com.mfreimueller.art.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ public class WebAuthController {
 
     private final CreatorService creatorService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @GetMapping("/login")
     public String login() {
@@ -48,6 +50,9 @@ public class WebAuthController {
                 .build();
 
         creatorService.create(cmd);
+
+        var emailTo = username + "@art-cms.local";
+        emailService.sendWelcomeEmail(emailTo, username);
 
         return "redirect:/login?registered";
     }

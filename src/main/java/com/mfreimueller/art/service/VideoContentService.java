@@ -1,7 +1,6 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.PutVideoContentCommand;
-import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.VideoContent;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.VideoContentRepository;
@@ -9,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +22,10 @@ public class VideoContentService {
     private final VideoContentRepository videoContentRepository;
     private final CreatorService creatorService;
     private final DateTimeFactory dateTimeFactory;
+    private final EmailService emailService;
+
+    @Value("${app.admin.email:admin@art-cms.local}")
+    private String adminEmail;
 
     @Transactional(readOnly = false)
     public VideoContent create(@NotNull @Valid PutVideoContentCommand cmd) {
@@ -38,6 +42,9 @@ public class VideoContentService {
 
         var saved = videoContentRepository.save(textContent);
         log.debug("Created new video content with id {}", saved.getId());
+
+        var desc = String.join(" ", saved.getDescription().values());
+        emailService.sendNewContentNotification(adminEmail, "Video Content", desc, saved.getId());
 
         return saved;
     }

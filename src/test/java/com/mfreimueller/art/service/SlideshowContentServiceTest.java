@@ -34,6 +34,7 @@ import static org.mockito.Mockito.*;
 class SlideshowContentServiceTest {
 
     private @InjectMocks SlideshowContentService service;
+    private @Mock EmailService emailService;
     private @Mock SlideshowContentRepository repository;
     private @Mock ContentRepository contentRepository;
     private @Mock CreatorService creatorService;

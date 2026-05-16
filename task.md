@@ -2,13 +2,13 @@
 
 ## Phase A — Mailpit Integration for Email Sending
 
-- [ ] **A.1** Create `EmailService` class with `JavaMailSender` and `sendEmail(to, subject, body)` method using `MimeMessage` with HTML content. Handle send errors gracefully (log + continue).
-- [ ] **A.2** Add `MailpitContainer` bean with `@ServiceConnection` to `TestcontainersConfiguration.java` for test auto-discovery.
-- [ ] **A.3** Create `application-dev.properties` with Mailpit SMTP config: `spring.mail.host=localhost`, `spring.mail.port=1025`, `spring.mail.properties.mail.smtp.auth=false`.
-- [ ] **A.4** Wire email into `WebAuthController.register()` — call `EmailService.sendWelcomeEmail()` after successful registration.
-- [ ] **A.5** Wire email into `ImageContentService.create()` (and other content services) — call `EmailService.sendNewContentNotification()` to notify admins.
-- [ ] **A.6** Create Thymeleaf email template `templates/email/welcome.html` with recipient name and branded footer.
-- [ ] **A.7** Write `EmailServiceTest` — `@SpringBootTest` with Mailpit container, send email, verify via Mailpit REST API (`GET /api/v1/messages`).
+- [x] **A.1** Create `EmailService` class with `JavaMailSender` and `sendEmail(to, subject, body)` method using `MimeMessage` with HTML content. Handle send errors gracefully (log + continue).
+- [x] **A.2** Add `MailpitContainer` bean with `@ServiceConnection` to `TestcontainersConfiguration.java` for test auto-discovery.
+- [x] **A.3** Create `application-dev.properties` with Mailpit SMTP config: `spring.mail.host=localhost`, `spring.mail.port=1025`, `spring.mail.properties.mail.smtp.auth=false`.
+- [x] **A.4** Wire email into `WebAuthController.register()` — call `EmailService.sendWelcomeEmail()` after successful registration.
+- [x] **A.5** Wire email into `ImageContentService.create()` (and other content services) — call `EmailService.sendNewContentNotification()` to notify admins.
+- [x] **A.6** Create Thymeleaf email template `templates/email/welcome.html` with recipient name and branded footer.
+- [x] **A.7** Write `EmailServiceTest` — `@SpringBootTest` with Mailpit container, send email, verify via Mailpit REST API (`GET /api/v1/messages`).
 
 ## Phase B — File Upload
 

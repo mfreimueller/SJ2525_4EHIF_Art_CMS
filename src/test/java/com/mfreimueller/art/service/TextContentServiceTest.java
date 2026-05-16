@@ -30,6 +30,7 @@ class TextContentServiceTest {
     private @Mock TextContentRepository repository;
     private @Mock CreatorService creatorService;
     private @Mock DateTimeFactory dateTimeFactory;
+    private @Mock EmailService emailService;
 
     @BeforeEach
     public void setup() {

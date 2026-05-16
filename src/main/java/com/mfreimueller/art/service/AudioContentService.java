@@ -2,14 +2,13 @@ package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.PutAudioContentCommand;
 import com.mfreimueller.art.domain.AudioContent;
-import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.AudioContentRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +22,10 @@ public class AudioContentService {
     private final AudioContentRepository audioContentRepository;
     private final CreatorService creatorService;
     private final DateTimeFactory dateTimeFactory;
+    private final EmailService emailService;
+
+    @Value("${app.admin.email:admin@art-cms.local}")
+    private String adminEmail;
 
     @Transactional(readOnly = false)
     public AudioContent create(@NotNull @Valid PutAudioContentCommand cmd) {
@@ -39,6 +42,9 @@ public class AudioContentService {
 
         var saved = audioContentRepository.save(audioContent);
         log.debug("Created new audio content with id {}", saved.getId());
+
+        var desc = String.join(" ", saved.getDescription().values());
+        emailService.sendNewContentNotification(adminEmail, "Audio Content", desc, saved.getId());
 
         return saved;
     }

@@ -1,17 +1,14 @@
 package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.PutImageContentCommand;
-import com.mfreimueller.art.commands.PutTextContentCommand;
-import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.domain.ImageContent;
-import com.mfreimueller.art.domain.TextContent;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.ImageContentRepository;
-import com.mfreimueller.art.persistence.TextContentRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +22,10 @@ public class ImageContentService {
     private final ImageContentRepository imageContentRepository;
     private final CreatorService creatorService;
     private final DateTimeFactory dateTimeFactory;
+    private final EmailService emailService;
+
+    @Value("${app.admin.email:admin@art-cms.local}")
+    private String adminEmail;
 
     @Transactional(readOnly = false)
     public ImageContent create(@NotNull @Valid PutImageContentCommand cmd) {
@@ -39,6 +40,9 @@ public class ImageContentService {
 
         var saved = imageContentRepository.save(imageContent);
         log.debug("Created new image content with id {}", saved.getId());
+
+        var desc = String.join(" ", saved.getDescription().values());
+        emailService.sendNewContentNotification(adminEmail, "Image Content", desc, saved.getId());
 
         return saved;
     }

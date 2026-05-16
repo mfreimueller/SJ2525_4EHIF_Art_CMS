@@ -31,6 +31,7 @@ class VideoContentServiceTest {
     private @Mock VideoContentRepository repository;
     private @Mock CreatorService creatorService;
     private @Mock DateTimeFactory dateTimeFactory;
+    private @Mock EmailService emailService;
 
     @BeforeEach
     public void setup() {

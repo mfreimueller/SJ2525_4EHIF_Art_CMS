@@ -31,6 +31,7 @@ class AudioContentServiceTest {
     private @Mock AudioContentRepository repository;
     private @Mock CreatorService creatorService;
     private @Mock DateTimeFactory dateTimeFactory;
+    private @Mock EmailService emailService;
 
     @BeforeEach
     public void setup() {
