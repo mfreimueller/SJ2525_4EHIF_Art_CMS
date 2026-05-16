@@ -1,84 +1,75 @@
-# Task List: Art CMS Development
+# Task List — Art CMS Extension
 
-## Phase 0: Foundation Fixes
+## Phase A — Mailpit Integration for Email Sending
 
-- [x] **0.1** Add `password` field (`@NotBlank String password`, `@JsonIgnore`) to `Creator` entity
-- [x] **0.2** Create Flyway migration `V1.0.2__AddCreatorPassword.sql` adding `password` column to `creator` table
-- [x] **0.3** Add `password` field to `CreateCreatorCommand` record
-- [x] **0.4** Add `password` field to `UpdateCreatorCommand` record
-- [x] **0.5** Create `TextContentDto` (extends `ContentDto`) with `shortText`, `longText` fields
-- [x] **0.6** Create `ImageContentDto` (extends `ContentDto`) with `source` field
-- [x] **0.7** Create `VideoContentDto` (extends `ContentDto`) with `source`, `duration`, `subtitles` fields
-- [x] **0.8** Create `SlideshowContentDto` (extends `ContentDto`) with `slides`, `mode`, `speed` fields
-- [x] **0.9** Create `CollectionDto` with title, pointsOfInterest, subCollections, parentCollection, createdAt, updatedAt, createdBy, updatedBy
-- [x] **0.10** Create `ExhibitionDto` (extends `CollectionDto`) with `languages` field
-- [x] **0.11** Create `VisitorDto` with id, username, emailAddress
-- [x] **0.12** Create `VisitHistoryDto` with id, duration, visitedOn, pointsOfInterest, visitor
-- [x] **0.13** Add `@SubclassMapping` entries to `ContentMapper` for `TextContent`, `ImageContent`, `VideoContent`, `SlideshowContent`
-- [x] **0.14** Create `CollectionMapper` interface (with `toDto`, `toDtos` methods)
-- [x] **0.15** Create `VisitorMapper` interface
-- [x] **0.16** Create `VisitHistoryMapper` interface
-- [x] **0.17** Add `findByUsername(String username)` method to `CreatorRepository`
-- [x] **0.18** Add `role` field to `CreatorDto`
+- [ ] **A.1** Create `EmailService` class with `JavaMailSender` and `sendEmail(to, subject, body)` method using `MimeMessage` with HTML content. Handle send errors gracefully (log + continue).
+- [ ] **A.2** Add `MailpitContainer` bean with `@ServiceConnection` to `TestcontainersConfiguration.java` for test auto-discovery.
+- [ ] **A.3** Create `application-dev.properties` with Mailpit SMTP config: `spring.mail.host=localhost`, `spring.mail.port=1025`, `spring.mail.properties.mail.smtp.auth=false`.
+- [ ] **A.4** Wire email into `WebAuthController.register()` — call `EmailService.sendWelcomeEmail()` after successful registration.
+- [ ] **A.5** Wire email into `ImageContentService.create()` (and other content services) — call `EmailService.sendNewContentNotification()` to notify admins.
+- [ ] **A.6** Create Thymeleaf email template `templates/email/welcome.html` with recipient name and branded footer.
+- [ ] **A.7** Write `EmailServiceTest` — `@SpringBootTest` with Mailpit container, send email, verify via Mailpit REST API (`GET /api/v1/messages`).
 
-## Phase 1: Complete REST API
+## Phase B — File Upload
 
-- [x] **1.1** Create `CreatorModelAssembler` with self link + affordances for PUT, PATCH, DELETE
-- [x] **1.2** Create `CollectionModelAssembler` with self link + affordances
-- [x] **1.3** Create `ExhibitionModelAssembler` with self link + affordances
-- [x] **1.4** Create `VisitorModelAssembler` with self link + affordances
-- [x] **1.5** Create `VisitHistoryModelAssembler` with self link + affordances
-- [x] **1.6** Create `CreatorController` (`/api/creators`) with POST, GET, GET-all (pageable), PUT, PATCH, DELETE
-- [x] **1.7** Create `CollectionController` (`/api/collections`) with POST, GET, GET-all, PUT, PATCH, DELETE, add/remove POI, add/remove subCollection
-- [x] **1.8** Create `ExhibitionController` (`/api/exhibitions`) with POST, GET, GET-all, PUT, PATCH, DELETE, add/remove POI, add/remove subCollection
-- [x] **1.9** Create `VisitorController` (`/api/visitors`) with POST, GET, GET-all (pageable), PUT, PATCH, DELETE
-- [x] **1.10** Create `VisitHistoryController` (`/api/visit-histories`) with POST, GET, GET-all (pageable)
-- [x] **1.11** Implement `ContentController.getContent(Long id)` (replace `NotImplementedException` with actual logic)
-- [x] **1.12** Fix keyset pagination `prev`/`next` link computation in `ContentController.getContents()`
-- [x] **1.13** Add `GET /api/pois/{id}/comments` endpoint to `PointOfInterestController` using `RestClient` to fetch 2 random comments from `dummyjson.com`
-- [x] **1.14** Write `PointOfInterestControllerTest`
-- [x] **1.15** Write `CollectionControllerTest`
-- [x] **1.16** Write `ExhibitionControllerTest`
-- [x] **1.17** Write `VisitorControllerTest`
-- [x] **1.18** Write `VisitHistoryControllerTest`
-- [x] **1.19** Write/update `ContentControllerTest` covering `getContent` and keyset pagination
+- [ ] **B.1** Create `UploadProperties` record (`@ConfigurationProperties(prefix = "app.upload")`) with `Path dir` and `long maxFileSize`. Add multipart config to `application-dev.properties`.
+- [ ] **B.2** Create `FileStorageService` with `store(MultipartFile) -> String`, `load(String) -> Resource`, `delete(String)`. Handle empty file, unsupported extension, not-found.
+- [ ] **B.3** Add REST upload endpoint `POST /api/content/image/{id}/upload` to new `ImageContentController`. Store file, update `ImageContent.source` with relative path + `LinkType.Relative`, return 201.
+- [ ] **B.4** Create `FileController` with `GET /api/files/{filename:.+}` serving `Resource` from `FileStorageService` with proper `Content-Type`.
+- [ ] **B.5** Add file upload form to `content/detail.html` (visible for EDITOR/ADMIN). Show preview link after upload.
+- [ ] **B.6** Create Flyway migration `V1.0.3__CreateFileUpload.sql` — add optional `file_metadata` table (original filename, size, content type, upload timestamp).
+- [ ] **B.7** Write `FileStorageServiceTest` — `@ExtendWith(MockitoExtension.class)` with `@TempDir`. Test store/delete/error cases.
+- [ ] **B.8** Write `FileUploadControllerTest` — `@WebMvcTest(FileController.class)` with `MockMultipartFile`, mock `FileStorageService`. Test 201/200/404.
 
-## Phase 2: Spring Security
+## Phase C — Actuator Configuration
 
-- [x] **2.1** Create `CreatorDetails` class implementing `UserDetails` wrapping `Creator`, mapping `Role` to `GrantedAuthority`
-- [x] **2.2** Create `CreatorUserDetailsService` implementing `UserDetailsService`, delegating to `CreatorRepository.findByUsername()`
-- [x] **2.3** Create `SecurityConfig` with `@EnableWebSecurity` and `SecurityFilterChain` bean:
-  - Permit `/login`, `/register`, `/css/**`, `/js/**`
-  - Require authentication for all other paths (including `/api/**`)
-  - Configure form login with custom login page
-- [x] **2.4** Create `AdminInitializer` (`CommandLineRunner`) that seeds admin Creator (username=admin, password=admin, role=ADMIN) if not exists
-- [x] **2.5** Configure role-based authorization: EDITOR/ADMIN for write operations, VIEWER for read-only
+- [ ] **C.1** Configure actuator in `application.properties`: expose `health,info,metrics,prometheus,env`. Enable health probes. Add `info.*` properties.
+- [ ] **C.2** Create `DatabaseHealthIndicator` — custom `HealthIndicator` pinging database with `SELECT 1`, return UP/DOWN with metadata.
+- [ ] **C.3** Create `ExternalApiHealthIndicator` — pings dummyjson.com, returns UP/DOWN with timeout info.
+- [ ] **C.4** Add custom Micrometer metrics: `FileStorageService` counters (`files.uploaded`, `files.deleted`, `file.size.bytes`), `EmailService` timer (`email.send.duration`).
+- [ ] **C.5** Add `micrometer-registry-prometheus` dependency to `pom.xml`. Verify `/actuator/prometheus` output.
+- [ ] **C.6** Secure actuator endpoints in `SecurityConfig`: permit `/actuator/health/**` for all, restrict `/actuator/env` and `/actuator/metrics` to ADMIN.
+- [ ] **C.7** Write `ActuatorHealthTest` — `@SpringBootTest` + `TestRestTemplate`. Verify `/actuator/health` UP, `/actuator/info` 200, admin-only endpoints.
+- [ ] **C.8** Write `HealthIndicatorTest` — unit tests for both custom health indicators with mocked dependencies.
 
-## Phase 3: Thymeleaf Web Interface
+## Phase D — Closing Test Gaps
 
-- [x] **3.1** Create `templates/layout.html` with Thymeleaf fragments (header, nav, sidebar, footer)
-- [x] **3.2** Create `templates/login.html` with login form
-- [x] **3.3** Create `templates/register.html` with registration form (creates VIEWER Creator)
-- [x] **3.4** Create `PointOfInterestWebController` with list, detail, create, edit, delete handlers
-- [x] **3.5** Create POI templates: `poi/list.html`, `poi/detail.html`, `poi/create.html`, `poi/edit.html`, `poi/confirm-delete.html`
-- [x] **3.6** Create `ContentWebController` with list, detail handlers (read-only)
-- [x] **3.7** Create Content templates: `content/list.html`, `content/detail.html` (read-only)
-- [x] **3.8** Create `CreatorWebController` with list, detail, create, edit, delete handlers
-- [x] **3.9** Create Creator templates: `creator/list.html`, `creator/detail.html`, `creator/create.html`, `creator/edit.html`, `creator/confirm-delete.html`
-- [x] **3.10** Create `CollectionWebController` with list, detail, create, edit, delete, add/remove POI, add/remove subCollection
-- [x] **3.11** Create Collection templates: `collection/list.html`, `collection/detail.html`, `collection/create.html`, `collection/edit.html`, `collection/confirm-delete.html`
-- [x] **3.12** Create `ExhibitionWebController` with list, detail, create, edit, delete, add/remove POI, add/remove subCollection
-- [x] **3.13** Create Exhibition templates: `exhibition/list.html`, `exhibition/detail.html`, `exhibition/create.html`, `exhibition/edit.html`, `exhibition/confirm-delete.html`
-- [x] **3.14** Create `VisitorWebController` with list, detail handlers (read-only, no create/edit)
-- [x] **3.15** Create Visitor templates: `visitor/list.html`, `visitor/detail.html`
-- [x] **3.16** Create `VisitHistoryWebController` with list, detail handlers (read-only, no create/edit)
-- [x] **3.17** Create VisitHistory templates: `visit-history/list.html`, `visit-history/detail.html`
-- [x] **3.18** Implement nav hierarchy: Exhibition index shows linked POIs and Collections; POI detail shows linked Content; Collection detail shows parent Exhibition + linked POIs
-- [x] **3.19** Create Content Pool page listing all Content not assigned to any POI, with "create new" button
-- [x] **3.20** Create POI Pool page listing all POIs not assigned to any Collection, with "create new" button
-- [x] **3.21** Add repository queries: find unassigned Content, find unassigned POIs
+### D.1 — JaCoCo Setup
 
-## Phase 4: Final Verification
+- [ ] **D.1.1** Add `jacoco-maven-plugin` to `pom.xml` with `prepare-agent` and `report` goals.
+- [ ] **D.1.2** Configure JaCoCo coverage rule: minimum line coverage 0.70.
 
-- [x] **4.1** Run `./mvnw verify` and fix any test failures
-- [x] **4.2** Manual smoke test: start app, verify login/registration, CRUD flows, navigation hierarchy, pool pages, REST API HATEOAS links
+### D.2 — Missing REST Controller Test
+
+- [ ] **D.2.1** Create `CreatorControllerTest` extending `AbstractDocumentationControllerTest`. Test POST/GET/PUT/PATCH/DELETE with `@MockitoBean` service + `@MockitoSpyBean` mapper/assembler. Generate REST Docs snippets.
+
+### D.3 — Missing Mapper Tests
+
+- [ ] **D.3.1** Create `CreatorMapperTest` — `@SpringBootTest`, verify `toDto()` maps id, username, role.
+- [ ] **D.3.2** Create `CollectionMapperTest` — verify localized titles, POIs, subcollections in `toDto()`.
+- [ ] **D.3.3** Create `VisitorMapperTest` — verify all scalar fields in `toDto()`.
+- [ ] **D.3.4** Create `VisitHistoryMapperTest` — verify duration, visitedOn, POIs, visitor in `toDto()`.
+
+### D.4 — Web Controller Tests
+
+- [ ] **D.4.1** Create `AbstractWebControllerTest` base class (`@SpringBootTest` + `@AutoConfigureMockMvc` + `@WithMockUser(roles = "ADMIN")`).
+- [ ] **D.4.2** Create `PoiWebControllerTest` — list, detail, create (GET form + POST), edit, delete, pool.
+- [ ] **D.4.3** Create `ContentWebControllerTest` — list, detail, pool (read-only).
+- [ ] **D.4.4** Create `CreatorWebControllerTest` — list, detail, create, edit, delete.
+- [ ] **D.4.5** Create `CollectionWebControllerTest` — list, detail, create, edit, delete, add/remove POI, add/remove subcollection.
+- [ ] **D.4.6** Create `ExhibitionWebControllerTest` — list, detail (languages), create, edit, delete, add/remove POI, add/remove subcollection.
+- [ ] **D.4.7** Create `VisitorWebControllerTest` — list, detail (read-only).
+- [ ] **D.4.8** Create `VisitHistoryWebControllerTest` — list, detail (read-only).
+- [ ] **D.4.9** Create `WebAuthControllerTest` — GET login/register render forms, POST register valid redirects, POST register password mismatch shows error.
+
+### D.5 — Security Tests
+
+- [ ] **D.5.1** Create `CreatorUserDetailsServiceTest` — mock `CreatorRepository`, test found/not-found.
+- [ ] **D.5.2** Create `SecurityConfigIntegrationTest` — `@SpringBootTest` + `TestRestTemplate`. Test unauthenticated redirect, authenticated 200, POST without auth 403.
+- [ ] **D.5.3** Create `AdminInitializerTest` — verify admin user exists after context start.
+
+### D.6 — Final Verification
+
+- [ ] **D.6.1** Run `./mvnw clean verify` — all ~167 tests pass, JaCoCo report generated.
+- [ ] **D.6.2** Review JaCoCo report at `target/site/jacoco/index.html`. Target: ≥70% line coverage.
+- [ ] **D.6.3** Manual smoke test with dev profile: upload file, verify email via Mailpit UI (port 8025), check `/actuator/health` returns UP.
