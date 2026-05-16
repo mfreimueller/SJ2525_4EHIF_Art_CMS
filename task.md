@@ -56,27 +56,27 @@
 
 ## Phase 3: Thymeleaf Web Interface
 
-- [ ] **3.1** Create `templates/layout.html` with Thymeleaf fragments (header, nav, sidebar, footer)
-- [ ] **3.2** Create `templates/login.html` with login form
-- [ ] **3.3** Create `templates/register.html` with registration form (creates VIEWER Creator)
-- [ ] **3.4** Create `PointOfInterestWebController` with list, detail, create, edit, delete handlers
-- [ ] **3.5** Create POI templates: `poi/list.html`, `poi/detail.html`, `poi/create.html`, `poi/edit.html`, `poi/confirm-delete.html`
-- [ ] **3.6** Create `ContentWebController` with list, detail handlers (read-only)
-- [ ] **3.7** Create Content templates: `content/list.html`, `content/detail.html` (read-only)
-- [ ] **3.8** Create `CreatorWebController` with list, detail, create, edit, delete handlers
-- [ ] **3.9** Create Creator templates: `creator/list.html`, `creator/detail.html`, `creator/create.html`, `creator/edit.html`, `creator/confirm-delete.html`
-- [ ] **3.10** Create `CollectionWebController` with list, detail, create, edit, delete, add/remove POI, add/remove subCollection
-- [ ] **3.11** Create Collection templates: `collection/list.html`, `collection/detail.html`, `collection/create.html`, `collection/edit.html`, `collection/confirm-delete.html`
-- [ ] **3.12** Create `ExhibitionWebController` with list, detail, create, edit, delete, add/remove POI, add/remove subCollection
-- [ ] **3.13** Create Exhibition templates: `exhibition/list.html`, `exhibition/detail.html`, `exhibition/create.html`, `exhibition/edit.html`, `exhibition/confirm-delete.html`
-- [ ] **3.14** Create `VisitorWebController` with list, detail handlers (read-only, no create/edit)
-- [ ] **3.15** Create Visitor templates: `visitor/list.html`, `visitor/detail.html`
-- [ ] **3.16** Create `VisitHistoryWebController` with list, detail handlers (read-only, no create/edit)
-- [ ] **3.17** Create VisitHistory templates: `visit-history/list.html`, `visit-history/detail.html`
-- [ ] **3.18** Implement nav hierarchy: Exhibition index shows linked POIs and Collections; POI detail shows linked Content; Collection detail shows parent Exhibition + linked POIs
-- [ ] **3.19** Create Content Pool page listing all Content not assigned to any POI, with "create new" button
-- [ ] **3.20** Create POI Pool page listing all POIs not assigned to any Collection, with "create new" button
-- [ ] **3.21** Add repository queries: find unassigned Content, find unassigned POIs
+- [x] **3.1** Create `templates/layout.html` with Thymeleaf fragments (header, nav, sidebar, footer)
+- [x] **3.2** Create `templates/login.html` with login form
+- [x] **3.3** Create `templates/register.html` with registration form (creates VIEWER Creator)
+- [x] **3.4** Create `PointOfInterestWebController` with list, detail, create, edit, delete handlers
+- [x] **3.5** Create POI templates: `poi/list.html`, `poi/detail.html`, `poi/create.html`, `poi/edit.html`, `poi/confirm-delete.html`
+- [x] **3.6** Create `ContentWebController` with list, detail handlers (read-only)
+- [x] **3.7** Create Content templates: `content/list.html`, `content/detail.html` (read-only)
+- [x] **3.8** Create `CreatorWebController` with list, detail, create, edit, delete handlers
+- [x] **3.9** Create Creator templates: `creator/list.html`, `creator/detail.html`, `creator/create.html`, `creator/edit.html`, `creator/confirm-delete.html`
+- [x] **3.10** Create `CollectionWebController` with list, detail, create, edit, delete, add/remove POI, add/remove subCollection
+- [x] **3.11** Create Collection templates: `collection/list.html`, `collection/detail.html`, `collection/create.html`, `collection/edit.html`, `collection/confirm-delete.html`
+- [x] **3.12** Create `ExhibitionWebController` with list, detail, create, edit, delete, add/remove POI, add/remove subCollection
+- [x] **3.13** Create Exhibition templates: `exhibition/list.html`, `exhibition/detail.html`, `exhibition/create.html`, `exhibition/edit.html`, `exhibition/confirm-delete.html`
+- [x] **3.14** Create `VisitorWebController` with list, detail handlers (read-only, no create/edit)
+- [x] **3.15** Create Visitor templates: `visitor/list.html`, `visitor/detail.html`
+- [x] **3.16** Create `VisitHistoryWebController` with list, detail handlers (read-only, no create/edit)
+- [x] **3.17** Create VisitHistory templates: `visit-history/list.html`, `visit-history/detail.html`
+- [x] **3.18** Implement nav hierarchy: Exhibition index shows linked POIs and Collections; POI detail shows linked Content; Collection detail shows parent Exhibition + linked POIs
+- [x] **3.19** Create Content Pool page listing all Content not assigned to any POI, with "create new" button
+- [x] **3.20** Create POI Pool page listing all POIs not assigned to any Collection, with "create new" button
+- [x] **3.21** Add repository queries: find unassigned Content, find unassigned POIs
 
 ## Phase 4: Final Verification
 
