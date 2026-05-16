@@ -2,6 +2,7 @@ package com.mfreimueller.art.presentation.web;
 
 import com.mfreimueller.art.service.ContentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,13 @@ public class ContentWebController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model, Authentication authentication) {
         var content = service.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Content not found: " + id));
         model.addAttribute("content", content);
+        var canUpload = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_EDITOR") || a.getAuthority().equals("ROLE_ADMIN"));
+        model.addAttribute("canUpload", canUpload);
         return "content/detail";
     }
 

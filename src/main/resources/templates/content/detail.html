@@ -43,6 +43,16 @@
             <h3>Source</h3>
             <p th:text="${content.source?.filePath}">/path/to/image.jpg</p>
             <p th:text="'Type: ' + ${content.source?.linkType}">Url</p>
+            <div th:if="${canUpload}" style="margin-top:1rem; padding:1rem; border:1px solid #ddd; border-radius:3px;">
+                <h4>Upload File</h4>
+                <form method="post" enctype="multipart/form-data" th:action="@{/api/content/image/{id}/upload(id=${content.id})}">
+                    <input type="file" name="file" required>
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </form>
+                <div th:if="${content.source?.filePath != null and content.source?.linkType.name() == 'Relative'}" style="margin-top:0.5rem">
+                    <a th:href="@{/api/files/{filename}(filename=${content.source?.filePath})}" class="btn btn-sm" target="_blank">View Uploaded File</a>
+                </div>
+            </div>
         </div>
         <div th:case="'SlideshowContent'">
             <h3>Mode</h3>

@@ -12,14 +12,14 @@
 
 ## Phase B — File Upload
 
-- [ ] **B.1** Create `UploadProperties` record (`@ConfigurationProperties(prefix = "app.upload")`) with `Path dir` and `long maxFileSize`. Add multipart config to `application-dev.properties`.
-- [ ] **B.2** Create `FileStorageService` with `store(MultipartFile) -> String`, `load(String) -> Resource`, `delete(String)`. Handle empty file, unsupported extension, not-found.
-- [ ] **B.3** Add REST upload endpoint `POST /api/content/image/{id}/upload` to new `ImageContentController`. Store file, update `ImageContent.source` with relative path + `LinkType.Relative`, return 201.
-- [ ] **B.4** Create `FileController` with `GET /api/files/{filename:.+}` serving `Resource` from `FileStorageService` with proper `Content-Type`.
-- [ ] **B.5** Add file upload form to `content/detail.html` (visible for EDITOR/ADMIN). Show preview link after upload.
-- [ ] **B.6** Create Flyway migration `V1.0.3__CreateFileUpload.sql` — add optional `file_metadata` table (original filename, size, content type, upload timestamp).
-- [ ] **B.7** Write `FileStorageServiceTest` — `@ExtendWith(MockitoExtension.class)` with `@TempDir`. Test store/delete/error cases.
-- [ ] **B.8** Write `FileUploadControllerTest` — `@WebMvcTest(FileController.class)` with `MockMultipartFile`, mock `FileStorageService`. Test 201/200/404.
+- [x] **B.1** Create `UploadProperties` record (`@ConfigurationProperties(prefix = "app.upload")`) with `Path dir` and `long maxFileSize`.
+- [x] **B.2** Create `FileStorageService` with `store(MultipartFile) -> String`, `load(String) -> Resource`, `delete(String)`. Handle empty file, unsupported extension, not-found.
+- [x] **B.3** Add REST upload endpoint `POST /api/content/image/{id}/upload` to new `ImageContentController`. Store file, update `ImageContent.source` with relative path + `LinkType.Relative`, return 201.
+- [x] **B.4** Create `FileController` with `GET /api/files/{filename:.+}` serving `Resource` from `FileStorageService` with proper `Content-Type`.
+- [x] **B.5** Add file upload form to `content/detail.html` (visible for EDITOR/ADMIN). Show preview link after upload.
+- [x] **B.6** Create Flyway migration `V1.0.3__CreateFileUpload.sql` — add optional `file_metadata` table (original filename, size, content type, upload timestamp).
+- [x] **B.7** Write `FileStorageServiceTest` — `@ExtendWith(MockitoExtension.class)` with `@TempDir`. Test store/delete/error cases.
+- [x] **B.8** Write `FileUploadControllerTest` — `@WebMvcTest(FileController.class)` with `MockMultipartFile`, mock `FileStorageService`. Test 201/200/404.
 
 ## Phase C — Actuator Configuration
 
