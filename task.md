@@ -80,5 +80,5 @@
 
 ## Phase 4: Final Verification
 
-- [ ] **4.1** Run `./mvnw verify` and fix any test failures
-- [ ] **4.2** Manual smoke test: start app, verify login/registration, CRUD flows, navigation hierarchy, pool pages, REST API HATEOAS links
+- [x] **4.1** Run `./mvnw verify` and fix any test failures
+- [x] **4.2** Manual smoke test: start app, verify login/registration, CRUD flows, navigation hierarchy, pool pages, REST API HATEOAS links
