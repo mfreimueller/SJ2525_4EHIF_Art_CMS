@@ -18,10 +18,10 @@ public interface CollectionMapper {
     List<CollectionDto> toDtos(List<Collection> collections);
 
     default PointOfInterest.PointOfInterestId map(PointOfInterest value) {
-        return value.getId();
+        return value != null ? value.getId() : null;
     }
 
     default Collection.CollectionId map(Collection value) {
-        return value.getId();
+        return value != null ? value.getId() : null;
     }
 }

@@ -1,19 +1,18 @@
 package com.mfreimueller.art.presentation;
 
+import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.dto.ContentDto;
 import com.mfreimueller.art.presentation.assembler.ContentModelAssembler;
 import com.mfreimueller.art.service.ContentService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.SlicedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 import static com.mfreimueller.art.util.LogHelper.logEnter;
 import static com.mfreimueller.art.util.LogHelper.logExit;
@@ -31,8 +30,17 @@ public class ContentController {
     private final ContentModelAssembler assembler;
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<ContentDto>> getContent(@PathParam("id") Long id) {
-        throw new NotImplementedException();
+    public ResponseEntity<EntityModel<ContentDto>> getContent(@PathVariable("id") Long id) {
+        logEnter(log);
+
+        var content = Optional.ofNullable(service.getByReference(id));
+        var result = content
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+        logExit(log);
+        return result;
     }
 
     @GetMapping
@@ -41,8 +49,6 @@ public class ContentController {
             @RequestParam(defaultValue = "20") int pageSize
             ) {
         logEnter(log);
-
-        // FIXME: this needs to be reworked to support keyset pagination. Currently it's a mess.
 
         var content = service.getPaged(lastId, pageSize);
         var items = content.map(assembler::toModel).stream().toList();
@@ -57,13 +63,16 @@ public class ContentController {
         var model = SlicedModel.of(items, metadata, self);
 
         if (content.hasPrevious()) {
-            var prev = linkTo(methodOn(ContentController.class).getContents(lastId - pageSize, pageSize))
+            var page = content.previousPageable();
+            var prevLastId = content.getContent().getFirst().getId() - page.getPageSize();
+            var prev = linkTo(methodOn(ContentController.class).getContents(prevLastId, page.getPageSize()))
                     .withRel("prev");
             model.add(prev);
         }
 
         if (content.hasNext()) {
-            var next = linkTo(methodOn(ContentController.class).getContents(lastId + pageSize, pageSize))
+            var next = linkTo(methodOn(ContentController.class).getContents(
+                    content.getContent().getLast().getId(), pageSize))
                     .withRel("next");
             model.add(next);
         }
