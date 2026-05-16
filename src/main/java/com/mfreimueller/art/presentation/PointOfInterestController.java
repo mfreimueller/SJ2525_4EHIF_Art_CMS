@@ -2,10 +2,9 @@ package com.mfreimueller.art.presentation;
 
 import com.mfreimueller.art.commands.CreatePointOfInterestCommand;
 import com.mfreimueller.art.commands.UpdatePointOfInterestCommand;
-import com.mfreimueller.art.domain.Collection;
 import com.mfreimueller.art.domain.PointOfInterest;
+import com.mfreimueller.art.dto.CommentDto;
 import com.mfreimueller.art.dto.PointOfInterestDto;
-import com.mfreimueller.art.mappers.PointOfInterestMapper;
 import com.mfreimueller.art.presentation.assembler.PointOfInterestModelAssembler;
 import com.mfreimueller.art.service.PointOfInterestService;
 import jakarta.validation.Valid;
@@ -19,7 +18,10 @@ import org.springframework.hateoas.SlicedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import static com.mfreimueller.art.util.LogHelper.logEnter;
@@ -36,6 +38,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class PointOfInterestController {
     private final PointOfInterestService service;
     private final PointOfInterestModelAssembler assembler;
+    private final RestClient.Builder restClientBuilder;
 
     @PostMapping
     public ResponseEntity<EntityModel<PointOfInterestDto>> createPointOfInterest(
@@ -118,6 +121,25 @@ public class PointOfInterestController {
         logExit(log);
 
         return ResponseEntity.ok(model);
+    }
+
+    @GetMapping("/{key}/comments")
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long key) {
+        logEnter(log);
+
+        var random = ThreadLocalRandom.current().nextInt(0, 99);
+        var restClient = restClientBuilder.build();
+        var response = restClient.get()
+                .uri("https://dummyjson.com/comments?limit=2&skip={random_offset}&select=body", random)
+                .retrieve()
+                .body(CommentDto.CommentResponse.class);
+
+        var comments = response != null ? response.comments() : List.<CommentDto>of();
+
+        log.info("Retrieved {} comments for POI {}", comments.size(), key);
+        logExit(log);
+
+        return ResponseEntity.ok(comments);
     }
 
     @GetMapping("/search/{lang}/{search}")
