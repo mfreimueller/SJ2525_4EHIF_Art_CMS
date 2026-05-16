@@ -8,6 +8,7 @@ import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
+
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgresContainer() {
