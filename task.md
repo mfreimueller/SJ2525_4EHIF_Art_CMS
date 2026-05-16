@@ -52,15 +52,15 @@
 
 ### D.4 — Web Controller Tests
 
-- [ ] **D.4.1** Create `AbstractWebControllerTest` base class (`@SpringBootTest` + `@AutoConfigureMockMvc` + `@WithMockUser(roles = "ADMIN")`).
-- [ ] **D.4.2** Create `PoiWebControllerTest` — list, detail, create (GET form + POST), edit, delete, pool.
-- [ ] **D.4.3** Create `ContentWebControllerTest` — list, detail, pool (read-only).
-- [ ] **D.4.4** Create `CreatorWebControllerTest` — list, detail, create, edit, delete.
-- [ ] **D.4.5** Create `CollectionWebControllerTest` — list, detail, create, edit, delete, add/remove POI, add/remove subcollection.
-- [ ] **D.4.6** Create `ExhibitionWebControllerTest` — list, detail (languages), create, edit, delete, add/remove POI, add/remove subcollection.
-- [ ] **D.4.7** Create `VisitorWebControllerTest` — list, detail (read-only).
-- [ ] **D.4.8** Create `VisitHistoryWebControllerTest` — list, detail (read-only).
-- [ ] **D.4.9** Create `WebAuthControllerTest` — GET login/register render forms, POST register valid redirects, POST register password mismatch shows error.
+- [x] **D.4.1** Create `AbstractWebControllerTest` base class (`@SpringBootTest` + `@Import(TestcontainersConfiguration.class)` with helper auth methods).
+- [x] **D.4.2** Create `PoiWebControllerTest` — list, detail, create, edit, delete, pool.
+- [x] **D.4.3** Create `ContentWebControllerTest` — list, detail.
+- [x] **D.4.4** Create `CreatorWebControllerTest` — list, detail, create, edit, delete.
+- [x] **D.4.5** Create `CollectionWebControllerTest` — list, detail, create, edit, delete, add/remove POI, add/remove subcollection.
+- [x] **D.4.6** Create `ExhibitionWebControllerTest` — list, detail, create, edit, delete, add/remove POI, add/remove subcollection.
+- [x] **D.4.7** Create `VisitorWebControllerTest` — list, detail.
+- [x] **D.4.8** Create `VisitHistoryWebControllerTest` — list, detail.
+- [x] **D.4.9** Create `WebAuthControllerTest` — login, register, register password mismatch, redirect root.
 
 ### D.5 — Security Tests
 
