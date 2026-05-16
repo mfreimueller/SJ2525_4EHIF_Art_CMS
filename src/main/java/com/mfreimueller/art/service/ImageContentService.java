@@ -2,6 +2,7 @@ package com.mfreimueller.art.service;
 
 import com.mfreimueller.art.commands.PutImageContentCommand;
 import com.mfreimueller.art.domain.ImageContent;
+import com.mfreimueller.art.domain.Source;
 import com.mfreimueller.art.foundation.DateTimeFactory;
 import com.mfreimueller.art.persistence.ImageContentRepository;
 import jakarta.validation.Valid;
@@ -60,6 +61,15 @@ public class ImageContentService {
         var saved = imageContentRepository.save(imageContent);
         log.debug("Updated image content with id {}", saved.getId());
 
+        return saved;
+    }
+
+    @Transactional(readOnly = false)
+    public ImageContent updateSource(@NotNull Long id, @NotNull Source source) {
+        var imageContent = imageContentRepository.getReferenceById(id);
+        imageContent.setSource(source);
+        var saved = imageContentRepository.save(imageContent);
+        log.debug("Updated source for image content with id {}", saved.getId());
         return saved;
     }
 
