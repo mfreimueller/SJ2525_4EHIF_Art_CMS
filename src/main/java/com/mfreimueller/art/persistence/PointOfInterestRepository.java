@@ -27,4 +27,7 @@ public interface PointOfInterestRepository extends JpaRepository<PointOfInterest
            """)
     <T> Slice<T> findByTitleInLanguage(@Param("lang") String lang, @Param("term") String title, Pageable pageable);
 
+    @Query("SELECT p FROM PointOfInterest p WHERE p NOT IN (SELECT c.pointsOfInterest FROM Collection c)")
+    List<PointOfInterest> findUnassignedPointsOfInterest();
+
 }

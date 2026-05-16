@@ -19,4 +19,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     """)
     List<Content> findSliceWithKeysetPaging(long lastKey, Pageable pageable);
 
+    @Query("SELECT c FROM Content c WHERE c NOT IN (SELECT pc FROM PointOfInterest p JOIN p.content pc)")
+    List<Content> findUnassignedContent();
+
 }

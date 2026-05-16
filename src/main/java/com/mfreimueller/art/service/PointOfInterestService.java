@@ -161,6 +161,10 @@ public class PointOfInterestService {
         return pointOfInterestRepository.findAll();
     }
 
+    public List<PointOfInterest> getUnassignedPointsOfInterest() {
+        return pointOfInterestRepository.findUnassignedPointsOfInterest();
+    }
+
     public Slice<PointOfInterest> getPointsOfInterest(Pageable pageable) {
         return pointOfInterestRepository.findAll(pageable);
     }

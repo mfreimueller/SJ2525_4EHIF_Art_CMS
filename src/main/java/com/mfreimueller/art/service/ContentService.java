@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 
@@ -27,6 +28,14 @@ public class ContentService {
         var pageable = Pageable.ofSize(pageSize);
         // return contentRepository.findSliceWithKeysetPaging(lastId, pageable);
         return contentRepository.findAll(pageable);
+    }
+
+    public List<Content> getUnassignedContent() {
+        return contentRepository.findUnassignedContent();
+    }
+
+    public Optional<Content> findById(@NotNull Long id) {
+        return contentRepository.findById(id);
     }
 
 }
