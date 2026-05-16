@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Creator Detail')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/creators}">Creators</a> &raquo;
+        <span th:text="${creator.username}">admin</span>
+    </div>
+    <h1 th:text="${creator.username}">admin</h1>
+    <table>
+        <tr><th>ID</th><td th:text="${creator.id.id()}">1</td></tr>
+        <tr><th>Username</th><td th:text="${creator.username}">admin</td></tr>
+        <tr><th>Role</th><td th:text="${creator.role}">ADMIN</td></tr>
+    </table>
+    <div class="actions" style="margin-top:1rem">
+        <a th:href="@{/web/creators/{id}/edit(id=${creator.id.id()})}" class="btn btn-warning">Edit</a>
+        <a th:href="@{/web/creators/{id}/delete(id=${creator.id.id()})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/web/creators}" class="btn">Back to List</a>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
