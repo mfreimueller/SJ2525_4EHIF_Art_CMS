@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Exhibitions')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <h1>Exhibitions</h1>
+    <a th:href="@{/web/exhibitions/create}" class="btn btn-success">Create Exhibition</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Languages</th>
+                <th>POIs</th>
+                <th>Subcollections</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="e : ${exhibitions}">
+                <td th:text="${e.id.id()}">1</td>
+                <td th:text="${#strings.listJoin(e.title.values(), ', ')}">Title</td>
+                <td th:text="${#strings.setJoin(e.languages, ', ')}">en, de</td>
+                <td th:text="${e.pointsOfInterest.size()}">0</td>
+                <td th:text="${e.subCollections.size()}">0</td>
+                <td class="actions">
+                    <a th:href="@{/web/exhibitions/{id}(id=${e.id.id()})}" class="btn btn-sm">View</a>
+                    <a th:href="@{/web/exhibitions/{id}/edit(id=${e.id.id()})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/web/exhibitions/{id}/delete(id=${e.id.id()})}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

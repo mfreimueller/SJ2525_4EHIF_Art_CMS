@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Create Exhibition')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/exhibitions}">Exhibitions</a> &raquo;
+        <span>Create</span>
+    </div>
+    <h1>Create Exhibition</h1>
+    <form th:action="@{/web/exhibitions/create}" method="post">
+        <div class="form-group">
+            <label for="titleEn">Title (English)</label>
+            <input type="text" id="titleEn" name="titleEn">
+        </div>
+        <div class="form-group">
+            <label for="titleDe">Title (German)</label>
+            <input type="text" id="titleDe" name="titleDe">
+        </div>
+        <div class="form-group">
+            <label>Languages</label>
+            <div>
+                <label><input type="checkbox" name="languages" value="en"> English</label>
+                <label><input type="checkbox" name="languages" value="de"> German</label>
+                <label><input type="checkbox" name="languages" value="fr"> French</label>
+                <label><input type="checkbox" name="languages" value="it"> Italian</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+        <a th:href="@{/web/exhibitions}" class="btn">Cancel</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Delete Exhibition')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/exhibitions}">Exhibitions</a> &raquo;
+        <a th:href="@{/web/exhibitions/{id}(id=${exhibition.id.id()})}" th:text="${exhibition.id.id()}">123</a> &raquo;
+        <span>Delete</span>
+    </div>
+    <h1>Delete Exhibition</h1>
+    <p>Are you sure you want to delete this exhibition?</p>
+    <table>
+        <tr><th>ID</th><td th:text="${exhibition.id.id()}">1</td></tr>
+        <tr>
+            <th>Title</th>
+            <td th:text="${#strings.listJoin(exhibition.title.values(), ', ')}">Title</td>
+        </tr>
+        <tr><th>Languages</th><td th:text="${#strings.setJoin(exhibition.languages, ', ')}">en, de</td></tr>
+    </table>
+    <form th:action="@{/web/exhibitions/{id}/delete(id=${exhibition.id.id()})}" method="post" style="margin-top:1rem">
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a th:href="@{/web/exhibitions/{id}(id=${exhibition.id.id()})}" class="btn">Cancel</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

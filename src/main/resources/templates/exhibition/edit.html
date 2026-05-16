@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Edit Exhibition')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/exhibitions}">Exhibitions</a> &raquo;
+        <a th:href="@{/web/exhibitions/{id}(id=${exhibition.id.id()})}" th:text="${exhibition.id.id()}">123</a> &raquo;
+        <span>Edit</span>
+    </div>
+    <h1>Edit Exhibition</h1>
+    <form th:action="@{/web/exhibitions/{id}/edit(id=${exhibition.id.id()})}" method="post">
+        <div class="form-group">
+            <label for="titleEn">Title (English)</label>
+            <input type="text" id="titleEn" name="titleEn" th:value="${exhibition.title.get('en')}">
+        </div>
+        <div class="form-group">
+            <label for="titleDe">Title (German)</label>
+            <input type="text" id="titleDe" name="titleDe" th:value="${exhibition.title.get('de')}">
+        </div>
+        <div class="form-group">
+            <label>Languages</label>
+            <div>
+                <label><input type="checkbox" name="languages" value="en" th:checked="${exhibition.languages.contains('en')}"> English</label>
+                <label><input type="checkbox" name="languages" value="de" th:checked="${exhibition.languages.contains('de')}"> German</label>
+                <label><input type="checkbox" name="languages" value="fr" th:checked="${exhibition.languages.contains('fr')}"> French</label>
+                <label><input type="checkbox" name="languages" value="it" th:checked="${exhibition.languages.contains('it')}"> Italian</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a th:href="@{/web/exhibitions/{id}(id=${exhibition.id.id()})}" class="btn">Cancel</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
