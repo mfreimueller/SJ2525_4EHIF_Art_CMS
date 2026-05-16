@@ -45,10 +45,10 @@
 
 ### D.3 — Missing Mapper Tests
 
-- [ ] **D.3.1** Create `CreatorMapperTest` — `@SpringBootTest`, verify `toDto()` maps id, username, role.
-- [ ] **D.3.2** Create `CollectionMapperTest` — verify localized titles, POIs, subcollections in `toDto()`.
-- [ ] **D.3.3** Create `VisitorMapperTest` — verify all scalar fields in `toDto()`.
-- [ ] **D.3.4** Create `VisitHistoryMapperTest` — verify duration, visitedOn, POIs, visitor in `toDto()`.
+- [x] **D.3.1** Create `CreatorMapperTest` — `@SpringBootTest`, verify `toDto()` maps id, username, role.
+- [x] **D.3.2** Create `CollectionMapperTest` — verify localized titles, POIs, subcollections in `toDto()`.
+- [x] **D.3.3** Create `VisitorMapperTest` — verify all scalar fields in `toDto()`.
+- [x] **D.3.4** Create `VisitHistoryMapperTest` — verify duration, visitedOn, POIs, visitor in `toDto()`.
 
 ### D.4 — Web Controller Tests
 
