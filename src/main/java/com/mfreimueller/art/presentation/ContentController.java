@@ -1,8 +1,6 @@
 package com.mfreimueller.art.presentation;
 
-import com.mfreimueller.art.domain.Content;
 import com.mfreimueller.art.dto.ContentDto;
-import com.mfreimueller.art.dto.KeysetPaged;
 import com.mfreimueller.art.presentation.assembler.ContentModelAssembler;
 import com.mfreimueller.art.service.ContentService;
 import jakarta.websocket.server.PathParam;
