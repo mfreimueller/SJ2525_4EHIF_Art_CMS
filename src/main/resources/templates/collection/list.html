@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Collections')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <h1>Collections</h1>
+    <a th:href="@{/web/collections/create}" class="btn btn-success">Create Collection</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>POIs</th>
+                <th>Subcollections</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${collections}">
+                <td th:text="${c.id.id()}">1</td>
+                <td th:text="${#strings.listJoin(c.title.values(), ', ')}">Title</td>
+                <td th:text="${c.pointsOfInterest.size()}">0</td>
+                <td th:text="${c.subCollections.size()}">0</td>
+                <td class="actions">
+                    <a th:href="@{/web/collections/{id}(id=${c.id.id()})}" class="btn btn-sm">View</a>
+                    <a th:href="@{/web/collections/{id}/edit(id=${c.id.id()})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/web/collections/{id}/delete(id=${c.id.id()})}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

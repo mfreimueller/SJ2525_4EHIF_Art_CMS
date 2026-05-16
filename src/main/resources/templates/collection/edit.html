@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Edit Collection')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/collections}">Collections</a> &raquo;
+        <a th:href="@{/web/collections/{id}(id=${collection.id.id()})}" th:text="${collection.id.id()}">123</a> &raquo;
+        <span>Edit</span>
+    </div>
+    <h1>Edit Collection</h1>
+    <form th:action="@{/web/collections/{id}/edit(id=${collection.id.id()})}" method="post">
+        <div class="form-group">
+            <label for="titleEn">Title (English)</label>
+            <input type="text" id="titleEn" name="titleEn" th:value="${collection.title.get('en')}">
+        </div>
+        <div class="form-group">
+            <label for="titleDe">Title (German)</label>
+            <input type="text" id="titleDe" name="titleDe" th:value="${collection.title.get('de')}">
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a th:href="@{/web/collections/{id}(id=${collection.id.id()})}" class="btn">Cancel</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

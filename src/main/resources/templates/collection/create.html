@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Create Collection')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/collections}">Collections</a> &raquo;
+        <span>Create</span>
+    </div>
+    <h1>Create Collection</h1>
+    <form th:action="@{/web/collections/create}" method="post">
+        <div class="form-group">
+            <label for="titleEn">Title (English)</label>
+            <input type="text" id="titleEn" name="titleEn">
+        </div>
+        <div class="form-group">
+            <label for="titleDe">Title (German)</label>
+            <input type="text" id="titleDe" name="titleDe">
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+        <a th:href="@{/web/collections}" class="btn">Cancel</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
