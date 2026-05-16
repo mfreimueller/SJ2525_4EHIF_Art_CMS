@@ -2,7 +2,7 @@
 
 ## Phase 0: Foundation Fixes
 
-- [ ] **0.1** Add `password` field (`@NotBlank String password`, `@JsonIgnore`) to `Creator` entity
+- [x] **0.1** Add `password` field (`@NotBlank String password`, `@JsonIgnore`) to `Creator` entity
 - [ ] **0.2** Create Flyway migration `V1.0.2__AddCreatorPassword.sql` adding `password` column to `creator` table
 - [ ] **0.3** Add `password` field to `CreateCreatorCommand` record
 - [ ] **0.4** Add `password` field to `UpdateCreatorCommand` record

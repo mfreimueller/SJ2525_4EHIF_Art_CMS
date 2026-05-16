@@ -39,6 +39,7 @@ class CreatorServiceTest {
     public void can_create_with_valid_data() {
         var cmd = CreateCreatorCommand.builder()
                 .username("admin") // security best practice
+                .password("admin")
                 .role(Creator.Role.ADMIN)
                 .build();
 
@@ -56,6 +57,7 @@ class CreatorServiceTest {
 
         var cmd = UpdateCreatorCommand.builder()
                 .username("guest")
+                .password("guestpass")
                 .role(Creator.Role.VIEWER)
                 .build();
 

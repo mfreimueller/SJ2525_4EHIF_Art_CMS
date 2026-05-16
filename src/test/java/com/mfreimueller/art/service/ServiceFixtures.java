@@ -25,6 +25,7 @@ public final class ServiceFixtures {
         return Creator.builder()
                 .id(new Creator.CreatorId(randomId()))
                 .username("editor")
+                .password("secret")
                 .role(Creator.Role.EDITOR)
                 .build();
     }

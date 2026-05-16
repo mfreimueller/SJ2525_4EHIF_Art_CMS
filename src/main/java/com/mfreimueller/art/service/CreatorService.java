@@ -25,6 +25,7 @@ public class CreatorService {
     public Creator create(@NotNull @Valid CreateCreatorCommand cmd) {
         var creator = Creator.builder()
                 .username(cmd.username())
+                .password(cmd.password())
                 .role(cmd.role())
                 .build();
 
@@ -38,6 +39,7 @@ public class CreatorService {
     public Creator update(@NotNull Creator.CreatorId id, @NotNull @Valid UpdateCreatorCommand cmd) {
         var creator = creatorRepository.getReferenceById(id);
         creator.setUsername(cmd.username());
+        creator.setPassword(cmd.password());
         creator.setRole(cmd.role());
 
         var saved = creatorRepository.save(creator);

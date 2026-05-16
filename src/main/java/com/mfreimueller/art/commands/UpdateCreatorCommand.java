@@ -6,5 +6,5 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-public record UpdateCreatorCommand(@NotNull @NotBlank String username, @NotNull Creator.Role role) {
+public record UpdateCreatorCommand(@NotNull @NotBlank String username, @NotNull @NotBlank String password, @NotNull Creator.Role role) {
 }
