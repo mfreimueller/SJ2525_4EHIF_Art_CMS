@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Points of Interest')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <h1>Points of Interest</h1>
+    <a th:href="@{/web/pois/create}" class="btn btn-success">Create POI</a>
+    <a th:href="@{/web/pois/pool}" class="btn btn-warning">POI Pool</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Content Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="poi : ${pois}">
+                <td th:text="${poi.id.id()}">1</td>
+                <td>
+                    <span th:each="entry : ${poi.title}" th:text="${entry.value} + ' (' + ${entry.key} + ')'" th:remove="tag">
+                        Title
+                    </span>
+                </td>
+                <td th:text="${poi.content.size()}">0</td>
+                <td class="actions">
+                    <a th:href="@{/web/pois/{id}(id=${poi.id.id()})}" class="btn btn-sm">View</a>
+                    <a th:href="@{/web/pois/{id}/edit(id=${poi.id.id()})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/web/pois/{id}/delete(id=${poi.id.id()})}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('POI Detail')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/pois}">POIs</a> &raquo;
+        <span th:text="${poi.id.id()}">123</span>
+    </div>
+    <h1 th:text="${#strings.listJoin(poi.title.values(), ', ')}">POI Title</h1>
+    <h2>Details</h2>
+    <table>
+        <tr><th>ID</th><td th:text="${poi.id.id()}">1</td></tr>
+        <tr>
+            <th>Title</th>
+            <td>
+                <ul>
+                    <li th:each="entry : ${poi.title}" th:text="${entry.key} + ': ' + ${entry.value}">en: Title</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                <ul>
+                    <li th:each="entry : ${poi.description}" th:text="${entry.key} + ': ' + ${entry.value}">en: Description</li>
+                </ul>
+            </td>
+        </tr>
+        <tr><th>Created</th><td th:text="${poi.createdAt}">2024-01-01</td></tr>
+        <tr><th>Updated</th><td th:text="${poi.updatedAt}">2024-01-01</td></tr>
+        <tr><th>Created By</th><td th:text="${poi.createdBy?.username}">creator</td></tr>
+    </table>
+    <h2>Linked Content (<span th:text="${poi.content.size()}">0</span>)</h2>
+    <table th:if="${!poi.content.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${poi.content}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.getClass().getSimpleName()}">TextContent</td>
+                <td th:text="${#strings.listJoin(c.description.values(), ', ')}">desc</td>
+                <td><a th:href="@{/web/content/{id}(id=${c.id})}" class="btn btn-sm">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${poi.content.isEmpty()}">No content linked to this POI.</p>
+    <div class="actions" style="margin-top:1rem">
+        <a th:href="@{/web/pois/{id}/edit(id=${poi.id.id()})}" class="btn btn-warning">Edit</a>
+        <a th:href="@{/web/pois/{id}/delete(id=${poi.id.id()})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/web/pois}" class="btn">Back to List</a>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

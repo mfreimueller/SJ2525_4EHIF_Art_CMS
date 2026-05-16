@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('POI Pool')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/pois}">POIs</a> &raquo;
+        <span>POI Pool</span>
+    </div>
+    <h1>POI Pool</h1>
+    <p>Points of Interest not assigned to any Collection.</p>
+    <a th:href="@{/web/pois/create}" class="btn btn-success">Create POI</a>
+    <a th:href="@{/web/pois}" class="btn">All POIs</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="poi : ${pois}">
+                <td th:text="${poi.id.id()}">1</td>
+                <td th:text="${#strings.listJoin(poi.title.values(), ', ')}">Title</td>
+                <td class="actions">
+                    <a th:href="@{/web/pois/{id}(id=${poi.id.id()})}" class="btn btn-sm">View</a>
+                    <a th:href="@{/web/pois/{id}/edit(id=${poi.id.id()})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/web/pois/{id}/delete(id=${poi.id.id()})}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${pois.isEmpty()}">All POIs are assigned to collections. <a th:href="@{/web/pois/create}">Create a new POI</a>.</p>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

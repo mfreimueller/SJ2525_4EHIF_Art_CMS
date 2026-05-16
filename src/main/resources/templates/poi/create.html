@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Create POI')}">
+</head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<nav th:replace="~{layout :: nav}"></nav>
+<main>
+    <div class="breadcrumb">
+        <a th:href="@{/web/pois}">POIs</a> &raquo;
+        <span>Create</span>
+    </div>
+    <h1>Create Point of Interest</h1>
+    <form th:action="@{/web/pois/create}" method="post">
+        <div class="form-group">
+            <label for="titleEn">Title (English)</label>
+            <input type="text" id="titleEn" name="titleEn">
+        </div>
+        <div class="form-group">
+            <label for="titleDe">Title (German)</label>
+            <input type="text" id="titleDe" name="titleDe">
+        </div>
+        <div class="form-group">
+            <label for="descEn">Description (English)</label>
+            <textarea id="descEn" name="descEn" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="descDe">Description (German)</label>
+            <textarea id="descDe" name="descDe" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+        <a th:href="@{/web/pois}" class="btn">Cancel</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
