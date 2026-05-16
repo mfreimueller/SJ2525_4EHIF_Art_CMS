@@ -1,4 +1,4 @@
-create sequence global_seq start with 1 increment by 1;
+create sequence global_seq start with 1 increment by 50;
 create table audio_content
 (
     id bigint not null,

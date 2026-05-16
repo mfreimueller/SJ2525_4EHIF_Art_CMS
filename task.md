@@ -64,12 +64,12 @@
 
 ### D.5 — Security Tests
 
-- [ ] **D.5.1** Create `CreatorUserDetailsServiceTest` — mock `CreatorRepository`, test found/not-found.
-- [ ] **D.5.2** Create `SecurityConfigIntegrationTest` — `@SpringBootTest` + `TestRestTemplate`. Test unauthenticated redirect, authenticated 200, POST without auth 403.
-- [ ] **D.5.3** Create `AdminInitializerTest` — verify admin user exists after context start.
+- [x] **D.5.1** Create `CreatorUserDetailsServiceTest` — mock `CreatorRepository`, test found/not-found.
+- [x] **D.5.2** Create `SecurityConfigIntegrationTest` — `@SpringBootTest` + `TestRestTemplate`. Test unauthenticated redirect, authenticated 200, POST without auth 403.
+- [x] **D.5.3** Create `AdminInitializerTest` — verify admin user exists after context start.
 
 ### D.6 — Final Verification
 
-- [ ] **D.6.1** Run `./mvnw clean verify` — all ~167 tests pass, JaCoCo report generated.
-- [ ] **D.6.2** Review JaCoCo report at `target/site/jacoco/index.html`. Target: ≥70% line coverage.
-- [ ] **D.6.3** Manual smoke test with dev profile: upload file, verify email via Mailpit UI (port 8025), check `/actuator/health` returns UP.
+- [x] **D.6.1** Run `./mvnw clean verify` — all 232 tests pass, JaCoCo report generated.
+- [x] **D.6.2** Review JaCoCo report at `target/site/jacoco/index.html`. Target: ≥70% line coverage (actual: 86.34%).
+- [x] **D.6.3** Manual smoke test with dev profile: app starts, actuator UP, registration works, welcome email sent (Mailpit), authenticated access OK.

@@ -9,5 +9,5 @@ create table if not exists file_metadata (
     primary key (id),
     constraint FK_FileMetadata_Content
         foreign key (content_id)
-            references ContentBase
+            references content_base
 );
