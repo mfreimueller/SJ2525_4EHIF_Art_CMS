@@ -1,0 +1,224 @@
+{
+  "project": "SJ2526 4EHIF Art CMS",
+  "description": "Spring Boot 4.0 REST API for managing art exhibitions (HTL 4th grade teaching project)",
+  "techStack": ["Spring Boot 4.0", "Java 25", "JPA/Hibernate", "PostgreSQL", "MapStruct 1.6.3", "Lombok", "Spring HATEOAS", "Flyway", "Spring REST Docs", "Testcontainers", "Thymeleaf", "Spring Security", "Springdoc OpenAPI 3.0.2"],
+  "rootPackage": "com.mfreimueller.art",
+
+  "existingFiles": {
+    "application": "src/main/java/com/mfreimueller/art/ArtCmsApplication.java",
+    "domain": {
+      "abstractEntity": "src/main/java/com/mfreimueller/art/domain/AbstractEntity.java",
+      "historyBase": "src/main/java/com/mfreimueller/art/domain/HistoryBase.java",
+      "pointOfInterest": "src/main/java/com/mfreimueller/art/domain/PointOfInterest.java",
+      "creator": "src/main/java/com/mfreimueller/art/domain/Creator.java",
+      "content": "src/main/java/com/mfreimueller/art/domain/Content.java",
+      "textContent": "src/main/java/com/mfreimueller/art/domain/TextContent.java",
+      "imageContent": "src/main/java/com/mfreimueller/art/domain/ImageContent.java",
+      "audioContent": "src/main/java/com/mfreimueller/art/domain/AudioContent.java",
+      "videoContent": "src/main/java/com/mfreimueller/art/domain/VideoContent.java",
+      "slideshowContent": "src/main/java/com/mfreimueller/art/domain/SlideshowContent.java",
+      "mediaContent": "src/main/java/com/mfreimueller/art/domain/MediaContent.java",
+      "source": "src/main/java/com/mfreimueller/art/domain/Source.java",
+      "collection": "src/main/java/com/mfreimueller/art/domain/Collection.java",
+      "exhibition": "src/main/java/com/mfreimueller/art/domain/Exhibition.java",
+      "visitor": "src/main/java/com/mfreimueller/art/domain/Visitor.java",
+      "visitHistory": "src/main/java/com/mfreimueller/art/domain/VisitHistory.java"
+    },
+    "commands": {
+      "createPoi": "src/main/java/com/mfreimueller/art/commands/CreatePointOfInterestCommand.java",
+      "updatePoi": "src/main/java/com/mfreimueller/art/commands/UpdatePointOfInterestCommand.java",
+      "removePoi": "src/main/java/com/mfreimueller/art/commands/RemovePointOfInterestCommand.java",
+      "addPoi": "src/main/java/com/mfreimueller/art/commands/AddPointOfInterestCommand.java",
+      "createCreator": "src/main/java/com/mfreimueller/art/commands/CreateCreatorCommand.java",
+      "updateCreator": "src/main/java/com/mfreimueller/art/commands/UpdateCreatorCommand.java",
+      "createCollection": "src/main/java/com/mfreimueller/art/commands/CreateCollectionCommand.java",
+      "updateCollection": "src/main/java/com/mfreimueller/art/commands/UpdateCollectionCommand.java",
+      "addSubcollection": "src/main/java/com/mfreimueller/art/commands/AddSubcollectionCommand.java",
+      "removeSubcollection": "src/main/java/com/mfreimueller/art/commands/RemoveSubcollectionCommand.java",
+      "createExhibition": "src/main/java/com/mfreimueller/art/commands/CreateExhibitionCommand.java",
+      "updateExhibition": "src/main/java/com/mfreimueller/art/commands/UpdateExhibitionCommand.java",
+      "createVisitor": "src/main/java/com/mfreimueller/art/commands/CreateVisitorCommand.java",
+      "updateVisitor": "src/main/java/com/mfreimueller/art/commands/UpdateVisitorCommand.java",
+      "createVisitHistory": "src/main/java/com/mfreimueller/art/commands/CreateVisitHistoryCommand.java",
+      "putTextContent": "src/main/java/com/mfreimueller/art/commands/PutTextContentCommand.java",
+      "putImageContent": "src/main/java/com/mfreimueller/art/commands/PutImageContentCommand.java",
+      "putAudioContent": "src/main/java/com/mfreimueller/art/commands/PutAudioContentCommand.java",
+      "putVideoContent": "src/main/java/com/mfreimueller/art/commands/PutVideoContentCommand.java",
+      "putSlideshowContent": "src/main/java/com/mfreimueller/art/commands/PutSlideshowContentCommand.java"
+    },
+    "dto": {
+      "content": "src/main/java/com/mfreimueller/art/dto/ContentDto.java",
+      "audioContent": "src/main/java/com/mfreimueller/art/dto/AudioContentDto.java",
+      "creator": "src/main/java/com/mfreimueller/art/dto/CreatorDto.java",
+      "poi": "src/main/java/com/mfreimueller/art/dto/PointOfInterestDto.java"
+    },
+    "mappers": {
+      "config": "src/main/java/com/mfreimueller/art/mappers/SpringMapperConfig.java",
+      "poi": "src/main/java/com/mfreimueller/art/mappers/PointOfInterestMapper.java",
+      "creator": "src/main/java/com/mfreimueller/art/mappers/CreatorMapper.java",
+      "content": "src/main/java/com/mfreimueller/art/mappers/ContentMapper.java"
+    },
+    "repositories": {
+      "content": "src/main/java/com/mfreimueller/art/persistence/ContentRepository.java",
+      "poi": "src/main/java/com/mfreimueller/art/persistence/PointOfInterestRepository.java",
+      "creator": "src/main/java/com/mfreimueller/art/persistence/CreatorRepository.java",
+      "collection": "src/main/java/com/mfreimueller/art/persistence/CollectionRepository.java",
+      "exhibition": "src/main/java/com/mfreimueller/art/persistence/ExhibitionRepository.java",
+      "visitor": "src/main/java/com/mfreimueller/art/persistence/VisitorRepository.java",
+      "visitHistory": "src/main/java/com/mfreimueller/art/persistence/VisitHistoryRepository.java",
+      "textContent": "src/main/java/com/mfreimueller/art/persistence/TextContentRepository.java",
+      "imageContent": "src/main/java/com/mfreimueller/art/persistence/ImageContentRepository.java",
+      "audioContent": "src/main/java/com/mfreimueller/art/persistence/AudioContentRepository.java",
+      "videoContent": "src/main/java/com/mfreimueller/art/persistence/VideoContentRepository.java",
+      "slideshowContent": "src/main/java/com/mfreimueller/art/persistence/SlideshowContentRepository.java"
+    },
+    "converters": [
+      "src/main/java/com/mfreimueller/art/persistence/converters/AbstractIntegerRichTypeConverter.java",
+      "src/main/java/com/mfreimueller/art/persistence/converters/DurationConverter.java",
+      "src/main/java/com/mfreimueller/art/persistence/converters/RoleConverter.java",
+      "src/main/java/com/mfreimueller/art/persistence/converters/ModeConverter.java",
+      "src/main/java/com/mfreimueller/art/persistence/converters/LinkTypeConverter.java"
+    ],
+    "services": {
+      "poi": "src/main/java/com/mfreimueller/art/service/PointOfInterestService.java",
+      "creator": "src/main/java/com/mfreimueller/art/service/CreatorService.java",
+      "content": "src/main/java/com/mfreimueller/art/service/ContentService.java",
+      "textContent": "src/main/java/com/mfreimueller/art/service/TextContentService.java",
+      "imageContent": "src/main/java/com/mfreimueller/art/service/ImageContentService.java",
+      "audioContent": "src/main/java/com/mfreimueller/art/service/AudioContentService.java",
+      "videoContent": "src/main/java/com/mfreimueller/art/service/VideoContentService.java",
+      "slideshowContent": "src/main/java/com/mfreimueller/art/service/SlideshowContentService.java",
+      "collection": "src/main/java/com/mfreimueller/art/service/CollectionService.java",
+      "exhibition": "src/main/java/com/mfreimueller/art/service/ExhibitionService.java",
+      "abstractCollection": "src/main/java/com/mfreimueller/art/service/AbstractCollectionService.java",
+      "visitor": "src/main/java/com/mfreimueller/art/service/VisitorService.java",
+      "visitHistory": "src/main/java/com/mfreimueller/art/service/VisitHistoryService.java"
+    },
+    "presentation": {
+      "controllers": {
+        "poi": "src/main/java/com/mfreimueller/art/presentation/PointOfInterestController.java",
+        "content": "src/main/java/com/mfreimueller/art/presentation/ContentController.java"
+      },
+      "assemblers": {
+        "poi": "src/main/java/com/mfreimueller/art/presentation/assembler/PointOfInterestModelAssembler.java",
+        "content": "src/main/java/com/mfreimueller/art/presentation/assembler/ContentModelAssembler.java"
+      },
+      "errorHandler": "src/main/java/com/mfreimueller/art/presentation/GlobalControllerAdvice.java"
+    },
+    "foundation": {
+      "exception": "src/main/java/com/mfreimueller/art/foundation/DataConstraintException.java",
+      "dateTimeFactory": "src/main/java/com/mfreimueller/art/foundation/DateTimeFactory.java"
+    },
+    "richtypes": {
+      "interface": "src/main/java/com/mfreimueller/art/richtypes/SingleValue.java",
+      "duration": "src/main/java/com/mfreimueller/art/richtypes/Duration.java"
+    },
+    "util": "src/main/java/com/mfreimueller/art/util/LogHelper.java",
+    "flyway": [
+      "src/main/resources/db/migration/V1.0.0__Init.sql",
+      "src/main/resources/db/migration/V1.0.1__Fixes.sql"
+    ],
+    "tests": {
+      "base": "src/test/java/com/mfreimueller/art/presentation/AbstractDocumentationControllerTest.java",
+      "controller": "src/test/java/com/mfreimueller/art/presentation/PointOfInterestControllerTest.java",
+      "mapper": [
+        "src/test/java/com/mfreimueller/art/mapper/ContentMapperTest.java",
+        "src/test/java/com/mfreimueller/art/mapper/PointOfInterestMapperTest.java"
+      ],
+      "service": "src/test/java/com/mfreimueller/art/service/ (10 test files + ServiceFixtures.java)",
+      "persistence": "src/test/java/com/mfreimueller/art/persistence/ (10 test files)",
+      "config": [
+        "src/test/java/com/mfreimueller/art/TestcontainersConfiguration.java",
+        "src/test/java/com/mfreimueller/art/TestMain.java",
+        "src/test/java/com/mfreimueller/art/MapperTestConfig.java",
+        "src/test/java/com/mfreimueller/art/RawResponseBodySnippet.java"
+      ]
+    }
+  },
+
+  "criticalGaps": {
+    "creatorPassword": {
+      "severity": "blocker",
+      "detail": "Creator entity has no password field. DB schema, entity, and commands all need updating. Required for Spring Security authentication.",
+      "files": ["Creator.java", "CreateCreatorCommand.java", "UpdateCreatorCommand.java", "V1.0.2__AddCreatorPassword.sql"]
+    },
+    "missingDtos": ["TextContentDto", "ImageContentDto", "VideoContentDto", "SlideshowContentDto", "CollectionDto", "ExhibitionDto", "VisitorDto", "VisitHistoryDto"],
+    "contentMapperSubclassMappings": {
+      "severity": "high",
+      "detail": "ContentMapper only has @SubclassMapping for AudioContent. All other subtypes (TextContent, ImageContent, VideoContent, SlideshowContent) are missing."
+    },
+    "missingMappers": ["CollectionMapper", "VisitorMapper", "VisitHistoryMapper"],
+    "missingRestControllerAssemblers": {
+      "controllers": ["CreatorController", "CollectionController", "ExhibitionController", "VisitorController", "VisitHistoryController"],
+      "modelAssemblers": ["CreatorModelAssembler", "CollectionModelAssembler", "ExhibitionModelAssembler", "VisitorModelAssembler", "VisitHistoryModelAssembler"]
+    },
+    "contentControllerIncomplete": {
+      "severity": "high",
+      "detail": "getContent() throws NotImplementedException. Keyset pagination prev/next link logic is broken (uses arithmetic instead of tracking IDs)."
+    },
+    "noSpringSecurity": "Complete missing: SecurityConfig, CreatorUserDetailsService, CreatorDetails, AdminInitializer",
+    "noThymeleaf": "Complete missing: all templates and web controllers (layout.html, CRUD templates, login/register, pool pages, navigation hierarchy)",
+    "noRestClientEndpoint": "GET /api/pois/{id}/comments not implemented"
+  },
+
+  "entityDetails": {
+    "creator": {
+      "idType": "Creator.CreatorId (EmbeddedId record)",
+      "extended": "AbstractEntity<CreatorId>",
+      "fields": ["username", "role (VIEWER|EDITOR|ADMIN)"],
+      "missingFields": ["password"]
+    },
+    "poi": {
+      "idType": "PointOfInterest.PointOfInterestId (EmbeddedId record)",
+      "extended": "HistoryBase<PointOfInterestId>",
+      "fields": ["title (localized map)", "description (localized map)", "content (ManyToMany with Content)"]
+    },
+    "collection": {
+      "idType": "Collection.CollectionId (EmbeddedId record)",
+      "extended": "HistoryBase<CollectionId>",
+      "fields": ["title (localized map)", "pointsOfInterest (ManyToMany)", "subCollections (OneToMany, self-ref)", "parentCollection (ManyToOne, self-ref)"],
+      "note": "@Inheritance JOINED parent of Exhibition"
+    },
+    "exhibition": {
+      "idType": "Collection.CollectionId (inherited)",
+      "extended": "Collection",
+      "fields": ["languages (ElementCollection Set<String>)"],
+      "note": "@PrimaryKeyJoinColumn(name = 'collection_id'), table 'Exhibiton' (typo)"
+    },
+    "content": {
+      "idType": "Long",
+      "extended": "HistoryBase<Long>",
+      "fields": ["description (localized map)"],
+      "note": "Abstract, @Inheritance JOINED, table 'ContentBase'"
+    },
+    "contentHierarchy": {
+      "abstract": ["Content", "MediaContent"],
+      "concrete": ["TextContent", "ImageContent", "AudioContent", "VideoContent", "SlideshowContent"]
+    },
+    "visitor": {
+      "idType": "Visitor.VisitorId (EmbeddedId record)",
+      "extended": "AbstractEntity<VisitorId>",
+      "fields": ["username", "emailAddress", "visitHistories (OneToMany)"]
+    },
+    "visitHistory": {
+      "idType": "VisitHistory.VisitHistoryId (EmbeddedId record)",
+      "extended": "AbstractEntity<VisitHistoryId>",
+      "fields": ["duration (Duration rich type)", "visitedOn", "pointsOfInterest (ManyToMany)", "visitor (ManyToOne)"],
+      "note": "FIXME: Duration rich type caps at 250s, unsuitable for visit durations"
+    }
+  },
+
+  "modelAssemblerPattern": {
+  "package": "com.mfreimueller.art.presentation.assembler",
+  "implements": "RepresentationModelAssembler<Entity, EntityModel<Dto>>",
+  "keyBehaviors": [
+    "Converts entity -> DTO via mapper",
+    "Creates self link with .withSelfRel()",
+    "Adds .andAffordance(afford(...)) for PUT, PATCH, DELETE",
+    "Adds collection link with .withRel('collection')"
+  ]
+},
+
+  "plan": "plan.md",
+  "taskList": "task.md"
+}
