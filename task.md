@@ -3,45 +3,45 @@
 ## Phase 0: Foundation Fixes
 
 - [x] **0.1** Add `password` field (`@NotBlank String password`, `@JsonIgnore`) to `Creator` entity
-- [ ] **0.2** Create Flyway migration `V1.0.2__AddCreatorPassword.sql` adding `password` column to `creator` table
-- [ ] **0.3** Add `password` field to `CreateCreatorCommand` record
-- [ ] **0.4** Add `password` field to `UpdateCreatorCommand` record
-- [ ] **0.5** Create `TextContentDto` (extends `ContentDto`) with `shortText`, `longText` fields
-- [ ] **0.6** Create `ImageContentDto` (extends `ContentDto`) with `source` field
-- [ ] **0.7** Create `VideoContentDto` (extends `ContentDto`) with `source`, `duration`, `subtitles` fields
-- [ ] **0.8** Create `SlideshowContentDto` (extends `ContentDto`) with `slides`, `mode`, `speed` fields
-- [ ] **0.9** Create `CollectionDto` with title, pointsOfInterest, subCollections, parentCollection, createdAt, updatedAt, createdBy, updatedBy
-- [ ] **0.10** Create `ExhibitionDto` (extends `CollectionDto`) with `languages` field
-- [ ] **0.11** Create `VisitorDto` with id, username, emailAddress
-- [ ] **0.12** Create `VisitHistoryDto` with id, duration, visitedOn, pointsOfInterest, visitor
-- [ ] **0.13** Add `@SubclassMapping` entries to `ContentMapper` for `TextContent`, `ImageContent`, `VideoContent`, `SlideshowContent`
-- [ ] **0.14** Create `CollectionMapper` interface (with `toDto`, `toDtos` methods)
-- [ ] **0.15** Create `VisitorMapper` interface
-- [ ] **0.16** Create `VisitHistoryMapper` interface
-- [ ] **0.17** Add `findByUsername(String username)` method to `CreatorRepository`
-- [ ] **0.18** Add `role` field to `CreatorDto`
+- [x] **0.2** Create Flyway migration `V1.0.2__AddCreatorPassword.sql` adding `password` column to `creator` table
+- [x] **0.3** Add `password` field to `CreateCreatorCommand` record
+- [x] **0.4** Add `password` field to `UpdateCreatorCommand` record
+- [x] **0.5** Create `TextContentDto` (extends `ContentDto`) with `shortText`, `longText` fields
+- [x] **0.6** Create `ImageContentDto` (extends `ContentDto`) with `source` field
+- [x] **0.7** Create `VideoContentDto` (extends `ContentDto`) with `source`, `duration`, `subtitles` fields
+- [x] **0.8** Create `SlideshowContentDto` (extends `ContentDto`) with `slides`, `mode`, `speed` fields
+- [x] **0.9** Create `CollectionDto` with title, pointsOfInterest, subCollections, parentCollection, createdAt, updatedAt, createdBy, updatedBy
+- [x] **0.10** Create `ExhibitionDto` (extends `CollectionDto`) with `languages` field
+- [x] **0.11** Create `VisitorDto` with id, username, emailAddress
+- [x] **0.12** Create `VisitHistoryDto` with id, duration, visitedOn, pointsOfInterest, visitor
+- [x] **0.13** Add `@SubclassMapping` entries to `ContentMapper` for `TextContent`, `ImageContent`, `VideoContent`, `SlideshowContent`
+- [x] **0.14** Create `CollectionMapper` interface (with `toDto`, `toDtos` methods)
+- [x] **0.15** Create `VisitorMapper` interface
+- [x] **0.16** Create `VisitHistoryMapper` interface
+- [x] **0.17** Add `findByUsername(String username)` method to `CreatorRepository`
+- [x] **0.18** Add `role` field to `CreatorDto`
 
 ## Phase 1: Complete REST API
 
-- [ ] **1.1** Create `CreatorModelAssembler` with self link + affordances for PUT, PATCH, DELETE
-- [ ] **1.2** Create `CollectionModelAssembler` with self link + affordances
-- [ ] **1.3** Create `ExhibitionModelAssembler` with self link + affordances
-- [ ] **1.4** Create `VisitorModelAssembler` with self link + affordances
-- [ ] **1.5** Create `VisitHistoryModelAssembler` with self link + affordances
-- [ ] **1.6** Create `CreatorController` (`/api/creators`) with POST, GET, GET-all (pageable), PUT, PATCH, DELETE
-- [ ] **1.7** Create `CollectionController` (`/api/collections`) with POST, GET, GET-all, PUT, PATCH, DELETE, add/remove POI, add/remove subCollection
-- [ ] **1.8** Create `ExhibitionController` (`/api/exhibitions`) with POST, GET, GET-all, PUT, PATCH, DELETE, add/remove POI, add/remove subCollection
-- [ ] **1.9** Create `VisitorController` (`/api/visitors`) with POST, GET, GET-all (pageable), PUT, PATCH, DELETE
-- [ ] **1.10** Create `VisitHistoryController` (`/api/visit-histories`) with POST, GET, GET-all (pageable)
-- [ ] **1.11** Implement `ContentController.getContent(Long id)` (replace `NotImplementedException` with actual logic)
-- [ ] **1.12** Fix keyset pagination `prev`/`next` link computation in `ContentController.getContents()`
-- [ ] **1.13** Add `GET /api/pois/{id}/comments` endpoint to `PointOfInterestController` using `RestClient` to fetch 2 random comments from `dummyjson.com`
-- [ ] **1.14** Write `CreatorControllerTest`
-- [ ] **1.15** Write `CollectionControllerTest`
-- [ ] **1.16** Write `ExhibitionControllerTest`
-- [ ] **1.17** Write `VisitorControllerTest`
-- [ ] **1.18** Write `VisitHistoryControllerTest`
-- [ ] **1.19** Write/update `ContentControllerTest` covering `getContent` and keyset pagination
+- [x] **1.1** Create `CreatorModelAssembler` with self link + affordances for PUT, PATCH, DELETE
+- [x] **1.2** Create `CollectionModelAssembler` with self link + affordances
+- [x] **1.3** Create `ExhibitionModelAssembler` with self link + affordances
+- [x] **1.4** Create `VisitorModelAssembler` with self link + affordances
+- [x] **1.5** Create `VisitHistoryModelAssembler` with self link + affordances
+- [x] **1.6** Create `CreatorController` (`/api/creators`) with POST, GET, GET-all (pageable), PUT, PATCH, DELETE
+- [x] **1.7** Create `CollectionController` (`/api/collections`) with POST, GET, GET-all, PUT, PATCH, DELETE, add/remove POI, add/remove subCollection
+- [x] **1.8** Create `ExhibitionController` (`/api/exhibitions`) with POST, GET, GET-all, PUT, PATCH, DELETE, add/remove POI, add/remove subCollection
+- [x] **1.9** Create `VisitorController` (`/api/visitors`) with POST, GET, GET-all (pageable), PUT, PATCH, DELETE
+- [x] **1.10** Create `VisitHistoryController` (`/api/visit-histories`) with POST, GET, GET-all (pageable)
+- [x] **1.11** Implement `ContentController.getContent(Long id)` (replace `NotImplementedException` with actual logic)
+- [x] **1.12** Fix keyset pagination `prev`/`next` link computation in `ContentController.getContents()`
+- [x] **1.13** Add `GET /api/pois/{id}/comments` endpoint to `PointOfInterestController` using `RestClient` to fetch 2 random comments from `dummyjson.com`
+- [x] **1.14** Write `PointOfInterestControllerTest`
+- [x] **1.15** Write `CollectionControllerTest`
+- [x] **1.16** Write `ExhibitionControllerTest`
+- [x] **1.17** Write `VisitorControllerTest`
+- [x] **1.18** Write `VisitHistoryControllerTest`
+- [x] **1.19** Write/update `ContentControllerTest` covering `getContent` and keyset pagination
 
 ## Phase 2: Spring Security
 
